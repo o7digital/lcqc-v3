@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/@tinacms/webpack@latest/dist/index.js"></script>
+  </head>
+  <body>
+    <div id="tina"></div>
+    <script>
+      Tina.init({
+        apis: {
+          github: {
+            repo: "o7digital/lcqc",
+            branch: "staging",
+            token: "5cb6c30bbf0bf643747ce33b885d45241d9579a1"
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

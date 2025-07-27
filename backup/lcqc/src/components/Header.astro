@@ -1,0 +1,109 @@
+<nav id="navbar" class="p-4 z-50 fixed flex justify-between items-center w-full">
+    <div id="header-scroll" class="fixed w-full left-0 h-[150px] right-0 top-0 hidden"></div>
+    <div class="flex gap-3 items-center">
+        <div class="flex justify-between items-center ">
+            <label class="block  relative z-40 cursor-pointer px-3 py-6" for="mobile-menu">
+                <input class="peer hidden" type="checkbox" id="mobile-menu" />
+                <div id="menu-icon"
+                    class="relative z-50 block h-[2px] rounded-full w-7 bg-white/90  content-[''] before:absolute before:top-[-0.55rem] before:z-50 before:block before:h-full before:w-full before:bg-white/90 before:transition-all before:duration-200 before:ease-out before:content-[''] after:absolute after:right-0 after:bottom-[-0.55rem] after:block after:h-full after:w-full after:bg-white/90 after:transition-all after:duration-200 after:ease-out after:content-[''] peer-checked:!bg-black/0  before:peer-checked:top-0 before:peer-checked:w-full before:peer-checked:rotate-45 before:peer-checked:transform after:peer-checked:bottom-0 after:peer-checked:w-full after:peer-checked:-rotate-45 after:peer-checked:transform after:peer-checked:bg-black before:peer-checked:bg-black peer-checked:right-0"
+                >
+                </div>
+                <div
+                    class="fixed inset-0 z-40 hidden h-full w-full  backdrop-blur-sm peer-checked:block"
+                >
+                    &nbsp;
+                </div>
+                <div
+                    class="fixed  top-0 left-0 z-40 h-full w-[95%] md:w-1/2 lg:w-1/4 -translate-x-full overflow-x-auto overscroll-y-none transition duration-500 peer-checked:translate-x-0"
+                >
+                    <div class="float-right min-h-full w-full bg-white px-6 pt-12 shadow-2xl  bg-[url('/palm-bg-menu.png')] bg-cover">
+                        <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 py-8 font-medium ">
+                            <li class="hover:underline"><a href="/">Home</a></li>
+                            <li class="hover:underline"><a href="/la-casa-que-canta">La casa que canta</a></li>
+                            <li class="hover:underline"><a href="/accomodations">Accomodations</a></li>
+                            <li class="hover:underline"><a href="/activities">Activities</a></li>
+                            <li class="hover:underline"><a href="/activities/spa">Spa</a></li>
+                            <li class="hover:underline"><a href="/activities/gym">Gym</a></li>
+                            <li class="hover:underline"><a href="/mar-y-cielo">Mar y Cielo</a></li>
+                            <li class="hover:underline"><a href="/luxury-villas">Luxury Villas</a></li>
+                            <li class="hover:underline"><a href="/contact">Contact and Find Us</a></li>
+    
+                        </menu>
+                        <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 font-medium border-y border-black/40 py-6 ">
+                            <li class="hover:underline"><a target="_blank" href="https://lacasaquecanta.com/savings/">Offers</a></li>
+    
+                        </menu>
+                        <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 font-medium  py-8 ">
+                            <li class="grid hover:underline"><a target="_blank"  href="https://be.synxis.com/?chain=22402&hotel=78821&src=24C">Booking</a><span class="text-base">Best Rate Guarentee</span></li>
+    
+                        </menu>
+                        
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div>
+            <div class="relative flex-col text-left">
+                <button type="button" class="inline-flex w-full text-base px-2 font-medium text-white/90 focus:outline-none " id="menu-button" aria-expanded="true" aria-haspopup="true">
+                    EN
+                    <svg class="  h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.293 9.293a1 1 0 011.414 0L10 12.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div class="hidden origin-top-right absolute transition-all	border-l border-black/0 right-0 mt-2 w-full rounded-md focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                    <div class="py-1" role="none">
+                        <a href="#" class="text-white/90 px-2 block text-base font-medium  hover:border-l hover:border-white/90" role="menuitem" tabindex="-1" id="menu-item-0">ES</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex gap-4">
+        <div class="relative">
+            <a target="_blank" href="https://be.synxis.com/?chain=22402&hotel=78821&src=24C" class="uppercase py-3 px-6 bg-white font-semibold tracking-widest text-black/90">Book Now</a>
+        </div>
+        <div class="relative hidden md:block">
+            <a target="_blank" href="https://lacasaquecanta.com/savings/" target="_blank" class="uppercase py-3 px-6 bg-black font-semibold tracking-widest text-white">Offers</a>
+        </div>
+    </div>
+    
+</nav>
+
+<style>
+    .navbar-scroll #header-scroll {
+    background:linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+    visibility:visible;
+        display:block;
+    transition: background-color 0.3s;
+}
+
+
+
+
+</style>
+
+<script>
+   
+   window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-scroll');
+        } else {
+            navbar.classList.remove('navbar-scroll');
+        }
+    });
+    
+    document.getElementById('menu-button').addEventListener('click', function() {
+            const menu = this.nextElementSibling;
+            menu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('[role="menuitem"]').forEach(item => {
+            item.addEventListener('click', function(event) {
+                event.preventDefault();
+                const selectedLanguage = this.textContent;
+                alert('Langue sélectionnée : ' + selectedLanguage);
+            });
+        });
+</script>
+
