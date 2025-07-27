@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Welcome to Astro.">
+    <section class="h-72 bg-center bg-[url('/activities.jpeg')]  bg-cover ">
+    </section>
+    <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
+        <div class="px-4 grid md:grid-cols-2 py-10 max-w-7xl items-center mx-auto justify-between ">
+            <div class="mb-8">
+                <h2 class="text-3xl md:text-5xl lg:text-7xl text-black/90 text-balance font-bold">
+                    ACTIVITIES</h2>
+                    <mark class="text-xl font-bold">Small Luxury Hotel Boutique
+                    </mark>
+            </div>
+            <div class="text-justify text-base grid gap-4">
+                <p>La Casa Que Canta is a small luxury hotel with essence, history and a personality of its own.</p>
+                    
+                <p>Located in Zihuatanejo next to the beautiful La Ropa beach, this hotel offers unrivaled panoramic views.</p>
+                    
+            </div>
+        </div>
+    </section>
+    <section class="grid md:grid-cols-2 max-h-screen">
+        <div class="col-span-1 md:aspect-video grid items-end bg-[url('/activities/spa-1.jpg')] bg-cover bg-center">
+			<div class="p-10">
+				<h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
+					Spa</h2>
+					
+					<div class="py-6">
+						<a href="/activities/spa" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Read More</a>
+					</div>
+			</div>
+			
+		</div>
+        <div class="col-span-1 md:aspect-video grid items-end bg-[url('/activities/gym-1.jpg')] bg-cover bg-center">
+			<div class="p-10">
+				<h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
+					Gym</h2>
+					
+					<div class="py-6">
+						<a href="/activities/gym" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Read More</a>
+					</div>
+			</div>
+			
+		</div>
+        
+    </section>
+</Layout>

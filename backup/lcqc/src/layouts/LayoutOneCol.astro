@@ -1,0 +1,73 @@
+---
+import Layout from "@layouts/Layout.astro";
+const { frontmatter } = Astro.props;
+---
+<Layout title=`${frontmatter.title} - La Casa Que Canta` >
+
+<section class="">
+    
+    <div>
+        <div class="swiper mySwiper overflow-hidden  aspect-square md:aspect-[16/6]">
+            <div class="swiper-wrapper">
+                {frontmatter.items.map((item, index) => (
+                    <div class="swiper-slide">
+                        <img 
+                            class="cursor-pointer object-cover object-center transition duration-300 ease-in-out w-full h-full" 
+                            data-page="false" 
+                            src={item.image} 
+                            alt={frontmatter.title} 
+                            data-image={item.image} 
+                            data-text={item.text} 
+                        />
+                    </div>
+                ))}
+            </div>
+            
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <div class="px-8 grid relative text-center items-center pt-12 pb-12 prose-base">
+        <div class="absolute top-1/4 right-0 left-0 mx-auto">
+            <img src="/palm-bg-layout.png" class="hidden md:block mx-auto rotate-180 opacity-80" alt="">
+        </div>
+        <div class="relative">
+            <div class="mb-6">
+                <h1 class="text-5xl lg:text-7xl font-bold ">{frontmatter.title}</h1>
+                <mark class=" font-bold ">{frontmatter.description}</mark>
+            </div>
+           
+            <slot/>
+            
+        </div>
+        <div class="mt-10 relative">
+            <a href="/" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Back to Home</a>
+        </div>
+        
+    </div>
+    
+
+</section>
+<script>
+    import Swiper from "swiper"
+    import {Pagination,Autoplay } from 'swiper/modules';
+
+    // import Swiper and modules styles
+    import 'swiper/css';
+    import 'swiper/css/navigation';
+    import 'swiper/css/pagination';
+     var swiper = new Swiper(".mySwiper", {
+        modules: [Pagination,Autoplay],
+      spaceBetween: 30,
+      centeredSlides: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+    
+    });
+</script>
+</Layout>

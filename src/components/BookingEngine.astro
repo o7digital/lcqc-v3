@@ -1,0 +1,52 @@
+--- 
+const chainId = "22402";
+const hotelId = "78821";
+---
+
+<div class="mx-auto  bg-black/50 md:bg-black/70 shadow-md overflow-hidden ">
+  <div class="p-7">
+    <!-- 
+    <div class="uppercase tracking-wide text-sm text-white font-semibold mb-4">Book a Room</div>-->
+    <form id="booking-form" class="flex flex-wrap items-center gap-4">
+      <div class="w-full sm:w-auto">
+        <label for="arrival-date" class="block text-sm font-medium text-white">Arrival Date</label>
+        <input type="date" id="arrival-date" name="arrival-date" required class="mt-1 block w-full border-b border-white bg-transparent text-white focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+      </div>
+      <div class="w-full sm:w-auto">
+        <label for="departure-date" class="block text-sm font-medium text-white">Departure Date</label>
+        <input type="date" id="departure-date" name="departure-date" required class="mt-1 block w-full border-b border-white bg-transparent text-white focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+      </div>
+      <div class="w-full sm:w-auto">
+        <label for="num-adults" class="block text-sm font-medium text-white">Number of Adults</label>
+        <input type="number" id="num-adults" name="num-adults" min="1" value="2" required class="mt-1 block w-full border-b border-white bg-transparent text-white focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+      </div>
+      <div class="w-full sm:w-auto">
+        <button type="submit" class="text-black/90 px-6 py-3 font-bold block text-base   hover:border-l hover:border-white/90 uppercase bg-white">
+          Check Availability
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script define:vars={{ chainId, hotelId }}>
+  function buildBookingUrl() {
+    const arrivalDate = document.getElementById('arrival-date').value;
+    const departureDate = document.getElementById('departure-date').value;
+    const numAdults = document.getElementById('num-adults').value;
+
+    const baseUrl = "https://be.synxis.com/";
+    let url = `${baseUrl}?Chain=${chainId}&Hotel=${hotelId}`;
+    if (arrivalDate) url += `&arrive=${arrivalDate}`;
+    if (departureDate) url += `&depart=${departureDate}`;
+    url += `&adult=${numAdults}`;
+    url += `&rooms=1`; // Assuming 1 room for simplicity
+
+    window.location.href = url;
+  }
+
+  document.getElementById('booking-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    buildBookingUrl();
+  });
+</script>
