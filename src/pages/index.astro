@@ -1,7 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import BookingEngine from '../components/BookingEngine.astro';
-import { fetchDatoCMS } from '../lib/datocms';
+import Layout from '@layouts/Layout.astro';  // 🔹 Ahora usando alias
+import BookingEngine from '@components/BookingEngine.astro'; // 🔹 Alias
+import { fetchDatoCMS } from '@lib/datocms';  // 🔹 Alias
 
 // Consulta a DatoCMS
 const query = `
@@ -16,7 +16,7 @@ const query = `
 }
 `;
 const data = await fetchDatoCMS(query);
-const slides = data.allSliders || [];
+const slides = data?.allSliders || [];
 ---
 
 <Layout title="Welcome to La Casa Que Canta">
@@ -29,11 +29,15 @@ const slides = data.allSliders || [];
     <div class="hidden md:block absolute top-0 left-0 w-full h-full overflow-hidden">
       <div class="swiper mySwiper w-full h-full">
         <div class="swiper-wrapper">
-          {slides.map((slide) => (
+          {slides.length > 0 ? slides.map((slide) => (
             <div class="swiper-slide">
               <img src={slide.media.url} class="w-full h-full object-cover" alt={slide.description || 'Slide'} />
             </div>
-          ))}
+          )) : (
+            <div class="swiper-slide bg-black text-white flex items-center justify-center">
+              Sin imágenes en el slider
+            </div>
+          )}
         </div>
         <div class="swiper-pagination"></div>
       </div>
@@ -42,11 +46,15 @@ const slides = data.allSliders || [];
     <!-- Slider Mobile -->
     <div class="md:!hidden swiper mySwiper !absolute h-full w-full top-0 overflow-hidden aspect-[16/6]">
       <div class="swiper-wrapper">
-        {slides.map((slide) => (
+        {slides.length > 0 ? slides.map((slide) => (
           <div class="swiper-slide">
             <img src={slide.media.url} class="w-full h-full object-cover" alt={slide.description || 'Slide'} />
           </div>
-        ))}
+        )) : (
+          <div class="swiper-slide bg-black text-white flex items-center justify-center">
+            Sin imágenes en el slider
+          </div>
+        )}
       </div>
       <div class="swiper-pagination"></div>
     </div>

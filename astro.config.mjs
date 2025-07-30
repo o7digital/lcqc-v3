@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 console.log('Forzando redeploy limpio desde astro.config.mjs');
 
 export default defineConfig({
-  site: 'https://lcqc2.vercel.app',  // 🔹 URL corregida
+  site: 'https://lcqc2.vercel.app',  // URL de tu proyecto en Vercel
   integrations: [
     tailwind()
   ],

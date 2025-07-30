@@ -1,1 +1,0 @@
-# LCQC - Mi Proyecto Astro
