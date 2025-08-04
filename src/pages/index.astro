@@ -1,17 +1,18 @@
 ---
-import Layout from '@layouts/Layout.astro';  // 🔹 Ahora usando alias
-import BookingEngine from '@components/BookingEngine.astro'; // 🔹 Alias
-import { fetchDatoCMS } from '@lib/datocms';  // 🔹 Alias
+import Layout from '@layouts/Layout.astro';
+import BookingEngine from '@components/BookingEngine.astro';
+import { fetchDatoCMS } from '@lib/datocms';
 
-// Consulta a DatoCMS
+// 🔹 Consulta GraphQL actualizada para ordenar por sort_order
 const query = `
 {
-  allSliders(orderBy: _createdAt_ASC) {
+  allSliders(orderBy: sort_order_ASC) {
     id
     media {
       url
     }
     description
+    sort_order
   }
 }
 `;
@@ -96,7 +97,6 @@ const slides = data?.allSliders || [];
     </div>
   </section>
 
-  <!-- Script Swiper -->
   <script>
     import Swiper from "swiper";
     import { Pagination, Autoplay } from "swiper/modules";
