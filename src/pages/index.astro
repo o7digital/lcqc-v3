@@ -2,8 +2,9 @@
 import Layout from '@layouts/Layout.astro';
 import BookingEngine from '@components/BookingEngine.astro';
 import { fetchDatoCMS } from '@lib/datocms';
+import { Image } from 'astro:assets';
 
-// 🔹 Consulta GraphQL actualizada para ordenar por sort_order
+// Consulta ordenada por sort_order
 const query = `
 {
   allSliders(orderBy: sort_order_ASC) {
@@ -12,10 +13,10 @@ const query = `
       url
     }
     description
-    sort_order
   }
 }
 `;
+
 const data = await fetchDatoCMS(query);
 const slides = data?.allSliders || [];
 ---
@@ -23,7 +24,7 @@ const slides = data?.allSliders || [];
 <Layout title="Welcome to La Casa Que Canta">
   <section class="scroll-section grid relative">
     <div class="absolute top-20 right-8 z-10">
-      <img class="hidden md:block" src="/logo-white.svg" width="115px" alt="">
+      <img class="hidden md:block" src="/logo-white.svg" width="115px" alt="La Casa Que Canta logo">
     </div>
 
     <!-- Slider Desktop -->
@@ -32,7 +33,13 @@ const slides = data?.allSliders || [];
         <div class="swiper-wrapper">
           {slides.length > 0 ? slides.map((slide) => (
             <div class="swiper-slide">
-              <img src={slide.media.url} class="w-full h-full object-cover" alt={slide.description || 'Slide'} />
+              <img
+                src={slide.media.url}
+                alt={slide.description || 'Slide'}
+                class="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
           )) : (
             <div class="swiper-slide bg-black text-white flex items-center justify-center">
@@ -49,7 +56,13 @@ const slides = data?.allSliders || [];
       <div class="swiper-wrapper">
         {slides.length > 0 ? slides.map((slide) => (
           <div class="swiper-slide">
-            <img src={slide.media.url} class="w-full h-full object-cover" alt={slide.description || 'Slide'} />
+            <img
+              src={slide.media.url}
+              alt={slide.description || 'Slide'}
+              class="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         )) : (
           <div class="swiper-slide bg-black text-white flex items-center justify-center">
@@ -75,8 +88,10 @@ const slides = data?.allSliders || [];
         <div class="flex flex-col flex-wrap items-center gap-1 flex-grow">
           <BookingEngine/>
           <p class="uppercase text-white font-semibold text-xs">
-            zihuatanejo, guerrero mexico.pueblo mágico.
-            <a href="mailto:sales.reservations@lacasaquecanta.com">sales.reservations@lacasaquecanta.com</a>
+            zihuatanejo, guerrero mexico. pueblo mágico. <br />
+            <a href="mailto:sales.reservations@lacasaquecanta.com">
+              sales.reservations@lacasaquecanta.com
+            </a>
           </p>
         </div>
         <div class="flex gap-3">
