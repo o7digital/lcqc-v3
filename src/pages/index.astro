@@ -5,9 +5,9 @@ import { fetchDatoCMS } from '@lib/datocms';
 
 const query = `
 {
-  allSliders(orderBy: sort_order_ASC) {
+  allSliders(orderBy: order_ASC) {
     id
-    sort_order
+    order
     media {
       url
     }
