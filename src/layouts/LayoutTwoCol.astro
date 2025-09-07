@@ -6,9 +6,7 @@ const { frontmatter } = Astro.props;
 <Layout title={`${frontmatter.title} - La Casa Que Canta`}>
 
 <section class="grid md:grid-cols-[65%_35%] md:h-screen overflow-y-hidden">
-  <!-- 🖼️ Slider (65%) -->
   <div>
-    <!-- 🔹 Agregamos la clase activities-slider -->
     <div class="swiper mySwiper activities-slider overflow-hidden">
       <div class="swiper-wrapper">
         {Array.isArray(frontmatter.items) && frontmatter.items.map((item) => (
@@ -28,13 +26,12 @@ const { frontmatter } = Astro.props;
     </div>
   </div>
 
-  <!-- 📝 Texto (35%) -->
   <div class="px-8 grid items-center my-8 prose-base md:px-12 lg:px-16">
     <div>
       <div class="mb-6">
         <h1 class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
         {frontmatter.description && (
-          <mark class="font-bold">{frontmatter.description}</mark>
+          <span class="font-bold bg-yellow-200 px-1">{frontmatter.description}</span>
         )}
       </div>
       <slot />
@@ -55,7 +52,7 @@ const { frontmatter } = Astro.props;
   import "swiper/css/navigation";
   import "swiper/css/pagination";
 
-  var swiper = new Swiper(".mySwiper", {
+  new Swiper(".mySwiper", {
     modules: [Pagination, Autoplay],
     spaceBetween: 30,
     centeredSlides: true,
