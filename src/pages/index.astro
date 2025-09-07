@@ -84,17 +84,16 @@ const slides = data?.allSliders || [];
     <div class="px-4 relative z-10 py-4 flex flex-col justify-end gap-y-16">
       <div></div>
       <div class="flex flex-wrap justify-between gap-6 items-end w-full">
+        <!-- Booking Engine -->
         <div class="flex flex-col flex-wrap items-center gap-1 flex-grow">
           <BookingEngine/>
         </div>
 
-        <!-- Redes sociales -->
-        <div class="flex gap-3">
-          <a href="https://www.facebook.com/LaCasaQueCantaLuxuryHotel/" target="_blank">
-            <svg class="fill-white" role="img" width="20" height="20" viewBox="0 0 24 24"><title>Facebook</title><path d="..." /></svg>
-          </a>
-          <a href="https://www.instagram.com/lacasaquecanta_hotelboutique/" target="_blank">
-            <svg class="fill-white" role="img" width="20" height="20" viewBox="0 0 24 24"><title>Instagram</title><path d="..." /></svg>
+        <!-- Dirección + Correo -->
+        <div class="flex flex-col md:items-end gap-2 text-white text-xs font-semibold uppercase">
+          <div>Zihuatanejo, Guerrero, México · Pueblo Mágico</div>
+          <a href="mailto:sales.reservations@lacasaquecanta.com" class="hover:underline">
+            sales.reservations@lacasaquecanta.com
           </a>
         </div>
       </div>
