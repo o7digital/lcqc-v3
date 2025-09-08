@@ -36,18 +36,8 @@ const { title } = Astro.props;
 				<slot />
 				<Footer/>
 
-				<!-- 🔹 Dirección izquierda / Correo derecha -->
-				<footer class="absolute bottom-0 left-0 w-full flex justify-between px-6 py-2 text-xs md:text-sm text-white z-20">
-				  <div>
-				    <span>Zihuatanejo, Guerrero, México · Pueblo Mágico</span>
-				  </div>
-				  <div>
-				    <a href="mailto:reservations@lacasaquecanta.com" class="hover:underline">
-				      reservations@lacasaquecanta.com
-				    </a>
-				  </div>
-				</footer>
-
+				<!-- ❌ Eliminado bloque duplicado de dirección/correo -->
+				
 				<div id="whatsapp-icon" class="fixed bottom-4 right-4 z-50 md:hidden">
 					<a href="https://wa.me/yourphonenumber" target="_blank" class="flex items-center justify-center w-12 h-12 bg-green-500 rounded-full shadow-lg hover:bg-green-600">
 					  <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" class="w-6 h-6">
