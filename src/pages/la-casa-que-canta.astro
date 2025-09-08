@@ -7,7 +7,7 @@ import Layout from '../layouts/Layout.astro';
   </section>
 
   <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
-    <div class="px-4 grid md:grid-cols-2 py-16 max-w-7xl items-center mx-auto justify-between">
+    <div class="px-4 grid md:grid-cols-2 py-8 max-w-7xl items-center mx-auto justify-between">
       <div class="mb-8">
         <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">
           Welcome to La Casa que Canta
@@ -36,9 +36,10 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
-  <section class="grid md:grid-cols-2">
+  <!-- 🔹 Ahora cada bloque ocupa toda la fila -->
+  <section class="grid">
     <!-- History -->
-    <div class="col-span-1 md:aspect-video grid items-end bg-[url('/panorama-lcqc.jpg')] bg-cover bg-center">
+    <div class="aspect-[16/9] grid items-end bg-[url('/panorama-lcqc.jpg')] bg-cover bg-center">
       <div class="p-10">
         <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
           History
@@ -52,7 +53,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
 
     <!-- Our Team -->
-    <div class="col-span-1 md:aspect-video grid items-end bg-[url('/team.jpeg')] bg-cover bg-center">
+    <div class="aspect-[16/9] grid items-end bg-[url('/team.jpeg')] bg-cover bg-center">
       <div class="p-10">
         <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
           Our Team
@@ -61,7 +62,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
 
     <!-- Pools -->
-    <div class="col-span-1 md:col-span-2 md:aspect-[16/4] grid items-end bg-[url('/pool-front.jpeg')] bg-cover bg-center">
+    <div class="aspect-[16/9] grid items-end bg-[url('/pool-front.jpeg')] bg-cover bg-center">
       <div class="p-10">
         <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
           Pools
