@@ -5,12 +5,13 @@ import { fetchDatoCMS } from '@lib/datocms';
 
 const query = `
 {
-  allSliders {
+  allSliders(orderBy: sort_order_ASC) {
     id
     media {
       url
     }
     description
+    sort_order
   }
 }
 `;
@@ -29,7 +30,7 @@ const slides = data?.allSliders || [];
       <div class="swiper mySwiper w-full h-full">
         <div class="swiper-wrapper">
           {slides.length > 0 ? slides.map((slide, i) => (
-            <div class="swiper-slide">
+            <div class="swiper-slide" key={slide.id}>
               <img
                 src={slide.media.url}
                 srcset={`${slide.media.url}?w=640 640w, ${slide.media.url}?w=1280 1280w, ${slide.media.url}?w=1920 1920w`}
@@ -53,7 +54,7 @@ const slides = data?.allSliders || [];
     <div class="md:!hidden swiper mySwiper !absolute h-full w-full top-0 overflow-hidden aspect-[16/6]">
       <div class="swiper-wrapper">
         {slides.length > 0 ? slides.map((slide, i) => (
-          <div class="swiper-slide">
+          <div class="swiper-slide" key={slide.id}>
             <img
               src={slide.media.url}
               srcset={`${slide.media.url}?w=320 320w, ${slide.media.url}?w=640 640w, ${slide.media.url}?w=1024 1024w`}
