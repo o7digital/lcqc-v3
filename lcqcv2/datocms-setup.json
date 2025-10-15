@@ -1,0 +1,87 @@
+{
+  "entities": [
+    {
+      "type": "item_type",
+      "id": "slider",
+      "attributes": {
+        "name": "Slider",
+        "api_key": "slider",
+        "draft_mode_active": false,
+        "sortable": true,
+        "singleton": false
+      }
+    },
+    {
+      "type": "field",
+      "attributes": {
+        "label": "Media",
+        "field_type": "file",
+        "api_key": "media",
+        "localized": false,
+        "validators": { "required": {} }
+      },
+      "relationships": { "item_type": { "data": { "type": "item_type", "id": "slider" } } }
+    },
+    {
+      "type": "field",
+      "attributes": {
+        "label": "Orden",
+        "field_type": "integer",
+        "api_key": "order",
+        "localized": false
+      },
+      "relationships": { "item_type": { "data": { "type": "item_type", "id": "slider" } } }
+    },
+    {
+      "type": "item_type",
+      "id": "section",
+      "attributes": {
+        "name": "Sección",
+        "api_key": "section",
+        "draft_mode_active": false,
+        "sortable": true,
+        "singleton": false
+      }
+    },
+    {
+      "type": "field",
+      "attributes": {
+        "label": "Título",
+        "field_type": "string",
+        "api_key": "title",
+        "localized": false,
+        "validators": { "required": {} }
+      },
+      "relationships": { "item_type": { "data": { "type": "item_type", "id": "section" } } }
+    },
+    {
+      "type": "field",
+      "attributes": {
+        "label": "Descripción",
+        "field_type": "text",
+        "api_key": "description",
+        "localized": false
+      },
+      "relationships": { "item_type": { "data": { "type": "item_type", "id": "section" } } }
+    },
+    {
+      "type": "field",
+      "attributes": {
+        "label": "Imagen de fondo",
+        "field_type": "file",
+        "api_key": "background_image",
+        "localized": false,
+        "validators": { "required": {} }
+      },
+      "relationships": { "item_type": { "data": { "type": "item_type", "id": "section" } } }
+    },
+    {
+      "type": "field",
+      "attributes": {
+        "label": "Texto del botón",
+        "field_type": "string",
+        "api_key": "cta_text",
+        "localized": false
+      },
+      "relationships": { "item_type": { "data": { "type": "item_type", "id": "section" } } }
+    },
