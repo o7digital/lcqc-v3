@@ -84,8 +84,10 @@ const slides = data?.allSliders || [];
 
     <!-- Booking Engine centrado -->
     <div class="absolute bottom-10 w-full z-20 flex justify-center">
-      <div class="bg-black/10 hover:bg-black/40 backdrop-blur-sm transition rounded-lg p-4">
-        <BookingEngine/>
+      <div class="booking-hover-zone group" tabindex="0" style="outline:none;">
+        <div class="bg-black/10 hover:bg-black/40 backdrop-blur-sm transition rounded-lg p-4 opacity-0 pointer-events-none scale-95 group-hover:opacity-100 group-hover:pointer-events-auto group-hover:scale-100 group-focus-within:opacity-100 group-focus-within:pointer-events-auto group-focus-within:scale-100" id="booking-bar-container">
+          <BookingEngine/>
+        </div>
       </div>
     </div>
   </section>
@@ -107,5 +109,31 @@ const slides = data?.allSliders || [];
   <style is:global>
     .scroll-section { height: 100vh; position: relative; }
     .swiper, .swiper-slide { width: 100%; height: 100%; }
+    .booking-hover-zone .bg-black\/10 {
+      transition: opacity 0.3s, transform 0.3s;
+    }
   </style>
+
+  <script>
+    // Pour le support tactile/mobile : afficher le booking bar au toucher
+    if (typeof window !== 'undefined') {
+      const box = document.querySelector('.booking-hover-zone');
+      const barContainer = document.getElementById('booking-bar-container');
+      if (box && barContainer) {
+        let hideTimeout;
+        box.addEventListener('touchstart', () => {
+          barContainer.style.opacity = '1';
+          barContainer.style.pointerEvents = 'auto';
+          barContainer.style.transform = 'scale(1)';
+          clearTimeout(hideTimeout);
+          // Masquer après 2s si pas d'interaction
+          hideTimeout = setTimeout(() => {
+            barContainer.style.opacity = '0';
+            barContainer.style.pointerEvents = 'none';
+            barContainer.style.transform = 'scale(0.95)';
+          }, 2000);
+        });
+      }
+    }
+  </script>
 </Layout>
