@@ -3,8 +3,8 @@ const chainId = "22402";
 const hotelId = "78821";
 ---
 
-<div class="reservation-box mx-auto shadow-md overflow-hidden">
-  <div class="p-7">
+<div class="reservation-box mx-auto shadow-md overflow-hidden group" tabindex="0" style="outline:none;">
+  <div class="p-7 transition-all duration-300 opacity-0 pointer-events-none scale-95 group-hover:opacity-100 group-hover:pointer-events-auto group-hover:scale-100 group-focus-within:opacity-100 group-focus-within:pointer-events-auto group-focus-within:scale-100" id="booking-form-container">
     <form id="booking-form" class="flex flex-wrap items-center gap-4">
       <!-- Arrival Date -->
       <div class="w-full sm:w-auto">
@@ -77,4 +77,33 @@ const hotelId = "78821";
     event.preventDefault();
     buildBookingUrl();
   });
+
 </script>
+<script>
+// Pour le support tactile/mobile : afficher le formulaire au toucher
+if (typeof window !== 'undefined') {
+  const box = document.querySelector('.reservation-box');
+  const formContainer = document.getElementById('booking-form-container');
+  if (box && formContainer) {
+    let hideTimeout;
+    box.addEventListener('touchstart', () => {
+      formContainer.style.opacity = '1';
+      formContainer.style.pointerEvents = 'auto';
+      formContainer.style.transform = 'scale(1)';
+      clearTimeout(hideTimeout);
+      // Masquer après 2s si pas d'interaction
+      hideTimeout = setTimeout(() => {
+        formContainer.style.opacity = '0';
+        formContainer.style.pointerEvents = 'none';
+        formContainer.style.transform = 'scale(0.95)';
+      }, 2000);
+    });
+  }
+}
+</script>
+
+<style is:global>
+.reservation-box .p-7 {
+  transition: opacity 0.3s, transform 0.3s;
+}
+</style>
