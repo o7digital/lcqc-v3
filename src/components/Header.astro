@@ -9,7 +9,7 @@ const menu = isES
             { label: 'Spa', href: '/es/activities/spa' },
             { label: 'Gimnasio', href: '/es/activities/gym' },
             { label: 'Mar y Cielo', href: '/es/mar-y-cielo' },
-            { label: 'Villas de Lujo', href: '/es/luxury-villas' },
+            { label: 'Nuestras Villas', href: '/es/luxury-villas' },
             { label: 'Contacto y Ubicación', href: '/es/contact' },
         ]
     : [
@@ -82,10 +82,10 @@ const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
     </div>
     <div class="flex gap-4">
         <div class="relative">
-            <a target="_blank" href="https://be.synxis.com/?chain=22402&hotel=78821&src=24C" class="uppercase py-3 px-6 bg-white font-semibold tracking-widest text-black/90">Book Now</a>
+            <a target="_blank" href={bookingHref} class="uppercase py-3 px-6 bg-white font-semibold tracking-widest text-black/90">{bookingLabel}</a>
         </div>
         <div class="relative hidden md:block">
-            <a target="_blank" href="https://lacasaquecanta.com/savings/" target="_blank" class="uppercase py-3 px-6 bg-black font-semibold tracking-widest text-white">Offers</a>
+            <a target="_blank" href={offersHref} class="uppercase py-3 px-6 bg-black font-semibold tracking-widest text-white">{offersLabel}</a>
         </div>
     </div>
     
