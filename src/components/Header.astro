@@ -1,3 +1,34 @@
+---
+const isES = Astro.url.pathname.startsWith('/es');
+const menu = isES
+    ? [
+            { label: 'Inicio', href: '/es/' },
+            { label: 'La casa que canta', href: '/es/la-casa-que-canta' },
+            { label: 'Suites', href: '/es/accomodations' },
+            { label: 'Actividades', href: '/es/activities' },
+            { label: 'Spa', href: '/es/activities/spa' },
+            { label: 'Gimnasio', href: '/es/activities/gym' },
+            { label: 'Mar y Cielo', href: '/es/mar-y-cielo' },
+            { label: 'Villas de Lujo', href: '/es/luxury-villas' },
+            { label: 'Contacto y Ubicación', href: '/es/contact' },
+        ]
+    : [
+            { label: 'Home', href: '/' },
+            { label: 'La casa que canta', href: '/la-casa-que-canta' },
+            { label: 'Accomodations', href: '/accomodations' },
+            { label: 'Activities', href: '/activities' },
+            { label: 'Spa', href: '/activities/spa' },
+            { label: 'Gym', href: '/activities/gym' },
+            { label: 'Mar y Cielo', href: '/mar-y-cielo' },
+            { label: 'Luxury Villas', href: '/luxury-villas' },
+            { label: 'Contact and Find Us', href: '/contact' },
+        ];
+const offersLabel = isES ? 'Ofertas' : 'Offers';
+const bookingLabel = isES ? 'Reservar' : 'Book Now';
+const bestRateLabel = isES ? 'Mejor tarifa garantizada' : 'Best Rate Guarentee';
+const offersHref = isES ? '/es/savings' : 'https://lacasaquecanta.com/savings/';
+const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
+---
 <nav id="navbar" class="p-4 z-50 fixed flex justify-between items-center w-full">
     <div id="header-scroll" class="fixed w-full left-0 h-[150px] right-0 top-0 hidden"></div>
     <div class="flex gap-3 items-center">
@@ -17,26 +48,17 @@
                     class="fixed  top-0 left-0 z-40 h-full w-[95%] md:w-1/2 lg:w-1/4 -translate-x-full overflow-x-auto overscroll-y-none transition duration-500 peer-checked:translate-x-0"
                 >
                     <div class="float-right min-h-full w-full bg-white px-6 pt-12 shadow-2xl  bg-[url('/palm-bg-menu.png')] bg-cover">
-                        <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 py-8 font-medium ">
-                            <li class="hover:underline"><a href="/">Home</a></li>
-                            <li class="hover:underline"><a href="/la-casa-que-canta">La casa que canta</a></li>
-                            <li class="hover:underline"><a href="/accomodations">Accomodations</a></li>
-                            <li class="hover:underline"><a href="/activities">Activities</a></li>
-                            <li class="hover:underline"><a href="/activities/spa">Spa</a></li>
-                            <li class="hover:underline"><a href="/activities/gym">Gym</a></li>
-                            <li class="hover:underline"><a href="/mar-y-cielo">Mar y Cielo</a></li>
-                            <li class="hover:underline"><a href="/luxury-villas">Luxury Villas</a></li>
-                            <li class="hover:underline"><a href="/contact">Contact and Find Us</a></li>
-    
-                        </menu>
-                        <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 font-medium border-y border-black/40 py-6 ">
-                            <li class="hover:underline"><a target="_blank" href="https://lacasaquecanta.com/savings/">Offers</a></li>
-    
-                        </menu>
-                        <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 font-medium  py-8 ">
-                            <li class="grid hover:underline"><a target="_blank"  href="https://be.synxis.com/?chain=22402&hotel=78821&src=24C">Booking</a><span class="text-base">Best Rate Guarentee</span></li>
-    
-                        </menu>
+                                                <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 py-8 font-medium ">
+                                                    {menu.map(item => (
+                                                        <li class="hover:underline"><a href={item.href}>{item.label}</a></li>
+                                                    ))}
+                                                </menu>
+                                                <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 font-medium border-y border-black/40 py-6 ">
+                                                    <li class="hover:underline"><a href={offersHref} target="_blank">{offersLabel}</a></li>
+                                                </menu>
+                                                <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 font-medium  py-8 ">
+                                                    <li class="grid hover:underline"><a target="_blank" href={bookingHref}>{bookingLabel}</a><span class="text-base">{bestRateLabel}</span></li>
+                                                </menu>
                         
                     </div>
                 </div>
