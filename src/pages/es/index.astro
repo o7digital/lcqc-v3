@@ -1,0 +1,115 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BookingEngine from '@components/BookingEngine.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const query = `
+{
+  allSliders(orderBy: sortOrder_ASC) {
+    id
+    media {
+      url
+    }
+    description
+    sortOrder
+  }
+}
+`;
+const data = await fetchDatoCMS(query);
+const slides = data?.allSliders || [];
+---
+
+<Layout title="Bienvenido a La Casa Que Canta">
+  <section class="scroll-section grid relative">
+    <div class="absolute top-20 right-8 z-10">
+      <img class="hidden md:block" src="/logo-white.svg" width="115px" alt="">
+    </div>
+
+    <!-- Slider Desktop -->
+    <div class="hidden md:block absolute top-0 left-0 w-full h-full overflow-hidden">
+      <div class="swiper mySwiper w-full h-full">
+        <div class="swiper-wrapper">
+          {slides.length > 0 ? slides.map((slide, i) => (
+            <div class="swiper-slide">
+              <img
+                src={slide.media.url}
+                srcset={`${slide.media.url}?w=640 640w, ${slide.media.url}?w=1280 1280w, ${slide.media.url}?w=1920 1920w`}
+                sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+                class="w-full h-full object-cover"
+                alt={slide.description || 'Slide'}
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+            </div>
+          )) : (
+            <div class="swiper-slide bg-black text-white flex items-center justify-center">
+              Sin imágenes en el slider
+            </div>
+          )}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+
+    <!-- Slider Mobile -->
+    <div class="md:!hidden swiper mySwiper !absolute h-full w-full top-0 overflow-hidden aspect-[16/6]">
+      <div class="swiper-wrapper">
+        {slides.length > 0 ? slides.map((slide, i) => (
+          <div class="swiper-slide">
+            <img
+              src={slide.media.url}
+              srcset={`${slide.media.url}?w=320 320w, ${slide.media.url}?w=640 640w, ${slide.media.url}?w=1024 1024w`}
+              sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
+              class="w-full h-full object-cover"
+              alt={slide.description || 'Slide'}
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+          </div>
+        )) : (
+          <div class="swiper-slide bg-black text-white flex items-center justify-center">
+            Sin imágenes en el slider
+          </div>
+        )}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="relative pt-24 md:pt-4 z-10 w-full text-center">
+      <div class="mix-blend-difference">
+        <h1 class="relative text-4xl md:text-4xl lg:text-5xl xl:text-7xl text-white font-bold">
+          La Casa que canta
+        </h1>
+      </div>
+    </div>
+
+    <!-- Booking Engine centrado -->
+    <div class="absolute bottom-10 w-full z-20 flex justify-center">
+      <div class="booking-hover-zone group" tabindex="0" style="outline:none;">
+        <div class="bg-black/10 group-hover:bg-black/20 group-focus-within:bg-black/20 backdrop-blur-sm transition rounded-lg p-4 opacity-0 pointer-events-none scale-95 group-hover:opacity-100 group-hover:pointer-events-auto group-hover:scale-100 group-focus-within:opacity-100 group-focus-within:pointer-events-auto group-focus-within:scale-100" id="booking-bar-container">
+          <BookingEngine/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import Swiper from "swiper";
+    import { Pagination, Autoplay } from "swiper/modules";
+    import "swiper/css";
+    import "swiper/css/pagination";
+
+    new Swiper(".mySwiper", {
+      modules: [Pagination, Autoplay],
+      pagination: { el: ".swiper-pagination", clickable: true },
+      autoplay: { delay: 5000, disableOnInteraction: false },
+      loop: true,
+    });
+  </script>
+
+  <style is:global>
+    .scroll-section { height: 100vh; position: relative; }
+    .swiper, .swiper-slide { width: 100%; height: 100%; }
+    .booking-hover-zone .bg-black\/10 {
+      transition: opacity 0.3s, transform 0.3s;
+    }
+  </style>
