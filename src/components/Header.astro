@@ -75,13 +75,13 @@ const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
         </div>
         <div>
             <div class="relative flex-col text-left">
-                <button type="button" class="inline-flex w-full text-base px-2 font-medium text-white/90 focus:outline-none " id="menu-button" aria-expanded="true" aria-haspopup="true">
-                    EN
-                    <svg class="  h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <button type="button" class="inline-flex w-full text-base px-2 font-medium text-white/90 focus:outline-none " id="menu-button" aria-expanded="false" aria-haspopup="true">
+                    {isES ? 'ES' : 'EN'}
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path fill-rule="evenodd" d="M5.293 9.293a1 1 0 011.414 0L10 12.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
                 </button>
-                <div class="hidden origin-top-right absolute transition-all	border-l border-black/0 right-0 mt-2 w-full rounded-md focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                <div class="hidden origin-top-right absolute transition-all border-l border-black/0 right-0 mt-2 w-full rounded-md focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" id="lang-menu">
                     <div class="py-1" role="none">
                         <a href={switchLangHref} class="text-white/90 px-2 block text-base font-medium hover:border-l hover:border-white/90" role="menuitem" tabindex="-1" id="menu-item-0">{isES ? 'EN' : 'ES'}</a>
                     </div>
@@ -125,8 +125,12 @@ const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
     });
     
     document.getElementById('menu-button').addEventListener('click', function() {
-        const menu = this.nextElementSibling;
+        const menu = document.getElementById('lang-menu');
         menu.classList.toggle('hidden');
+    });
+    document.getElementById('menu-item-0').addEventListener('click', function() {
+        const menu = document.getElementById('lang-menu');
+        menu.classList.add('hidden');
     });
 </script>
 
