@@ -66,4 +66,10 @@ const { frontmatter } = Astro.props;
     });
 </script>
 
+{frontmatter.title && frontmatter.title.toLowerCase().includes('mar y cielo') ? (
+    <div class="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2 pointer-events-none">
+        <img src="/images/image2vector.svg" alt="Michelin" class="w-20 h-auto drop-shadow-xl bg-white/80 rounded-lg p-1" style="pointer-events:auto;" />
+        <img src="/images/dinnerchoise.webp" alt="Dinner Club" class="w-20 h-auto drop-shadow-xl bg-white/80 rounded-lg p-1" style="pointer-events:auto;" />
+    </div>
+) : null}
 </Layout>
