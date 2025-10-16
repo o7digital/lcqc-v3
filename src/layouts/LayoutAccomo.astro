@@ -99,16 +99,20 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
             <p>La Casa Que Canta es un pequeño hotel de lujo con esencia, historia y una personalidad propia. Ubicado en Zihuatanejo junto a la hermosa playa La Ropa, este hotel ofrece vistas panorámicas incomparables.</p>
         </div>
         <div class="grid gap-6 grid-cols-1 px-4 md:grid-cols-3 lg:grid-cols-4">
-            {suggestedRooms.slice(0, 5).map((post) => (
-                <div class="group relative bg-cover bg-center p-4 aspect-square grid items-end text-white overflow-hidden">
-                    <div class="absolute z-10 w-full h-full top-0 bg-gradient-to-br from-transparent to-gray-900 opacity-60"></div>
-                    <img class="absolute z-0 w-full h-full top-0 object-cover group-hover:scale-[1.02] transition duration-300 ease-in-out" src={post.frontmatter.imagefront} alt="" />
-                    <h3 class="text-5xl z-20 relative">{post.frontmatter.title}</h3>
-                    <div>
-                        <a href={post.url} class="relative text-sm z-10 bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Más detalles</a>
+            {suggestedRooms.slice(0, 5).map((post) => {
+                // Si la URL no empieza con '/es', la agregamos
+                const url = post.url.startsWith('/es') ? post.url : `/es${post.url}`;
+                return (
+                    <div class="group relative bg-cover bg-center p-4 aspect-square grid items-end text-white overflow-hidden">
+                        <div class="absolute z-10 w-full h-full top-0 bg-gradient-to-br from-transparent to-gray-900 opacity-60"></div>
+                        <img class="absolute z-0 w-full h-full top-0 object-cover group-hover:scale-[1.02] transition duration-300 ease-in-out" src={post.frontmatter.imagefront} alt="" />
+                        <h3 class="text-5xl z-20 relative">{post.frontmatter.title}</h3>
+                        <div>
+                            <a href={url} class="relative text-sm z-10 bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Más detalles</a>
+                        </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     </div>
 </section>
