@@ -50,7 +50,7 @@ const hotelId = "78821";
           type="submit" 
           class="text-black/90 px-6 py-3 font-bold block text-base hover:border-l hover:border-white/90 uppercase bg-white"
         >
-          Check Availability
+          {Astro.url.pathname.startsWith('/es') ? 'Consultar Disponibilidad' : 'Check Availability'}
         </button>
       </div>
     </form>
