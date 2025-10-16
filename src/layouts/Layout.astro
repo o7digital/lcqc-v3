@@ -34,10 +34,12 @@ const { title } = Astro.props;
 			<div class="scroll-wrapper" id="wrapper">
 				<Header/>
 				<slot />
-								<Footer/>
-								<div class="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2 pointer-events-none">
-									<img src="/images/image2vector.svg" alt="Michelin" class="w-20 h-auto drop-shadow-xl bg-white/80 rounded-lg p-1" style="pointer-events:auto;" />
-								</div>
+												<Footer/>
+												{Astro.url.pathname.includes('mar-y-cielo') ? null : (
+													<div class="w-full flex justify-end items-center px-4 pb-2">
+														<img src="/images/image2vector.svg" alt="Michelin" class="w-24 h-auto drop-shadow-xl" style="pointer-events:auto;" />
+													</div>
+												)}
 
 				<!-- ❌ Eliminado bloque duplicado de dirección/correo -->
 				
