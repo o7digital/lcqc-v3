@@ -35,11 +35,8 @@ const { title } = Astro.props;
 				<Header/>
 				<slot />
 												<Footer/>
-												{Astro.url.pathname.includes('mar-y-cielo') ? null : (
-													<div class="w-full flex justify-end items-center px-4 pb-2">
-														<img src="/images/image2vector.svg" alt="Michelin" class="w-24 h-auto drop-shadow-xl" style="pointer-events:auto;" />
-													</div>
-												)}
+																<!-- Logo Michelin overlay sur le slider, sauf Mar y Cielo -->
+																<!-- Rien ici, tout passe dans LayoutOneCol.astro et LayoutTwoCol.astro -->
 
 				<!-- ❌ Eliminado bloque duplicado de dirección/correo -->
 				
