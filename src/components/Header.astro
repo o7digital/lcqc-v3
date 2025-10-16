@@ -94,16 +94,8 @@
     });
     
     document.getElementById('menu-button').addEventListener('click', function() {
-            const menu = this.nextElementSibling;
-            menu.classList.toggle('hidden');
-        });
-
-        document.querySelectorAll('[role="menuitem"]').forEach(item => {
-            item.addEventListener('click', function(event) {
-                event.preventDefault();
-                const selectedLanguage = this.textContent;
-                alert('Langue sélectionnée : ' + selectedLanguage);
-            });
-        });
+        const menu = this.nextElementSibling;
+        menu.classList.toggle('hidden');
+    });
 </script>
 
