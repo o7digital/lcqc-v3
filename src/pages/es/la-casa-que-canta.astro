@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Bienvenido a La Casa Que Canta">
+  <section class="h-72 bg-center bg-[url('/lobby.jpg')] bg-cover">
+  </section>
+
+  <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
+    <div class="px-4 grid md:grid-cols-2 py-8 max-w-7xl items-center mx-auto justify-between">
+      <div class="mb-8">
+        <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">
+          Bienvenido a La Casa que Canta
+        </h2>
+        <mark class="text-xl font-bold">
+          Pequeño hotel boutique de lujo
+        </mark>
+      </div>
+
+      <div class="text-justify text-base grid gap-4">
+        <p>
+          La Casa Que Canta es un pequeño hotel de lujo con esencia, historia y una personalidad propia.
+          Ubicado en Zihuatanejo junto a la hermosa playa La Ropa, este hotel ofrece vistas panorámicas incomparables.
+        </p>
+        <p>
+          Construido con ladrillos de adobe, palapas y maderas tropicales, la arquitectura única de La Casa Que Canta es
+          un icono en la Costa del Pacífico de México. Sus 25 amplias suites frente al mar, distribuidas en tres edificios,
+          todas tienen terrazas espaciosas y vistas de 180 grados a la bahía.
+        </p>
+        <p>
+          Considerado el hotel más romántico por revistas y viajeros famosos. El hotel fue elegido para una famosa película de Hollywood
+          llamada “Cuando un hombre ama a una mujer”. Desde nuestra apertura hace 25 años, estamos orgullosos de estar entre los mejores hoteles boutique del mundo. Nuestra búsqueda de mejora constante y excelente servicio nos ha otorgado múltiples premios.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <!-- Historia -->
+    <div class="aspect-[16/9] grid items-end bg-[url('/panorama-lcqc.jpg')] bg-cover bg-center">
+      <div class="p-10">
+        <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
+          Historia
+        </h2>
+        <div class="py-6">
+          <a href="/es/history" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
+            Leer más
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nuestro equipo -->
+    <div class="aspect-[16/9] grid items-end bg-[url('/team.jpeg')] bg-cover bg-center">
+      <div class="p-10">
+        <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
+          Nuestro equipo
+        </h2>
+        <div class="py-6">
+          <a href="/es/team" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
+            Leer más
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
