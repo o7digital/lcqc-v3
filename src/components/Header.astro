@@ -1,5 +1,14 @@
 ---
 const isES = Astro.url.pathname.startsWith('/es');
+// Génère l'URL de la page courante dans l'autre langue
+let switchLangHref = '';
+if (isES) {
+    // On retire le /es du début de l'URL
+    switchLangHref = Astro.url.pathname.replace(/^\/es/, '') || '/';
+} else {
+    // On ajoute /es devant l'URL
+    switchLangHref = '/es' + (Astro.url.pathname === '/' ? '' : Astro.url.pathname);
+}
 const menu = isES
     ? [
         { label: 'Inicio', href: '/es/' },
@@ -74,7 +83,7 @@ const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
                 </button>
                 <div class="hidden origin-top-right absolute transition-all	border-l border-black/0 right-0 mt-2 w-full rounded-md focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                     <div class="py-1" role="none">
-                        <a href="/es/" class="text-white/90 px-2 block text-base font-medium  hover:border-l hover:border-white/90" role="menuitem" tabindex="-1" id="menu-item-0">ES</a>
+                        <a href={switchLangHref} class="text-white/90 px-2 block text-base font-medium hover:border-l hover:border-white/90" role="menuitem" tabindex="-1" id="menu-item-0">{isES ? 'EN' : 'ES'}</a>
                     </div>
                 </div>
             </div>
