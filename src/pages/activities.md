@@ -2,6 +2,7 @@
 title: "Activities"
 description: "Experiences that make your stay unforgettable"
 layout: "@layouts/LayoutTwoCol.astro"
+showMichelin: false
 items:
   - image: "/images/jeremy-bishop-surfing.jpg"
     text: "Surfing"
