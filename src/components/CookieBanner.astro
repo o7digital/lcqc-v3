@@ -1,0 +1,59 @@
+---
+const isES = Astro.url.pathname.startsWith('/es');
+const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
+const labels = isES
+  ? {
+      title: 'Uso de Cookies',
+      text:
+        'Utilizamos cookies para mejorar su experiencia en nuestro sitio web, analizar el tráfico y personalizar el contenido. Al continuar navegando, acepta nuestro uso de cookies según nuestra Política de Cookies.',
+      accept: 'Aceptar',
+      decline: 'Rechazar',
+      policy: 'Política de Cookies'
+    }
+  : {
+      title: 'Use of Cookies',
+      text:
+        'We use cookies to improve your experience on our website, analyze traffic, and personalize content. By continuing to browse, you agree to our use of cookies as outlined in our Policy Privacy.',
+      accept: 'Accept',
+      decline: 'Decline',
+      policy: 'Policy Privacy'
+    };
+---
+
+<div id="cookie-banner" class="fixed inset-x-0 bottom-0 z-[60] hidden">
+  <div class="w-full">
+    <div class="w-full bg-[rgb(49,49,49)] text-white">
+      <div class="max-w-7xl mx-auto px-4 py-4 md:px-6 md:py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="text-sm md:text-base">
+          <strong class="block text-base md:text-lg">{labels.title}</strong>
+          <span>{labels.text} </span>
+          <a href={privacyHref} class="underline font-semibold" target="_self">{labels.policy}</a>.
+        </div>
+        <div class="flex gap-2 shrink-0">
+          <button id="cookie-decline" class="px-4 py-2 rounded-md border border-white/30 text-white hover:bg-white/10">{labels.decline}</button>
+          <button id="cookie-accept" class="px-4 py-2 rounded-md bg-orange-500 hover:bg-orange-600 text-white font-semibold">{labels.accept}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    try {
+      var key = 'cookieConsent';
+      var banner = document.getElementById('cookie-banner');
+      var stored = localStorage.getItem(key);
+      if (!stored) {
+        banner.classList.remove('hidden');
+      }
+      function hide(val) {
+        localStorage.setItem(key, val);
+        banner.classList.add('hidden');
+        window.dispatchEvent(new CustomEvent('cookie-consent-change', { detail: val }));
+      }
+      document.getElementById('cookie-accept')?.addEventListener('click', function(){ hide('accepted'); });
+      document.getElementById('cookie-decline')?.addEventListener('click', function(){ hide('declined'); });
+    } catch(e) { /* no-op */ }
+  })();
+</script>
