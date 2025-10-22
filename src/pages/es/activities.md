@@ -2,6 +2,7 @@
 title: "Actividades"
 description: "Experiencias que hacen tu estancia inolvidable"
 layout: "@layouts/LayoutTwoCol.astro"
+showMichelin: false
 items:
   - image: "/images/jeremy-bishop-surfing.jpg"
     text: "Surf"

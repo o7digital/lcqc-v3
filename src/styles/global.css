@@ -3,6 +3,27 @@
 @tailwind utilities;
 
 /* === Estilos personalizados === */
+/* Fondo azul oscuro parte inferior */
+.contact-bottom-bg {
+  background-color: rgb(34, 56, 76);
+}
+
+/* Color poliza dirección */
+.contact-address {
+  color: rgb(233, 226, 229);
+}
+
+/* Fondo blanco gris teléfonos */
+.contact-phone-bg {
+  background-color: rgb(233, 232, 229);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+/* Fondo gris claro para toda la columna derecha encima del segundo mapa */
+.contact-right-bg {
+  background-color: rgb(233, 232, 229);
+}
 
 /* Caja de reservas (BookingEngine) */
 
@@ -47,4 +68,9 @@
   font-size: 1.5rem;
   font-weight: 700;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Fondo para páginas de Aviso/Política de Privacidad */
+.privacy-bg {
+  background-color: rgb(199, 199, 199);
 }
