@@ -1,5 +1,6 @@
 ---
 title: "Our History"
+showBack: false
 layout: "@layouts/LayoutTwoCol.astro"
 items:
 - image: "/history/1.jpg"

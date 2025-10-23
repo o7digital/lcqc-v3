@@ -1,8 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro"; 
 const { frontmatter } = Astro.props;
-const path = Astro.url.pathname.replace(/\/$/, '');
-const isHistoryPage = path === '/history' || path === '/es/history';
+const showBack = frontmatter?.showBack !== false;
 ---
 
 <Layout title={`${frontmatter.title} - La Casa Que Canta`}>
@@ -42,7 +41,7 @@ const isHistoryPage = path === '/history' || path === '/es/history';
         )}
       </div>
       <slot />
-      {!isHistoryPage && (
+      {showBack && (
         <div class="mt-10">
           <a href="/" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
             {Astro.url.pathname.startsWith('/es') ? 'Regresar Home' : 'Back to Home'}
