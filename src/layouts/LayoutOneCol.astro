@@ -12,12 +12,12 @@ const justifyText = frontmatter?.justifyText === true;
                 <div class="swiper mySwiper overflow-hidden aspect-square md:aspect-[16/6]">
                     {frontmatter.showAwards === false ? null : (
                         frontmatter.title && frontmatter.title.toLowerCase().includes('mar y cielo') ? (
-                            <div class="absolute top-4 right-4 z-30 flex gap-4">
+                            <div class="absolute top-4 right-4 z-30 hidden md:flex gap-4">
                                 <img src="/images/image2vector.svg" alt="Michelin" class="w-24 h-auto drop-shadow-xl" />
                                 <img src="/images/dinnerchoise.webp" alt="Dinner Club" class="w-24 h-auto drop-shadow-xl" />
                             </div>
                         ) : (
-                            <div class="absolute top-4 right-4 z-30">
+                            <div class="absolute top-4 right-4 z-30 hidden md:block">
                                 <img src="/images/image2vector.svg" alt="Michelin" class="w-24 h-auto drop-shadow-xl" />
                             </div>
                         )
