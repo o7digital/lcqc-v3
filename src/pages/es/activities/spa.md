@@ -25,7 +25,8 @@ items:
     </div>
   </div>
 </div>
-<!-- Spa Reservation Popup -->
+
+<!-- Popup de Reservación de Spa (ES) -->
 <div id="spaReservationPopup" class="hidden fixed z-50 inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full" onclick="if(event.target===this){this.classList.add('hidden');}">
   <div class="relative top-20 mx-auto p-5 border -mt-8 max-w-4xl shadow-lg rounded-md bg-white">
     <div class="mt-3 text-center ">
@@ -35,5 +36,89 @@ items:
         <p class="text-sm md:text-base max-w-xl mx-auto text-balance mb-4 text-black/90">
           Las reservas en línea están disponibles hasta con 24 horas de anticipación. Para reservas el mismo día, por favor llámanos: <a href="tel:+527555557030">+52 755 555 7030</a>.
         </p>
-        <form id="spaReservationForm" class="space-y-4  max-w-3xl mx-auto">
-  <div class="grid md:grid-cols-2 gap-4">
+        <form id="spaReservationForm" class="space-y-4 max-w-3xl mx-auto">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label for="firstName" class="text-base text-left font-medium text-black/90 block">Nombre</label>
+              <input type="text" id="firstName" placeholder="Nombre" name="firstName" required class="border border-black/60 p-2 w-full text-gray-500">
+            </div>
+            <div>
+              <label for="lastName" class="text-base text-left font-medium text-black/90 block">Apellidos</label>
+              <input type="text" id="lastName" placeholder="Apellidos" name="lastName" required class="border border-black/60 p-2 w-full text-gray-500">
+            </div>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label for="email" class="text-base text-left font-medium text-black/90 block">Correo electrónico</label>
+              <input type="email" id="email" name="email" placeholder="Correo electrónico" required class="border border-black/60 p-2 w-full text-gray-500">
+            </div>
+            <div>
+              <label for="phone" class="text-base text-left font-medium text-black/90 block">Teléfono</label>
+              <input type="tel" id="phone" name="phone" placeholder="Teléfono" required class="border border-black/60 p-2 w-full text-gray-500">
+            </div>
+          </div>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div>
+              <label for="guests" class="text-base text-left font-medium text-black/90 block">Huéspedes</label>
+              <select id="guests" name="guests" required class="border border-black/60 p-2 w-full text-gray-500">
+                <option value="">Seleccionar</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="10+">10+ más</option>
+              </select>
+            </div>
+            <div>
+              <label for="hours" class="text-base text-left font-medium text-black/90 block">Horas</label>
+              <select id="hours" name="hours" required class="border border-black/60 p-2 w-full text-gray-500">
+                <option value="">Seleccionar</option>
+                <option value="10">10 h</option>
+                <option value="11">11 h</option>
+                <option value="12">12 h</option>
+                <option value="13">13 h</option>
+                <option value="14">14 h</option>
+                <option value="15">15 h</option>
+                <option value="16">16 h</option>
+                <option value="17">17 h</option>
+                <option value="18">18 h</option>
+              </select>
+            </div>
+            <div>
+              <label for="date" class="text-base text-left font-medium text-black/90 block">Fecha</label>
+              <input type="date" id="date" name="date" required class="border border-black/60 p-2 w-full text-gray-500">
+            </div>
+          </div>
+          <div>
+            <label for="message" class="text-base text-left font-medium text-black/90 block">Mensaje</label>
+            <textarea id="message" name="message" rows="3" class="border border-black/60 p-2 w-full text-gray-500"></textarea>
+          </div>
+          <button type="submit" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
+            Reservar tu sesión de spa
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initSpaReservation() {
+    const popup = document.getElementById("spaReservationPopup");
+    const openButton = document.getElementById("spaReservationBtn");
+    const form = document.getElementById("spaReservationForm");
+    if (openButton) {
+      openButton.addEventListener('click', (e) => { e.preventDefault(); popup.classList.remove('hidden'); });
+    }
+    if (form) {
+      form.addEventListener('submit', (e) => { e.preventDefault(); popup.classList.add('hidden'); });
+    }
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initSpaReservation); } else { initSpaReservation(); }
+</script>
