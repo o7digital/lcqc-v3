@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro"; // 🔹 Cambio de alias @layouts a
 const { frontmatter } = Astro.props;
 const rooms = await Astro.glob('/src/pages/accomodations/*.md'); 
 const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontmatter.title);
+const isEs = Astro.url.pathname.startsWith('/es');
 ---
 
 <Layout title={`${frontmatter.title} - La Casa Que Canta`}>
@@ -29,21 +30,25 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
                 </div>
                 <div class="flex gap-4 flex-wrap">
                     <a href={frontmatter.book} target="_blank" class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
-                        Book Now
+                        {isEs ? 'RESERVAR' : 'Book Now'}
                     </a>
-                    <button id="open-dialog" class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60 rounded-none">
-                        Floor Plan
-                    </button>
-                    <dialog id="floor-plan-dialog" class="p-0 overflow-hidden shadow-lg">
-                        <div class="relative">
-                            <button id="close-dialog" class="absolute top-2 right-2 text-black/90 hover:text-black/90 focus:outline-none">
-                                <!-- Icono cerrar -->
+                    {frontmatter.floorplan && (
+                        <>
+                            <button id="open-dialog" class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60 rounded-none">
+                                {isEs ? 'Plano' : 'Floor Plan'}
                             </button>
-                            <img src={frontmatter.floorplan} alt="Floor Plan" class="w-full h-auto object-contain aspect-square" />
-                        </div>
-                    </dialog>
+                            <dialog id="floor-plan-dialog" class="p-0 overflow-hidden shadow-lg">
+                                <div class="relative">
+                                    <button id="close-dialog" class="absolute top-2 right-2 text-black/90 hover:text-black/90 focus:outline-none">
+                                        <!-- Icono cerrar -->
+                                    </button>
+                                    <img src={frontmatter.floorplan} alt="Floor Plan" class="w-full h-auto object-contain aspect-square cursor-zoom-out" />
+                                </div>
+                            </dialog>
+                        </>
+                    )}
                     <a href="/accomodations" class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
-                        Back to accomodations
+                        {isEs ? 'REGRESO A SUITES' : 'Back to accomodations'}
                     </a>
                 </div>
                 <mark class="font-bold">{frontmatter.description}</mark>
@@ -52,7 +57,7 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
         </div>
         <div class="grid gap-6">
             <div>
-                <h4 class="font-bold">Room Features</h4>
+                <h4 class="font-bold">{isEs ? 'Caracteristicas de la Suite' : 'Room Features'}</h4>
                 <ul>
                     {frontmatter.roomfeatures.map((feature) => (
                         <li>{feature.rf}</li>
@@ -60,7 +65,7 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold">Amenities</h4>
+                <h4 class="font-bold">{isEs ? 'Amenidades' : 'Amenities'}</h4>
                 <ul>
                     {frontmatter.amenities.map((amenitie) => (
                         <li>{amenitie.a}</li>
@@ -118,12 +123,12 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
 </section>
 
 <script is:inline>
-document.getElementById('open-dialog').addEventListener('click', () => {
-    document.getElementById('floor-plan-dialog').showModal();
-});
-document.getElementById('close-dialog').addEventListener('click', () => {
-    document.getElementById('floor-plan-dialog').close();
-});
+const dialog = document.getElementById('floor-plan-dialog');
+const openBtn = document.getElementById('open-dialog');
+const closeBtn = document.getElementById('close-dialog');
+if (openBtn && dialog) openBtn.addEventListener('click', () => dialog.showModal());
+if (closeBtn && dialog) closeBtn.addEventListener('click', () => dialog.close());
+if (dialog) dialog.addEventListener('click', () => dialog.close());
 </script>
 
 <script>
