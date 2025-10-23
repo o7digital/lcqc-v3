@@ -21,7 +21,7 @@ amenities:
 - a: "Welcome drink"
 - a: "Artistic bedspread tapestry made with fresh flowers"
 - a: "In-room magazines and books"
-- a: "INTERNET ACCESS"
+- a: "Internet access"
 - a: "Complimentary Wi-Fi."
 items:
 - image: "/owner-pool-suite/1.jpeg"
@@ -35,7 +35,6 @@ items:
 
 ---
 Appreciate the majesty of Zihuatanejo bay in our penthouse and most private suite. This penthouse has an elegant décor with hand-picked crafts chosen by our founders. The stunning 180° ocean view from the large living terrace and plunge pool are unique. The owner’s suite includes all commodities to make your stay a memorable experience.
-
 
 
 

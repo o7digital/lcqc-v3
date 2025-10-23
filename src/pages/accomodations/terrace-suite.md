@@ -17,7 +17,7 @@ amenities:
 - a: "Welcome drink"
 - a: "Artistic bedspread tapestry made with fresh flowers"
 - a: "In-room magazines and books"
-- a: "INTERNET ACCESS"
+- a: "Internet access"
 - a: "Complimentary Wi-Fi."
 items:
 - image: "/terrace-suite/1.jpg"
@@ -30,7 +30,6 @@ items:
 
 ---
 Intimate and cozy, these 4 suites have some of the best views and thatched terraces. Every detail has been taken care of for you to savor peace and tranquility.
-
 
 
 
