@@ -3,6 +3,8 @@ title: "Mar y Cielo"
 description: "Seafood from the diversity of Zihuatanejo’s coast"
 layout: "@layouts/LayoutOneCol.astro"
 showAwards: false
+justifyText: true
+showBack: false
 items:
 - image: "/mar-y-cielo/1.jpeg"
 - image: "/mar-y-cielo/2.jpeg"
