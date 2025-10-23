@@ -1,7 +1,6 @@
 ---
 title: "Terrace Suites"
 imagefront: "/terrace-suite/4.jpg"
-floorplan: "/floor-plan/owner.png"
 book: "https://be.synxis.com/?chain=22402&hotel=78821&src=24C&room=A1K&locale=es-ES"
 square: "685-1,035 ft² | 65-95 m²"
 beds: "Cama King Size"

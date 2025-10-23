@@ -1,7 +1,6 @@
 ---
 title: "Master Pool Suite"
 imagefront: "/master-pool-suite/5.jpg"
-floorplan: "/floor-plan/owner.png"
 book: "https://be.synxis.com/?adult=1&arrive=2024-07-01&chain=22402&child=0&currency=USD&depart=2024-07-02&hotel=78821&level=hotel&locale=en-US&room=STE&rooms=1&src=24C"
 square: "1,100 -1,735 ft² | 103-160 m²"
 beds: "King Size Bed"
@@ -36,7 +35,6 @@ items:
 
 ---
 Appreciate the majesty of Zihuatanejo bay in our penthouse and most private suite. This penthouse has an elegant décor with hand-picked crafts chosen by our founders. The stunning 180° ocean view from the large living terrace and plunge pool are unique. The owner’s suite includes all commodities to make your stay a memorable experience.
-
 
 
 

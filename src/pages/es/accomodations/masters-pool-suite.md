@@ -1,7 +1,6 @@
 ---
 title: "Master Pool Suite"
 imagefront: "/master-pool-suite/5.jpg"
-floorplan: "/floor-plan/owner.png"
 book: "https://be.synxis.com/?adult=1&arrive=2024-07-01&chain=22402&child=0&currency=USD&depart=2024-07-02&hotel=78821&level=hotel&locale=es-ES&room=STE&rooms=1&src=24C"
 square: "1,100 -1,735 ft² | 103-160 m²"
 beds: "Cama King Size"

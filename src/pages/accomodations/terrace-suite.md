@@ -1,7 +1,6 @@
 ---
 title: "Terrace Suites"
 imagefront: "/terrace-suite/4.jpg"
-floorplan: "/floor-plan/owner.png"
 book: "https://be.synxis.com/?chain=22402&hotel=78821&src=24C&room=A1K"
 square: "685-1,035 ft² | 65-95 m²"
 beds: "King Size Bed"
@@ -31,7 +30,6 @@ items:
 
 ---
 Intimate and cozy, these 4 suites have some of the best views and thatched terraces. Every detail has been taken care of for you to savor peace and tranquility.
-
 
 
 
