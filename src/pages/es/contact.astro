@@ -4,6 +4,8 @@ import Layout from '../../layouts/Layout.astro';
 
 <Layout title="Contacto y Ubicación">
     <section class="grid md:grid-cols-2 items-center">
+        <!-- Franja azul superior móvil (~3cm) -->
+        <div class="md:hidden contact-bottom-bg h-[120px] order-0 w-full"></div>
         <!-- Mapa 2 (arriba izquierda en desktop, primero en móvil) -->
         <div class="md:col-span-1 order-1 md:order-1">
             <img src="/map-2.jpeg" class="w-full h-[60vh] md:h-auto object-cover" alt="">
@@ -59,7 +61,7 @@ import Layout from '../../layouts/Layout.astro';
 
         <!-- Bloque azul de dirección (tercero en móvil, abajo izquierda en desktop) -->
         <div class="md:col-span-1 order-3 md:order-3">
-          <div class="contact-bottom-bg text-base md:h-[55vh] border-b place-items-center grid md:text-lg text-center p-4 md:p-10 py-4">
+          <div class="contact-bottom-bg text-base md:h-[55vh] border-b place-items-center grid md:text-lg text-center p-4 md:p-10 py-9">
             <p class="contact-address"><strong>Dirección:</strong><br>
               Camino Escénico a Playa La Ropa S / N,<br>
               Playa La Ropa, 40880<br>
