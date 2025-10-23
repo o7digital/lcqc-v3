@@ -14,3 +14,5 @@ Donde el movimiento se encuentra con la calma. Inundado de luz natural y abierto
 Con equipos de cardio de última generación y áreas pensadas para fuerza y estiramientos, cada detalle está diseñado para que te sientas más fuerte, ligero y presente.
 
 Empieza al amanecer o relájate al atardecer: deja que el ritmo de la bahía marque tu paso.
+
+Lunes a domingo — 10:00 – 18:00 hrs.

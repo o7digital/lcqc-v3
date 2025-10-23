@@ -19,3 +19,4 @@ From state-of-the-art cardio to thoughtful strength and stretching zones, every 
 
 Begin at sunrise or unwind at sunset — let the rhythm of the bay set your pace.
 
+Monday through Sunday — 10:00 – 18:00 hrs.
