@@ -2,6 +2,7 @@
 title: "Spa by Clarins"
 description: "Descubre la diversidad de la costa de Zihuatanejo"
 layout: "@layouts/LayoutOneCol.astro"
+justifyText: true
 showBack: false
 items:
 - image: "/activities/spabyclarins.jpg"
@@ -12,8 +13,8 @@ items:
 - image: "/activities/spa-5.jpg"
 ---
 <div class="grid gap-6">
-  <p>El único spa Clarins en México</p>
-  <p>Consiente tu cuerpo con los exclusivos y reconocidos tratamientos de Clarins.</p>
+  <p>Entre el mar y el cielo, descubre un santuario de serenidad donde el arte del cuidado según Clarins revela su máxima expresión. Cada tratamiento combina el poder de los extractos naturales de plantas con el toque experto característico de Clarins, creando una experiencia que nutre el cuerpo, la mente y el espíritu.</p>
+  <p>Un momento de armonía absoluta, inspirado por el océano y diseñado exclusivamente para La Casa Que Canta.</p>
   <p class="text-xl font-bold">Lunes a domingo — 10:00 – 18:00 hrs.</p>
   <div class="flex flex-wrap mt-8 gap-4 justify-center">
     <div class="relative">

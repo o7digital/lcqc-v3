@@ -2,6 +2,7 @@
 title: "Spa by clarins"
 description: "See food from the diversity of Zihuatanejo’s coast"
 layout: "@layouts/LayoutOneCol.astro"
+justifyText: true
 showBack: false
 items:
 - image: "/activities/spabyclarins.jpg"
@@ -15,8 +16,8 @@ items:
 ---
 
 <div class="grid gap-6">
-  <p>The only Clarins spa in Mexico</p>
-  <p>Pamper yourself with the exclusive and world-renowned Clarins treatments.</p>
+  <p>Step into a sanctuary of beauty and well-being where the art of touch meets the science of nature. Experience exclusive Clarins treatments — renowned worldwide for their botanical expertise and exceptional results — designed to restore balance, radiance, and inner peace.</p>
+  <p>Let time dissolve as expert hands awaken your senses in a place where the ocean breeze and tranquility embrace you.</p>
   <p class="text-xl font-bold">Monday through Sunday — 10:00 – 18:00 hrs.</p>
   <div class="flex flex-wrap mt-8 gap-4 justify-center">
     <div class="relative">
@@ -151,4 +152,3 @@ items:
     initSpaReservation();
   }
 </script>
-
