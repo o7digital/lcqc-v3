@@ -3,6 +3,7 @@ title: "Infinity Pool"
 description: ""
 layout: "@layouts/LayoutOneCol.astro"
 justifyText: true
+showBack: false
 items:
 - image: "/infinity-pool/1.jpg"
 - image: "/infinity-pool/2.jpg"
