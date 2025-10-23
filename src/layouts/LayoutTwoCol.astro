@@ -10,7 +10,7 @@ const showBack = frontmatter?.showBack !== false;
   <div>
     <div class="swiper mySwiper activities-slider overflow-hidden relative">
       {frontmatter.showMichelin !== false && (
-        <div class="absolute top-4 right-4 z-30">
+        <div class="absolute top-4 right-4 z-30 hidden md:block">
           <img src="/images/image2vector.svg" alt="Michelin" class="w-24 h-auto drop-shadow-xl" />
         </div>
       )}
