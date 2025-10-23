@@ -2,6 +2,7 @@
 title: "Spa by Clarins"
 description: "Descubre la diversidad de la costa de Zihuatanejo"
 layout: "@layouts/LayoutOneCol.astro"
+showBack: false
 items:
 - image: "/activities/spabyclarins.jpg"
 - image: "/activities/spa-1.jpg"
