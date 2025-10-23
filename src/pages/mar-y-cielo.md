@@ -18,8 +18,9 @@ items:
 - image: "/mar-y-cielo/11.jpg"
 ---
 
-Our seafood is freshly caught daily from Zihuatanejo’s coast, blending traditional Mexican recipes with Mediterranean inspiration.  
-This rare tradition, passed down by local fishermen, brings authentic flavors directly to your table.
+Our seafood is freshly caught every morning from the pristine waters of Zihuatanejo’s coast, ensuring the finest flavors of the Pacific on your plate. Each dish celebrates the meeting of two culinary worlds — traditional Mexican recipes and delicate Mediterranean inspiration — crafted with seasonal ingredients and local passion.
+
+This rare tradition, passed down by generations of fishermen, transforms every meal into an authentic experience of coastal Mexico, where freshness, flavor, and artistry meet by the sea.
 
 ---
 
