@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout title="Contacto y Ubicación">
-    <section class="grid md:grid-cols-2 items-center">
+    <section class="grid md:grid-cols-2 items-stretch gap-0">
         <!-- Franja azul superior móvil (~3cm) -->
         <div class="md:hidden contact-bottom-bg h-[120px] order-0 w-full"></div>
         <!-- Mapa 2 (arriba izquierda en desktop, primero en móvil) -->
@@ -12,8 +12,8 @@ import Layout from '../../layouts/Layout.astro';
         </div>
 
         <!-- Bloque de contacto (arriba derecha en desktop, último en móvil) -->
-        <div class="md:col-span-1 order-4 md:order-2 contact-right-bg">
-            <div class="p-4 md:p-10 flex flex-col flex-wrap gap-2">
+        <div class="md:col-span-1 order-4 md:order-2 contact-right-bg h-full">
+            <div class="p-4 md:p-10 flex flex-col flex-wrap gap-2 h-full">
                 <div>
                     <h1 class="font-bold text-5xl lg:text-7xl text-black/90 text-balance" >Contacto y Ubicación</h1>
                     <mark class="text-lg">Por favor contáctanos en:</mark>
