@@ -2,6 +2,7 @@
 title: "Gym"
 layout: "@layouts/LayoutOneCol.astro"
 showBack: false
+justifyText: true
 items:
 - image: "/activities/gym-1.jpg"
 - image: "/activities/gym-2.jpg"
@@ -12,20 +13,9 @@ items:
 
 ---
 
-<div class="grid gap-6">
-<p>
-WATCH THE BAY’ S ACTIVITIES WHILE EXERCISING
+Where movement meets mindfulness. Bathed in natural light and open to the ocean breeze, our gym invites you to reconnect with your energy while gazing over Zihuatanejo Bay.
 
+From state-of-the-art cardio to thoughtful strength and stretching zones, every detail is designed to help you feel stronger, lighter, and more present.
 
-
-
-</p>
-
-<p>Monday through Sunday — 10:00 – 18:00 hrs.
-
-</p>
-
-
-</div>
-
+Begin at sunrise or unwind at sunset — let the rhythm of the bay set your pace.
 
