@@ -2,6 +2,7 @@
 title: "Ocean Water Pool & jacuzzi"
 description: ""
 showBack: false
+justifyText: true
 layout: "@layouts/LayoutOneCol.astro"
 items:
 - image: "/ocean-water-pool/1.jpg"
