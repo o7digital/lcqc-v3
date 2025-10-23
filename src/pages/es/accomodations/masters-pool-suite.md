@@ -19,7 +19,7 @@ amenities:
 - a: "Bebida de bienvenida"
 - a: "Colcha artística decorada con flores frescas"
 - a: "Revistas y libros en la habitación"
-- a: "ACCESO A INTERNET"
+- a: "Acceso a internet"
 - a: "Wi-Fi de cortesía."
 items:
 - image: "/master-pool-suite/1.jpg"

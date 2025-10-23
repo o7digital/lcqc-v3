@@ -20,7 +20,7 @@ amenities:
 - a: "Welcome drink"
 - a: "Artistic bedspread tapestry made with fresh flowers"
 - a: "In-room magazines and books"
-- a: "INTERNET ACCESS"
+- a: "Internet access"
 - a: "Complimentary Wi-Fi."
 items:
 - image: "/deluxe-grand-suites/1.jpg"
@@ -35,7 +35,6 @@ items:
 
 ---
 All the redesigned 10 suites are now even more comfortable and roomy with double views of the bay. Each suite is singular in its layout, with distinctive colors, furniture and authentic Mexican decoration. The newly renovated bathrooms are ample, luminous, some with sea views.
-
 
 
 

@@ -21,7 +21,7 @@ amenities:
 - a: "Welcome drink"
 - a: "Artistic bedspread tapestry made with fresh flowers"
 - a: "In-room magazines and books"
-- a: "INTERNET ACCESS"
+- a: "Internet access"
 - a: "Complimentary Wi-Fi."
 items:
 - image: "/mexico-lindo-suite/1.jpg"
@@ -34,7 +34,6 @@ items:
 
 ---
 Like an apartment this suite offer an exceptionally spacious lounge with custom designed Mexican furniture and an ample bathroom in blue granite stone. The large terrace with a sizable plunge pool complement this apartment with spectacular views from all sides.
-
 
 
 
