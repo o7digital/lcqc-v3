@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout title="Descubre nuestras piscinas - La Casa Que Canta">
-    <section class="h-72 bg-center bg-[url('/infinity-pool/5.jpg')] bg-cover ">
+    <section class="h-72 bg-center bg-cover" style="background-image: image-set(url('/infinity-pool/5.webp') type('image/webp'), url('/infinity-pool/5.jpg') type('image/jpeg'));">
     </section>
     <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
         <div class="px-4 grid md:grid-cols-2 py-16 max-w-7xl items-center mx-auto justify-between ">
@@ -20,7 +20,7 @@ import Layout from '../../layouts/Layout.astro';
         </div>
     </section>
     <section class="grid md:grid-cols-2 mb-32 max-h-screen">
-        <div class="col-span-1 md:aspect-video grid items-end bg-[url('/ocean-water-pool/1.jpg')] bg-cover bg-center">
+        <div class="col-span-1 md:aspect-video grid items-end bg-cover bg-center" style="background-image: image-set(url('/ocean-water-pool/1.webp') type('image/webp'), url('/ocean-water-pool/1.jpg') type('image/jpeg'));">
 			<div class="p-10">
 				<h2 class="text-3xl md:text-5xl lg:text-7xl text-white text-balance font-bold">
 					Ocean Water Pool & jacuzzi</h2>
@@ -29,7 +29,7 @@ import Layout from '../../layouts/Layout.astro';
 					</div>
 			</div>
 		</div>
-        <div class="col-span-1 md:aspect-video grid items-end bg-[url('/infinity-pool/1.jpg')] bg-cover bg-center">
+        <div class="col-span-1 md:aspect-video grid items-end bg-cover bg-center" style="background-image: image-set(url('/infinity-pool/1.webp') type('image/webp'), url('/infinity-pool/1.jpg') type('image/jpeg'));">
 			<div class="p-10">
 				<h2 class="text-3xl md:text-5xl lg:text-7xl text-white text-balance font-bold">
 					Infinity Pool</h2>
