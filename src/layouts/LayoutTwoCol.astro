@@ -15,18 +15,24 @@ const showBack = frontmatter?.showBack !== false;
         </div>
       )}
       <div class="swiper-wrapper">
-        {Array.isArray(frontmatter.items) && frontmatter.items.map((item) => (
+        {Array.isArray(frontmatter.items) && frontmatter.items.map((item) => {
+          const webp = item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+          return (
           <div class="swiper-slide">
-            <img 
-              class="cursor-pointer object-cover transition duration-300 ease-in-out w-full h-full" 
-              src={item.image} 
-              alt={frontmatter.title} 
-            />
+            <picture>
+              <source srcset={webp} type="image/webp" />
+              <img 
+                class="cursor-pointer object-cover transition duration-300 ease-in-out w-full h-full" 
+                src={item.image} 
+                alt={frontmatter.title} 
+              />
+            </picture>
             {item.text && (
               <div class="slide-caption">{item.text}</div>
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
       <div class="swiper-pagination"></div>
     </div>
