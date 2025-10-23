@@ -4,6 +4,8 @@ import Layout from "../layouts/Layout.astro"
 
 <Layout title="Welcome to Astro.">
     <section class="grid md:grid-cols-2 items-center">
+        <!-- Mobile top blue spacer (~3cm) -->
+        <div class="md:hidden contact-bottom-bg h-[120px] order-0 w-full"></div>
         <!-- Map 2 (top-left on desktop, first on mobile) -->
         <div class="md:col-span-1 order-1 md:order-1">
             <img src="/map-2.jpeg" class="w-full h-[60vh] md:h-auto object-cover" alt="">
@@ -59,7 +61,7 @@ import Layout from "../layouts/Layout.astro"
 
         <!-- Blue address block (third on mobile, bottom-left on desktop) -->
         <div class="md:col-span-1 order-3 md:order-3">
-            <div class="contact-bottom-bg text-base md:h-[55vh] border-b place-items-center grid md:text-lg text-center p-4 md:p-10 py-4">
+            <div class="contact-bottom-bg text-base md:h-[55vh] border-b place-items-center grid md:text-lg text-center p-4 md:p-10 py-9">
                 <p class="contact-address"><strong>Address:</strong><br>
                     Camino Escénico at Playa La Ropa S / N,<br>
                     La Ropa Beach, 40880<br>
