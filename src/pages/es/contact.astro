@@ -4,20 +4,13 @@ import Layout from '../../layouts/Layout.astro';
 
 <Layout title="Contacto y Ubicación">
     <section class="grid md:grid-cols-2 items-center">
-        <div class="h-full">
-            <img src="/map-2.jpeg" class="" alt="">
-        <div class="contact-bottom-bg p-10 text-base h-[55vh] border-b place-items-center grid md:text-lg text-center order-2 md:order-1">
-          <p class="contact-address"><strong>Dirección:</strong><br>
-            Camino Escénico a Playa La Ropa S / N,<br>
-            Playa La Ropa, 40880<br>
-            Zihuatanejo, Guerrero, México
-          </p>
-          <div>
-            <a href="https://lacasaquecanta.com/wp-content/uploads/2022/12/Presentacion_lcqcENG.pdf" target="_blank" class=" text-center text-base bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Descargar folleto</a>
-          </div>
+        <!-- Mapa 2 (arriba izquierda en desktop, primero en móvil) -->
+        <div class="md:col-span-1 order-1 md:order-1">
+            <img src="/map-2.jpeg" class="w-full h-[60vh] md:h-auto object-cover" alt="">
         </div>
-        </div>
-        <div>
+
+        <!-- Bloque de contacto (arriba derecha en desktop, último en móvil) -->
+        <div class="md:col-span-1 order-4 md:order-2">
             <div class="p-4 md:p-10 flex flex-col flex-wrap gap-2 contact-right-bg">
                 <div class="mt-8">
                     <h1 class="font-bold text-5xl lg:text-7xl text-black/90 text-balance" >Contacto y Ubicación</h1>
@@ -57,7 +50,25 @@ import Layout from '../../layouts/Layout.astro';
                         9 AM a 6 PM (CST) – Cerrado los domingos</p>
                 </div>
             </div>
-            <img src="/map-1.jpeg" class="w-full h-auto block" alt="">
+        </div>
+
+        <!-- Mapa 1 (segundo en móvil, abajo derecha en desktop) -->
+        <div class="md:col-span-1 order-2 md:order-4">
+            <img src="/map-1.jpeg" class="w-full h-[50vh] md:h-auto object-cover block" alt="">
+        </div>
+
+        <!-- Bloque azul de dirección (tercero en móvil, abajo izquierda en desktop) -->
+        <div class="md:col-span-1 order-3 md:order-3">
+          <div class="contact-bottom-bg text-base md:h-[55vh] border-b place-items-center grid md:text-lg text-center p-4 md:p-10 py-4">
+            <p class="contact-address"><strong>Dirección:</strong><br>
+              Camino Escénico a Playa La Ropa S / N,<br>
+              Playa La Ropa, 40880<br>
+              Zihuatanejo, Guerrero, México
+            </p>
+            <div>
+              <a href="https://lacasaquecanta.com/wp-content/uploads/2022/12/Presentacion_lcqcENG.pdf" target="_blank" class=" text-center text-base bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Descargar folleto</a>
+            </div>
+          </div>
         </div>
     </section>
 </Layout>
