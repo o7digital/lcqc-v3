@@ -12,4 +12,4 @@ items:
 - image: "/ocean-water-pool/5.jpg"
 - image: "/ocean-water-pool/6.jpg"
 ---
-Anidada junto al océano, esta alberca infinita parece fundirse con el mar. Rodeada de rocas esculpidas, terrazas bañadas por el sol y exuberantes jardines tropicales, ofrece una vista impresionante de la encantadora bahía y el pueblo de Zihuatanejo. Un refugio atemporal para desconectar, donde el sonido de las olas se convierte en tu banda sonora.
+Entre el mar y el cielo, esta alberca de agua de mar, única en su tipo en México y excepcional en el mundo, se confunde con el horizonte. Envuelta por rocas naturales, terrazas doradas por el sol y vegetación tropical, revela una de las vistas más cautivadoras de la bahía de Zihuatanejo. Un santuario de serenidad donde cada ola marca el ritmo del tiempo.

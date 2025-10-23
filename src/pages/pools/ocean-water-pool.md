@@ -13,4 +13,4 @@ items:
 - image: "/ocean-water-pool/6.jpg"
 
 ---
-Nestled beside the ocean, this infinity pool seems to merge with the sea itself. Surrounded by sculpted rocks, sun-drenched terraces and lush tropical gardens, it offers a breathtaking view over Zihuatanejo’s charming bay and village. A timeless place to unwind, where the sound of the waves becomes your soundtrack.
+Between the sea and the sky, this seawater pool, unique of its kind in Mexico and exceptional in the world, blends seamlessly with the horizon. Surrounded by natural rocks, sun-kissed terraces and tropical greenery, it unveils one of the most captivating views of Zihuatanejo Bay. A sanctuary of serenity where every wave sets the rhythm of time.
