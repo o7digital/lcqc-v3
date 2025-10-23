@@ -18,8 +18,9 @@ items:
 - image: "/mar-y-cielo/11.jpg"
 ---
 
-Nuestros mariscos son capturados frescos cada día en la costa de Zihuatanejo, fusionando recetas tradicionales mexicanas con inspiración mediterránea.  
-Esta rara tradición, transmitida por pescadores locales, lleva auténticos sabores directamente a tu mesa.
+Nuestros mariscos se capturan cada mañana en las aguas cristalinas de la costa de Zihuatanejo, garantizando la frescura y el sabor más puro del Pacífico en cada plato. Cada creación culinaria celebra el encuentro entre la tradición mexicana y la inspiración mediterránea, elaborada con ingredientes de temporada y el toque apasionado de nuestros chefs.
+
+Esta valiosa tradición, transmitida por generaciones de pescadores locales, convierte cada comida en una experiencia auténtica frente al mar, donde la frescura, el sabor y la elegancia se fusionan en perfecta armonía.
 
 ---
 
