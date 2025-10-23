@@ -8,14 +8,6 @@ const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
   </div>
 
   <div class="flex-col md:flex-row flex justify-around gap-4 pt-8">
-    <!-- Logo único -->
-    <div class="flex flex-col space-y-3 items-end">
-      <img 
-        src="/logo-lcqc.jpeg" 
-        alt="La Casa Que Canta" 
-        class="mx-auto max-w-[160px] md:max-w-[200px] h-auto"
-      />
-    </div>
 
     <div class="flex flex-col justify-between">
       <div class="flex flex-col md:flex-row justify-between gap-4">
@@ -43,7 +35,7 @@ const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
         </div>
       </div>
       <div>
-  <span class="flex-col md:flex-row gap-2 flex text-sm mt-4 justify-center">© La Casa que Canta · Todos los derechos reservados · Sitio web Created by <a href="#">07Digital</a></span>
+        <span class="flex-col md:flex-row gap-2 flex text-sm mt-4 justify-center">Symbole Copyright -  La casa que Canta. All copyright  Sitio Web creado by 07 Digital</span>
       </div>
     </div>
 
@@ -65,7 +57,7 @@ const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
       <div class="mt-10">
         <button id="back-to-top" class="flex items-center gap-2 bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-          Back to top
+          {isES ? 'Volver arriba' : 'Back to top'}
         </button>
       </div>
     </div>
