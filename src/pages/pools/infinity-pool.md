@@ -3,6 +3,7 @@ title: "Infinity Pool"
 description: ""
 layout: "@layouts/LayoutOneCol.astro"
 justifyText: true
+showBack: false
 items:
 - image: "/infinity-pool/1.jpg"
 - image: "/infinity-pool/2.jpg"
@@ -16,4 +17,3 @@ Perched above the Pacific, this stunning seawater infinity pool seems to melt in
 Just steps away from the bar and the restaurant, it is a place to bask in the warmth of the sun, savour a cocktail at sunset, or simply let the rhythm of the waves cradle your thoughts.
 
 Here, the horizon is not a limit: it is an experience.
-
