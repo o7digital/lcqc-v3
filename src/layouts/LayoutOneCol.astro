@@ -23,8 +23,12 @@ const justifyText = frontmatter?.justifyText === true;
                         )
                     )}
             <div class="swiper-wrapper">
-                {frontmatter.items.map((item) => (
-                    <div class="swiper-slide">
+            {frontmatter.items.map((item) => {
+                const webp = item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+                return (
+                <div class="swiper-slide">
+                    <picture>
+                        <source srcset={webp} type="image/webp" />
                         <img 
                             class="cursor-pointer object-cover object-center transition duration-300 ease-in-out w-full h-full" 
                             data-page="false" 
@@ -33,8 +37,10 @@ const justifyText = frontmatter?.justifyText === true;
                             data-image={item.image} 
                             data-text={item.text} 
                         />
-                    </div>
-                ))}
+                    </picture>
+                </div>
+                );
+            })}
             </div>
             <div class="swiper-pagination"></div>
         </div>
