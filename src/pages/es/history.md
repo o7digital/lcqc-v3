@@ -1,6 +1,7 @@
 ---
 title: "Nuestra Historia"
 showBack: false
+showMichelin: false
 layout: "@layouts/LayoutTwoCol.astro"
 items:
 - image: "/history/1.jpg"
