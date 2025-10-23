@@ -10,7 +10,7 @@ items:
 - image: "/ocean-water-pool/3.jpg"
 - image: "/ocean-water-pool/4.jpg"
 - image: "/ocean-water-pool/5.jpg"
-- image: "/ocean-water-pool/6.jpg"
+# removed missing 6th image
 
 ---
 Between the sea and the sky, this seawater pool, unique of its kind in Mexico and exceptional in the world, blends seamlessly with the horizon. Surrounded by natural rocks, sun-kissed terraces and tropical greenery, it unveils one of the most captivating views of Zihuatanejo Bay. A sanctuary of serenity where every wave sets the rhythm of time.
