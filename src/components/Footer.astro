@@ -62,7 +62,9 @@ const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
   </div>
   <!-- Bottom single-line copyright under back-to-top -->
   <div class="mt-6 text-center text-sm">
-    © La Casa Que Canta. All copyright Sitio Web creado by 07 Digital
+    {isES
+      ? '© La Casa Que Canta. Todos los derechos. Sitio web creado por 07 Digital'
+      : '© La Casa Que Canta. All copyright Sitio Web creado by 07 Digital'}
   </div>
 </section>
 
