@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout title="Bienvenido a Astro.">
-    <section class="h-72 bg-center bg-[url('/accomodations.jpg')] bg-cover ">
+    <section class="h-72 bg-center bg-cover" style="background-image: image-set(url('/accomodations.webp') type('image/webp'), url('/accomodations.jpg') type('image/jpeg'));">
     </section>
     <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
         <div class="px-4 grid md:grid-cols-2 py-10 max-w-7xl items-center mx-auto justify-between ">
@@ -20,7 +20,7 @@ import Layout from '../../layouts/Layout.astro';
         </div>
     </section>
     <section class="grid md:grid-cols-2">
-        <div class="col-span-1 md:col-span-2 md:aspect-[16/4] grid items-end bg-[url('/accomodations/3.jpeg')] bg-cover bg-center">
+        <div class="col-span-1 md:col-span-2 md:aspect-[16/4] grid items-end bg-cover bg-center" style="background-image: image-set(url('/accomodations/3.webp') type('image/webp'), url('/accomodations/3.jpeg') type('image/jpeg'));">
             <div class="p-10">
                 <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
                     Mexico lindo Suite</h2>
@@ -43,7 +43,7 @@ import Layout from '../../layouts/Layout.astro';
                 </div>
             </div>
         </div>
-        <div class="col-span-1 h-full md:aspect-video grid items-end bg-[url('/accomodations/4.jpeg')] bg-cover bg-center">
+        <div class="col-span-1 h-full md:aspect-video grid items-end bg-cover bg-center" style="background-image: image-set(url('/accomodations/4.webp') type('image/webp'), url('/accomodations/4.jpeg') type('image/jpeg'));">
             <div class="p-10">
                 <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
                     Owner's Pool Suite</h2>
@@ -118,7 +118,7 @@ import Layout from '../../layouts/Layout.astro';
         </div>
 
         <!-- Terrace Suites -->
-        <div class="col-span-1 md:aspect-video grid items-end bg-[url('/accomodations/5.jpg')] bg-cover bg-center">
+        <div class="col-span-1 md:aspect-video grid items-end bg-cover bg-center" style="background-image: image-set(url('/accomodations/5.webp') type('image/webp'), url('/accomodations/5.jpg') type('image/jpeg'));">
             <div class="p-10">
                 <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
                     Terrace Suites</h2>
