@@ -40,11 +40,13 @@ const { frontmatter } = Astro.props;
         )}
       </div>
       <slot />
-      <div class="mt-10">
-        <a href="/" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
-          {Astro.url.pathname.startsWith('/es') ? 'Regresar Home' : 'Back to Home'}
-        </a>
-      </div>
+      {!(Astro.url.pathname.endsWith('/history') || Astro.url.pathname.endsWith('/es/history')) && (
+        <div class="mt-10">
+          <a href="/" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
+            {Astro.url.pathname.startsWith('/es') ? 'Regresar Home' : 'Back to Home'}
+          </a>
+        </div>
+      )}
     </div>
   </div>
 </section>
