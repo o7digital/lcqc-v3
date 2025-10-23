@@ -1,6 +1,7 @@
 ---
 title: "Gym"
 layout: "@layouts/LayoutOneCol.astro"
+showBack: false
 items:
 - image: "/activities/gym-1.jpg"
 - image: "/activities/gym-2.jpg"
@@ -26,6 +27,5 @@ WATCH THE BAY’ S ACTIVITIES WHILE EXERCISING
 
 
 </div>
-
 
 

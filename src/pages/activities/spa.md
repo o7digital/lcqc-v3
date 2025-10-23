@@ -2,6 +2,7 @@
 title: "Spa by clarins"
 description: "See food from the diversity of Zihuatanejo’s coast"
 layout: "@layouts/LayoutOneCol.astro"
+showBack: false
 items:
 - image: "/activities/spabyclarins.jpg"
 - image: "/activities/spa-1.jpg"
@@ -150,5 +151,4 @@ items:
     initSpaReservation();
   }
 </script>
-
 

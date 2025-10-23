@@ -1,6 +1,7 @@
 ---
 title: "Gimnasio"
 layout: "@layouts/LayoutOneCol.astro"
+showBack: false
 items:
 - image: "/activities/gym-1.jpg"
 - image: "/activities/gym-2.jpg"
