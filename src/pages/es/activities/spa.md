@@ -36,7 +36,10 @@ items:
         <p class="text-sm md:text-base max-w-xl mx-auto text-balance mb-4 text-black/90">
           Las reservas en línea están disponibles hasta con 24 horas de anticipación. Para reservas el mismo día, por favor llámanos: <a href="tel:+527555557030">+52 755 555 7030</a>.
         </p>
-        <form id="spaReservationForm" class="space-y-4 max-w-3xl mx-auto">
+        <form id="spaReservationForm" action="https://formsubmit.co/olivier.steineur@icloud.com" method="POST" class="space-y-4 max-w-3xl mx-auto">
+          <input type="hidden" name="_subject" value="Reserva Spa - Sitio web">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
           <div class="grid md:grid-cols-2 gap-4">
             <div>
               <label for="firstName" class="text-base text-left font-medium text-black/90 block">Nombre</label>
@@ -116,9 +119,7 @@ items:
     if (openButton) {
       openButton.addEventListener('click', (e) => { e.preventDefault(); popup.classList.remove('hidden'); });
     }
-    if (form) {
-      form.addEventListener('submit', (e) => { e.preventDefault(); popup.classList.add('hidden'); });
-    }
+    // dejar que el formulario envíe normalmente al backend de email
   }
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initSpaReservation); } else { initSpaReservation(); }
 </script>
