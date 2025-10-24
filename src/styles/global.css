@@ -1,3 +1,10 @@
+.privacy-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 4cm;
+  padding-right: 4cm;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -73,4 +80,24 @@
 /* Fondo para páginas de Aviso/Política de Privacidad */
 .privacy-bg {
   background-color: rgb(199, 199, 199);
+  background-image: url('/images/logo/logo-gris.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 71vw auto;
+  background-attachment: fixed;
+  opacity: 1;
+}
+
+.privacy-bg .max-w-4xl {
+  font-size: 1.3rem;
+  max-width: 95vw;
+  margin-left: 2cm;
+  margin-right: 2cm;
+}
+.privacy-bg h1, .privacy-bg h2, .privacy-bg h3, .privacy-bg h4, .privacy-bg h5, .privacy-bg h6 {
+
+  font-size: 2rem;
+}
+.privacy-bg p, .privacy-bg li {
+  font-size: 1.3rem;
 }
