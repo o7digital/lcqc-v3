@@ -99,8 +99,8 @@ const slides = data?.allSliders || [];
       <div class="swiper-pagination"></div>
     </div>
 
-    <!-- Michelin logo overlay inside hero (bottom-right) raised ~1cm on mobile -->
-    <div class="absolute bottom-[54px] md:bottom-4 right-4 z-20">
+    <!-- Michelin logo overlay inside hero (bottom-right); raise on desktop (~3cm ≈ 120px) to avoid chatbot overlap -->
+    <div class="absolute bottom-[54px] md:bottom-[120px] right-4 z-20">
       <img src="images/1 MICHELIN Key_2025_Round_Red.png" alt="Michelin 2025" class="w-20 md:w-24 h-auto drop-shadow-xl" />
     </div>
 
