@@ -103,12 +103,21 @@
   inset: 0; /* cover viewport */
   background-image: url('/images/logo/logo-gris.png');
   background-repeat: no-repeat;
-  background-position: center 24%;
-  /* large but responsive logo size (~17% smaller) */
-  background-size: clamp(420px, 83vw, 1660px);
-  opacity: 0.22; /* slightly more visible */
+  /* Mobile-first: logo bien visible sur petits écrans */
+  background-position: center 30%;
+  background-size: clamp(360px, 120vw, 1400px);
+  opacity: 0.20;
   pointer-events: none;
   z-index: 0;
+}
+
+/* Desktop: affiner taille/position et intensité */
+@media (min-width: 768px) {
+  .privacy-bg::before {
+    background-position: center 24%;
+    background-size: clamp(420px, 83vw, 1660px);
+    opacity: 0.22;
+  }
 }
 /* Typography inside privacy container */
 .privacy-container h2 { font-size: 1.5rem; margin-top: 1.25rem; margin-bottom: .75rem; }
