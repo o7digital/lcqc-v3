@@ -140,6 +140,8 @@ const slides = data?.allSliders || [];
   <style is:global>
     .scroll-section { height: 100vh; position: relative; }
     .swiper, .swiper-slide { width: 100%; height: 100%; }
+    /* Hide pagination bullets for hero slider (desktop + mobile) */
+    .scroll-section .swiper-pagination { display: none !important; }
     .booking-hover-zone .bg-black\/10 {
       transition: opacity 0.3s, transform 0.3s;
     }
