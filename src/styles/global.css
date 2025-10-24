@@ -103,10 +103,10 @@
   inset: 0; /* cover viewport */
   background-image: url('/images/logo/logo-gris.png');
   background-repeat: no-repeat;
-  background-position: center 28%;
+  background-position: center 24%;
   /* large but responsive logo size */
   background-size: clamp(420px, 75vw, 1500px); /* ~+35% vs 55vw */
-  opacity: 0.18; /* soft, like Château des Alpilles */
+  opacity: 0.22; /* slightly more visible */
   pointer-events: none;
   z-index: 0;
 }
