@@ -13,7 +13,12 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
 
 <section class="">
     <div>
-       <img class="h-72 w-full object-cover" src={frontmatter.imagefront} alt="" />
+       {(() => { const heroWebp = frontmatter.imagefront.replace(/\.(jpg|jpeg|png)$/i, '.webp'); return (
+         <picture>
+           <source srcset={heroWebp} type="image/webp" />
+           <img class="h-72 w-full object-cover" src={frontmatter.imagefront} alt="" />
+         </picture>
+       ); })()}
     </div>
     <div class="max-w-7xl mx-auto py-16 px-8 grid gap-8 md:grid-cols-2 items-center">
         <div class="grid content-start h-full">
@@ -81,17 +86,23 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
     <!-- Galería -->
     <div class="max-w-7xl px-8 md:px-0 mx-auto swiper mySwiper h-full">
         <div class="swiper-wrapper aspect-square md:aspect-[16/7] object-cover">
-            {frontmatter.items.map((item) => (
+            {frontmatter.items.map((item) => {
+                const webp = item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+                return (
                 <div class="swiper-slide">
-                    <img 
-                        class="cursor-pointer object-cover transition duration-300 ease-in-out w-full h-full"
-                        src={item.image}
-                        alt={frontmatter.title}
-                        data-image={item.image}
-                        data-text={item.text}
-                    />
+                    <picture>
+                      <source srcset={webp} type="image/webp" />
+                      <img 
+                          class="cursor-pointer object-cover transition duration-300 ease-in-out w-full h-full"
+                          src={item.image}
+                          alt={frontmatter.title}
+                          data-image={item.image}
+                          data-text={item.text}
+                      />
+                    </picture>
                 </div>
-            ))}
+              );
+            })}
         </div>
         <div class="swiper-pagination"></div>
     </div>
