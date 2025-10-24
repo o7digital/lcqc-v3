@@ -165,6 +165,8 @@ var swiper = new Swiper(".mySwiper", {
   centeredSlides: true,
   autoplay: { delay: 4000, disableOnInteraction: false },
   pagination: { el: ".swiper-pagination", clickable: true },
+  preventClicks: false,
+  preventClicksPropagation: false
 });
 
 // Lightbox (PhotoSwipe) via CDN to éviter dépendance
@@ -174,6 +176,7 @@ var swiper = new Swiper(".mySwiper", {
   css.href = 'https://unpkg.com/photoswipe@5/dist/photoswipe.css';
   document.head.appendChild(css);
 
+  let __lbInstance = null;
   function initLightbox(){
     if (window.PhotoSwipeLightbox && window.PhotoSwipe) {
       const lb = new window.PhotoSwipeLightbox({
@@ -182,6 +185,7 @@ var swiper = new Swiper(".mySwiper", {
         // Use UMD core already loaded on window to avoid ESM import issues
         pswpModule: window.PhotoSwipe
       });
+      __lbInstance = lb;
       lb.on('open', () => {
         const pswp = lb.pswp;
         // Create thumbnails sidebar
@@ -241,6 +245,21 @@ var swiper = new Swiper(".mySwiper", {
   sLb.defer = true;
   sLb.onload = () => { lbLoaded = true; tryInit(); };
   document.body.appendChild(sLb);
+
+  // Delegated click handler to ensure click opens even if scripts load tardively
+  document.addEventListener('click', function(ev){
+    const a = ev.target && ev.target.closest && ev.target.closest('.pswp-gallery a');
+    if (!a) return;
+    ev.preventDefault();
+    const gallery = a.closest('.pswp-gallery');
+    const links = Array.from(gallery.querySelectorAll('a'));
+    const idx = Math.max(0, links.indexOf(a));
+    const open = () => {
+      if (__lbInstance) { try { __lbInstance.loadAndOpen(idx, gallery); } catch(e) {} }
+      else setTimeout(open, 50);
+    };
+    open();
+  }, { capture: true });
   // Inject minimal CSS for desktop thumbnails
   const st = document.createElement('style');
   st.textContent = `
