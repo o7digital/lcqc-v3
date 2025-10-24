@@ -1,3 +1,22 @@
+/* Wrapper for Privacy pages */
+.privacy-container {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  position: relative; /* ensure content overlays bg pseudo-element */
+  z-index: 1;
+}
+@media (min-width: 768px) {
+  .privacy-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -72,28 +91,36 @@
 
 /* Fondo para páginas de Aviso/Política de Privacidad */
 .privacy-bg {
-  background-color: rgb(199, 199, 199);
-  position: relative;
-  overflow: hidden;
+  background-color: rgb(233, 232, 229);
+  position: relative; /* host stacking context for overlay */
+  min-height: 100vh;
 }
 
+/* Fixed, centered logo behind the scrolling text */
 .privacy-bg::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1800px;
-  height: 1800px;
-  background: url('/images/logo/logo-gris.png') no-repeat center center;
-  background-size: contain;
-  opacity: 0.25;
-  transform: translate(-50%, -50%);
+  content: "";
+  position: fixed;
+  inset: 0; /* cover viewport */
+  background-image: url('/images/logo/logo-gris.png');
+  background-repeat: no-repeat;
+  /* Mobile-first: logo bien visible sur petits écrans */
+  background-position: center 30%;
+  background-size: clamp(360px, 120vw, 1400px);
+  opacity: 0.20;
   pointer-events: none;
   z-index: 0;
 }
 
-/* Removed unnecessary duplicate block */
-.privacy-bg > * {
-  position: relative;
-  z-index: 1;
+/* Desktop: affiner taille/position et intensité */
+@media (min-width: 768px) {
+  .privacy-bg::before {
+    background-position: center 24%;
+    background-size: clamp(420px, 83vw, 1660px);
+    opacity: 0.22;
+  }
 }
+/* Typography inside privacy container */
+.privacy-container h2 { font-size: 1.5rem; margin-top: 1.25rem; margin-bottom: .75rem; }
+.privacy-container h3 { font-size: 1.25rem; margin-top: 1rem; margin-bottom: .5rem; }
+.privacy-container p { line-height: 1.75; margin-bottom: .85rem; }
+.privacy-container ul { list-style: disc; margin-left: 1.25rem; }
