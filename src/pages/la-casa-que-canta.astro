@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Welcome to La Casa Que Canta">
-  <section class="h-72 bg-center bg-[url('/lobby.jpg')] bg-cover">
+  <section class="h-72 bg-center bg-cover" style="background-image: image-set(url('/lobby.webp') type('image/webp'), url('/lobby.jpg') type('image/jpeg'));">
   </section>
 
   <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
@@ -39,7 +39,7 @@ import Layout from '../layouts/Layout.astro';
   <!-- 🔹 Ahora cada bloque ocupa toda la fila -->
   <section class="grid">
     <!-- History -->
-    <div class="aspect-[16/9] grid items-end bg-[url('/panorama-lcqc.jpg')] bg-cover bg-center">
+    <div class="aspect-[16/9] grid items-end bg-cover bg-center" style="background-image: image-set(url('/panorama-lcqc.webp') type('image/webp'), url('/panorama-lcqc.jpg') type('image/jpeg'));">
       <div class="p-10">
         <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
           History
@@ -53,7 +53,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
 
     <!-- Our Team -->
-    <div class="aspect-[16/9] grid items-end bg-[url('/team.jpeg')] bg-cover bg-center">
+    <div class="aspect-[16/9] grid items-end bg-cover bg-center" style="background-image: image-set(url('/team.webp') type('image/webp'), url('/team.jpeg') type('image/jpeg'));">
       <div class="p-10">
         <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
           Our Team
