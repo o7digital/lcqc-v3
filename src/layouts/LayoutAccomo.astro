@@ -84,24 +84,26 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
     </div>
 
     <!-- Galería -->
-    <div class="max-w-7xl px-8 md:px-0 mx-auto swiper mySwiper h-full">
+    <div class="max-w-7xl px-8 md:px-0 mx-auto swiper mySwiper h-full pswp-gallery">
         <div class="swiper-wrapper aspect-square md:aspect-[16/7] object-cover">
             {frontmatter.items.map((item) => {
                 const webp = item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
                 return (
                 <div class="swiper-slide">
-                    <picture>
-                      <source srcset={webp} type="image/webp" />
-                      <img 
-                          class="cursor-pointer object-cover transition duration-300 ease-in-out w-full h-full"
-                          src={item.image}
-                          alt={frontmatter.title}
-                          data-image={item.image}
-                          data-text={item.text}
-                      />
-                    </picture>
+                    <a href={item.image} data-pswp-width="1600" data-pswp-height="1067">
+                      <picture>
+                          <source srcset={webp} type="image/webp" />
+                          <img 
+                              class="cursor-pointer object-cover transition duration-300 ease-in-out w-full h-full"
+                              src={item.image}
+                              alt={frontmatter.title}
+                              data-image={item.image}
+                              data-text={item.text}
+                          />
+                      </picture>
+                    </a>
                 </div>
-              );
+            );
             })}
         </div>
         <div class="swiper-pagination"></div>
@@ -164,5 +166,29 @@ var swiper = new Swiper(".mySwiper", {
   autoplay: { delay: 4000, disableOnInteraction: false },
   pagination: { el: ".swiper-pagination", clickable: true },
 });
+
+// Lightbox (PhotoSwipe) via CDN to éviter dépendance
+(function(){
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'https://unpkg.com/photoswipe@5/dist/photoswipe.css';
+  document.head.appendChild(css);
+
+  function initLightbox(){
+    if (window.PhotoSwipeLightbox) {
+      const lb = new window.PhotoSwipeLightbox({
+        gallery: '.pswp-gallery',
+        children: 'a',
+        pswpModule: () => import('https://unpkg.com/photoswipe@5/dist/photoswipe.esm.min.js')
+      });
+      lb.init();
+    }
+  }
+  const s = document.createElement('script');
+  s.src = 'https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.umd.min.js';
+  s.defer = true;
+  s.onload = initLightbox;
+  document.body.appendChild(s);
+})();
 </script>
 </Layout>
