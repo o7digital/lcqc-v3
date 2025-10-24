@@ -8,6 +8,7 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 ---
 
 <!doctype html>
@@ -22,6 +23,52 @@ const { title } = Astro.props;
 		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=La+Belle+Aurore&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		{isVercelPreview && (
+		  <>
+		    <style is:inline>
+		      {`/* Hide Vercel Toolbar only on Preview */
+		      [aria-label*="Vercel"],
+		      .vercel-toolbar,
+		      #vercel-toolbar,
+		      [data-vercel-toolbar],
+		      [class*="vercel-toolbar"],
+		      iframe[src*="vercel"],
+		      div[id*="vercel"],
+		      div[class*="vercel-toolbar"],
+		      button[aria-label*="Vercel"],
+		      a[aria-label*="Vercel"] {
+		        display: none !important;
+		        visibility: hidden !important;
+		        opacity: 0 !important;
+		      }`}
+		    </style>
+		    <script is:inline>
+		      {`try {
+		        // Also set an opt-out cookie if supported
+		        document.cookie = 'vercelToolbar=0; Max-Age=31536000; Path=/';
+		        const selectors = [
+		          '[aria-label*="Vercel"]', '.vercel-toolbar', '#vercel-toolbar', '[data-vercel-toolbar]',
+		          '[class*="vercel-toolbar"]', 'iframe[src*="vercel"]', 'div[id*="vercel"]', 'div[class*="vercel-toolbar"]',
+		          'button[aria-label*="Vercel"]', 'a[aria-label*="Vercel"]'
+		        ];
+		        const hideToolbar = () => {
+		          selectors.forEach(sel => document.querySelectorAll(sel).forEach(el => {
+		            try { el.remove(); } catch(_) { try { el.style.display = 'none'; } catch(__){} }
+		          }));
+		          // Remove buttons whose label text matches
+		          Array.from(document.querySelectorAll('button, a, div')).forEach(el => {
+		            if ((el.textContent || '').trim().toLowerCase().includes('vercel toolbar')) {
+		              try { el.remove(); } catch(_) { el.style.display='none'; }
+		            }
+		          });
+		        };
+		        const obs = new MutationObserver(() => hideToolbar());
+		        obs.observe(document.documentElement, { childList: true, subtree: true });
+		        hideToolbar();
+		      } catch (e) { /* noop */ }`}
+		    </script>
+		  </>
+		)}
 		<script>
 			setTimeout(function() {
 			  var script = document.createElement('script');
