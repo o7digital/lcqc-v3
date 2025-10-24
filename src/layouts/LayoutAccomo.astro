@@ -260,6 +260,20 @@ var swiper = new Swiper(".mySwiper", {
     };
     open();
   }, { capture: true });
+
+  // Fallback: click anywhere on gallery (outside pagination) opens current slide
+  document.addEventListener('click', function(ev){
+    const gallery = ev.target && ev.target.closest && ev.target.closest('.pswp-gallery');
+    if (!gallery) return;
+    if (ev.target.closest('.swiper-pagination')) return; // ignore pagination dots
+    ev.preventDefault();
+    const idx = (typeof swiper?.activeIndex === 'number') ? swiper.activeIndex : 0;
+    const open = () => {
+      if (__lbInstance) { try { __lbInstance.loadAndOpen(idx, gallery); } catch(e) {} }
+      else setTimeout(open, 50);
+    };
+    open();
+  }, { capture: true });
   // Inject minimal CSS for desktop thumbnails
   const st = document.createElement('style');
   st.textContent = `
