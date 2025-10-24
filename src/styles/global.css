@@ -104,8 +104,8 @@
   background-image: url('/images/logo/logo-gris.png');
   background-repeat: no-repeat;
   background-position: center 24%;
-  /* large but responsive logo size (encore +35%) */
-  background-size: clamp(420px, 100vw, 2000px);
+  /* large but responsive logo size (~17% smaller) */
+  background-size: clamp(420px, 83vw, 1660px);
   opacity: 0.22; /* slightly more visible */
   pointer-events: none;
   z-index: 0;
