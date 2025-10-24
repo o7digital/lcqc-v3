@@ -31,14 +31,27 @@ const slides = data?.allSliders || [];
         <div class="swiper-wrapper">
           {slides.length > 0 ? slides.map((slide, i) => (
             <div class="swiper-slide">
-              <img
-                src={slide.media.url}
-                srcset={`${slide.media.url}?w=640 640w, ${slide.media.url}?w=1280 1280w, ${slide.media.url}?w=1920 1920w`}
-                sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
-                class="w-full h-full object-cover"
-                alt={slide.description || 'Slide'}
-                loading={i === 0 ? 'eager' : 'lazy'}
-              />
+              <picture>
+                <source
+                  type="image/avif"
+                  srcset={`${slide.media.url}?fm=avif&q=60&w=640 640w, ${slide.media.url}?fm=avif&q=60&w=1280 1280w, ${slide.media.url}?fm=avif&q=60&w=1920 1920w`}
+                  sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+                />
+                <source
+                  type="image/webp"
+                  srcset={`${slide.media.url}?fm=webp&q=60&w=640 640w, ${slide.media.url}?fm=webp&q=60&w=1280 1280w, ${slide.media.url}?fm=webp&q=60&w=1920 1920w`}
+                  sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+                />
+                <img
+                  src={`${slide.media.url}?auto=compress&q=70&w=1280`}
+                  srcset={`${slide.media.url}?auto=compress&q=70&w=640 640w, ${slide.media.url}?auto=compress&q=70&w=1280 1280w, ${slide.media.url}?auto=compress&q=70&w=1920 1920w`}
+                  sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+                  class="w-full h-full object-cover"
+                  alt={slide.description || 'Slide'}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </picture>
             </div>
           )) : (
             <div class="swiper-slide bg-black text-white flex items-center justify-center">
@@ -55,14 +68,27 @@ const slides = data?.allSliders || [];
       <div class="swiper-wrapper">
         {slides.length > 0 ? slides.map((slide, i) => (
           <div class="swiper-slide">
-            <img
-              src={slide.media.url}
-              srcset={`${slide.media.url}?w=320 320w, ${slide.media.url}?w=640 640w, ${slide.media.url}?w=1024 1024w`}
-              sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
-              class="w-full h-full object-cover"
-              alt={slide.description || 'Slide'}
-              loading={i === 0 ? 'eager' : 'lazy'}
-            />
+            <picture>
+              <source
+                type="image/avif"
+                srcset={`${slide.media.url}?fm=avif&q=60&w=320 320w, ${slide.media.url}?fm=avif&q=60&w=640 640w, ${slide.media.url}?fm=avif&q=60&w=1024 1024w`}
+                sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
+              />
+              <source
+                type="image/webp"
+                srcset={`${slide.media.url}?fm=webp&q=60&w=320 320w, ${slide.media.url}?fm=webp&q=60&w=640 640w, ${slide.media.url}?fm=webp&q=60&w=1024 1024w`}
+                sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
+              />
+              <img
+                src={`${slide.media.url}?auto=compress&q=70&w=640`}
+                srcset={`${slide.media.url}?auto=compress&q=70&w=320 320w, ${slide.media.url}?auto=compress&q=70&w=640 640w, ${slide.media.url}?auto=compress&q=70&w=1024 1024w`}
+                sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
+                class="w-full h-full object-cover"
+                alt={slide.description || 'Slide'}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </picture>
           </div>
         )) : (
           <div class="swiper-slide bg-black text-white flex items-center justify-center">
