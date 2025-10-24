@@ -175,11 +175,12 @@ var swiper = new Swiper(".mySwiper", {
   document.head.appendChild(css);
 
   function initLightbox(){
-    if (window.PhotoSwipeLightbox) {
+    if (window.PhotoSwipeLightbox && window.PhotoSwipe) {
       const lb = new window.PhotoSwipeLightbox({
         gallery: '.pswp-gallery',
         children: 'a',
-        pswpModule: () => import('https://unpkg.com/photoswipe@5/dist/photoswipe.esm.min.js')
+        // Use UMD core already loaded on window to avoid ESM import issues
+        pswpModule: window.PhotoSwipe
       });
       lb.on('open', () => {
         const pswp = lb.pswp;
@@ -227,11 +228,19 @@ var swiper = new Swiper(".mySwiper", {
       };
     }
   }
-  const s = document.createElement('script');
-  s.src = 'https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.umd.min.js';
-  s.defer = true;
-  s.onload = initLightbox;
-  document.body.appendChild(s);
+  // Load PhotoSwipe core then Lightbox (UMD)
+  let coreLoaded = false, lbLoaded = false;
+  function tryInit(){ if (coreLoaded && lbLoaded) initLightbox(); }
+  const sCore = document.createElement('script');
+  sCore.src = 'https://unpkg.com/photoswipe@5/dist/photoswipe.umd.min.js';
+  sCore.defer = true;
+  sCore.onload = () => { coreLoaded = true; tryInit(); };
+  document.body.appendChild(sCore);
+  const sLb = document.createElement('script');
+  sLb.src = 'https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.umd.min.js';
+  sLb.defer = true;
+  sLb.onload = () => { lbLoaded = true; tryInit(); };
+  document.body.appendChild(sLb);
   // Inject minimal CSS for desktop thumbnails
   const st = document.createElement('style');
   st.textContent = `
