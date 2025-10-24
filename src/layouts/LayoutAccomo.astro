@@ -197,6 +197,13 @@ var swiper = new Swiper(".mySwiper", {
           sidebar.appendChild(img);
         }
         pswp.element.appendChild(sidebar);
+        // Explicit close button (top-right)
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'pswp-close-btn';
+        closeBtn.type = 'button';
+        closeBtn.setAttribute('aria-label','Close');
+        closeBtn.addEventListener('click', () => pswp.close());
+        pswp.element.appendChild(closeBtn);
         const updateActive = () => {
           const idx = pswp.currIndex;
           Array.from(sidebar.querySelectorAll('img')).forEach((el, i) => {
@@ -205,7 +212,7 @@ var swiper = new Swiper(".mySwiper", {
         };
         pswp.on('change', updateActive);
         updateActive();
-        pswp.on('destroy', () => sidebar.remove());
+        pswp.on('destroy', () => { sidebar.remove(); closeBtn.remove(); });
       });
       lb.init();
     }
@@ -218,10 +225,14 @@ var swiper = new Swiper(".mySwiper", {
   // Inject minimal CSS for desktop thumbnails
   const st = document.createElement('style');
   st.textContent = `
-    .pswp-thumbs{position:fixed;right:16px;top:16px;bottom:16px;width:120px;overflow:auto;display:none;z-index:100000}
+    .pswp-thumbs{position:fixed;right:16px;top:16px;bottom:16px;width:128px;overflow:auto;display:none;z-index:100050;background:rgba(0,0,0,.55);padding:8px;border-radius:6px}
     @media(min-width:1024px){.pswp-thumbs{display:block}}
-    .pswp-thumbs img{display:block;width:100%;margin:0 0 8px 0;cursor:pointer;opacity:.85;border:2px solid transparent;box-sizing:border-box}
+    .pswp-thumbs img{display:block;width:100%;height:auto;margin:0 0 8px 0;cursor:pointer;opacity:.85;border:2px solid transparent;box-sizing:border-box;transition:opacity .2s}
+    .pswp-thumbs img:hover{opacity:1}
     .pswp-thumbs img.active{opacity:1;border-color:#fff}
+    .pswp-close-btn{position:fixed;right:160px;top:16px;z-index:100060;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:36px;height:36px;display:none;align-items:center;justify-content:center;cursor:pointer}
+    .pswp-close-btn:after{content:'×';font-size:22px;line-height:1}
+    @media(min-width:1024px){.pswp-close-btn{display:flex}}
   `;
   document.head.appendChild(st);
 })();
