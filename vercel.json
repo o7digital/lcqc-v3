@@ -3,9 +3,9 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "x-vercel-toolbar", "value": "0" }
+        { "key": "x-vercel-toolbar", "value": "0" },
+        { "key": "Set-Cookie", "value": "vercelToolbar=0; Path=/; Max-Age=31536000" }
       ]
     }
   ]
 }
-

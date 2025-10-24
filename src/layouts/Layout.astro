@@ -27,11 +27,16 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 		  <>
 		    <style is:inline>
 		      {`/* Hide Vercel Toolbar only on Preview */
-		      [aria-label="Vercel Toolbar"],
+		      [aria-label*="Vercel"],
 		      .vercel-toolbar,
 		      #vercel-toolbar,
 		      [data-vercel-toolbar],
-		      [class*="vercel-toolbar"] {
+		      [class*="vercel-toolbar"],
+		      iframe[src*="vercel"],
+		      div[id*="vercel"],
+		      div[class*="vercel-toolbar"],
+		      button[aria-label*="Vercel"],
+		      a[aria-label*="Vercel"] {
 		        display: none !important;
 		        visibility: hidden !important;
 		        opacity: 0 !important;
@@ -41,11 +46,24 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 		      {`try {
 		        // Also set an opt-out cookie if supported
 		        document.cookie = 'vercelToolbar=0; Max-Age=31536000; Path=/';
+		        const selectors = [
+		          '[aria-label*="Vercel"]', '.vercel-toolbar', '#vercel-toolbar', '[data-vercel-toolbar]',
+		          '[class*="vercel-toolbar"]', 'iframe[src*="vercel"]', 'div[id*="vercel"]', 'div[class*="vercel-toolbar"]',
+		          'button[aria-label*="Vercel"]', 'a[aria-label*="Vercel"]'
+		        ];
 		        const hideToolbar = () => {
-		          const nodes = document.querySelectorAll('[aria-label="Vercel Toolbar"], .vercel-toolbar, #vercel-toolbar, [data-vercel-toolbar]');
-		          nodes.forEach(n => n.remove());
+		          selectors.forEach(sel => document.querySelectorAll(sel).forEach(el => {
+		            try { el.remove(); } catch(_) { try { el.style.display = 'none'; } catch(__){} }
+		          }));
+		          // Remove buttons whose label text matches
+		          Array.from(document.querySelectorAll('button, a, div')).forEach(el => {
+		            if ((el.textContent || '').trim().toLowerCase().includes('vercel toolbar')) {
+		              try { el.remove(); } catch(_) { el.style.display='none'; }
+		            }
+		          });
 		        };
-		        new MutationObserver(() => hideToolbar()).observe(document.documentElement, { childList: true, subtree: true });
+		        const obs = new MutationObserver(() => hideToolbar());
+		        obs.observe(document.documentElement, { childList: true, subtree: true });
 		        hideToolbar();
 		      } catch (e) { /* noop */ }`}
 		    </script>
