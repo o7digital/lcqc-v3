@@ -190,6 +190,21 @@ var swiper = new Swiper(".mySwiper", {
       __lbInstance = lb;
       lb.on('open', () => {
         const pswp = lb.pswp;
+        try {
+          // Aggressive hide of any Vercel toolbar in preview
+          const killVercel = () => {
+            const q = [
+              '[aria-label*="Vercel"], .vercel-toolbar, #vercel-toolbar, [data-vercel-toolbar]',
+              '[class*="vercel-toolbar"], iframe[src*="vercel"], div[id*="vercel"]',
+              'div[class*="vercel-toolbar"], button[aria-label*="Vercel"], a[aria-label*="Vercel"]'
+            ];
+            q.forEach(sel => document.querySelectorAll(sel).forEach(el => { try { el.remove(); } catch(_) { el.style.display='none'; }}));
+          };
+          killVercel();
+          const mo = new MutationObserver(killVercel);
+          mo.observe(document.documentElement, { childList: true, subtree: true });
+          pswp.on('destroy', () => mo.disconnect());
+        } catch(_) { /* noop */ }
         // Create thumbnails sidebar
         const sidebar = document.createElement('div');
         sidebar.className = 'pswp-thumbs';
@@ -290,12 +305,12 @@ var swiper = new Swiper(".mySwiper", {
   // Inject minimal CSS for desktop thumbnails
   const st = document.createElement('style');
   st.textContent = `
-    .pswp-thumbs{position:fixed;right:20px;top:20px;bottom:20px;width:130px;overflow:auto;display:none;z-index:100050;background:rgba(0,0,0,.5);padding:8px 6px;border-radius:8px}
+    .pswp-thumbs{position:fixed;right:20px;top:20px;bottom:20px;width:130px;overflow:auto;display:none;z-index:2147483600;background:rgba(0,0,0,.5);padding:8px 6px;border-radius:8px}
     @media(min-width:1024px){.pswp-thumbs{display:block}}
     .pswp-thumbs img{display:block;width:100%;height:auto;margin:0 0 8px 0;cursor:pointer;opacity:.9;border:2px solid transparent;box-sizing:border-box;transition:opacity .2s}
     .pswp-thumbs img:hover{opacity:1}
     .pswp-thumbs img.active{opacity:1;border-color:#eaeaea}
-    .pswp-close-btn{position:fixed;right:170px;top:20px;z-index:100060;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:20px;width:32px;height:32px;display:none;align-items:center;justify-content:center;cursor:pointer}
+    .pswp-close-btn{position:fixed;right:170px;top:20px;z-index:2147483601;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:20px;width:32px;height:32px;display:none;align-items:center;justify-content:center;cursor:pointer}
     .pswp-close-btn:after{content:'×';font-size:18px;line-height:1}
     @media(min-width:1024px){.pswp-close-btn{display:flex}}
   `;
@@ -306,14 +321,14 @@ var swiper = new Swiper(".mySwiper", {
     if (window.__slb) return window.__slb;
     const css = document.createElement('style');
     css.textContent = `
-      .slb{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;z-index:99999}
+      .slb{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;z-index:2147483645}
       .slb.open{display:block}
       .slb-img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:calc(100% - 180px);max-height:92%;box-shadow:0 10px 30px rgba(0,0,0,.6)}
-      .slb-thumbs{position:absolute;right:20px;top:20px;bottom:20px;width:120px;overflow:auto;display:none}
+      .slb-thumbs{position:absolute;right:20px;top:20px;bottom:20px;width:120px;overflow:auto;display:none;z-index:2147483646}
       @media(min-width:1024px){.slb-thumbs{display:block}}
       .slb-thumbs img{display:block;width:100%;margin:0 0 8px 0;opacity:.9;border:2px solid transparent;cursor:pointer}
       .slb-thumbs img.active{opacity:1;border-color:#eaeaea}
-      .slb-close{position:absolute;right:160px;top:20px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:18px;width:32px;height:32px;display:none;align-items:center;justify-content:center;cursor:pointer}
+      .slb-close{position:absolute;right:160px;top:20px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:18px;width:32px;height:32px;display:none;align-items:center;justify-content:center;cursor:pointer;z-index:2147483646}
       .slb-close:after{content:'×';font-size:18px}
       @media(min-width:1024px){.slb-close{display:flex}}
       .slb-nav{position:absolute;top:50%;transform:translateY(-50%);left:10px;right:10px;display:flex;justify-content:space-between}
