@@ -2,7 +2,7 @@
 const isES = Astro.url.pathname.startsWith('/es');
 const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
 ---
-<section class="scroll-section max-h-[700px] py-6 max-w-7xl mx-auto px-4 bg-[url('/palm-bg-footer.png')] bg-cover bg-bottom bg-no-repeat">
+<section class="py-6 max-w-7xl mx-auto px-4 bg-[url('/palm-bg-footer.png')] bg-cover bg-bottom bg-no-repeat">
   <div class="w-full">
     
   </div>
@@ -14,7 +14,6 @@ const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
         <div>
           <h3 class="uppercase mb-6 text-4xl font-bold">Links</h3>
           <div class="grid gap-y-4 md:gap-y-2 text-sm">
-            <a href="/">Back Home</a>
             <a href="/contact">Contact</a>
             <a href={privacyHref}>Privacy Policy</a>
           </div>
