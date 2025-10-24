@@ -90,7 +90,7 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
                 const webp = item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
                 return (
                 <div class="swiper-slide">
-                    <a href={item.image} data-pswp-width="1600" data-pswp-height="1067">
+                    <a href={item.image} data-pswp-width="1600" data-pswp-height="1067" onclick="return window.__openSuiteLB ? window.__openSuiteLB(event,this) : false;">
                       <picture>
                           <source srcset={webp} type="image/webp" />
                           <img 
@@ -215,6 +215,16 @@ var swiper = new Swiper(".mySwiper", {
         pswp.on('destroy', () => { sidebar.remove(); closeBtn.remove(); });
       });
       lb.init();
+      // Expose manual opener to prevent default navigation and open matching index
+      window.__openSuiteLB = function(ev, anchor){
+        if (ev) ev.preventDefault();
+        const gallery = document.querySelector('.pswp-gallery');
+        if (!gallery) return false;
+        const links = Array.from(gallery.querySelectorAll('a'));
+        const idx = Math.max(0, links.indexOf(anchor));
+        try { lb.loadAndOpen(idx, gallery); } catch(e) {}
+        return false;
+      };
     }
   }
   const s = document.createElement('script');
@@ -225,13 +235,13 @@ var swiper = new Swiper(".mySwiper", {
   // Inject minimal CSS for desktop thumbnails
   const st = document.createElement('style');
   st.textContent = `
-    .pswp-thumbs{position:fixed;right:16px;top:16px;bottom:16px;width:128px;overflow:auto;display:none;z-index:100050;background:rgba(0,0,0,.55);padding:8px;border-radius:6px}
+    .pswp-thumbs{position:fixed;right:20px;top:20px;bottom:20px;width:130px;overflow:auto;display:none;z-index:100050;background:rgba(0,0,0,.5);padding:8px 6px;border-radius:8px}
     @media(min-width:1024px){.pswp-thumbs{display:block}}
-    .pswp-thumbs img{display:block;width:100%;height:auto;margin:0 0 8px 0;cursor:pointer;opacity:.85;border:2px solid transparent;box-sizing:border-box;transition:opacity .2s}
+    .pswp-thumbs img{display:block;width:100%;height:auto;margin:0 0 8px 0;cursor:pointer;opacity:.9;border:2px solid transparent;box-sizing:border-box;transition:opacity .2s}
     .pswp-thumbs img:hover{opacity:1}
-    .pswp-thumbs img.active{opacity:1;border-color:#fff}
-    .pswp-close-btn{position:fixed;right:160px;top:16px;z-index:100060;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:36px;height:36px;display:none;align-items:center;justify-content:center;cursor:pointer}
-    .pswp-close-btn:after{content:'×';font-size:22px;line-height:1}
+    .pswp-thumbs img.active{opacity:1;border-color:#eaeaea}
+    .pswp-close-btn{position:fixed;right:170px;top:20px;z-index:100060;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:20px;width:32px;height:32px;display:none;align-items:center;justify-content:center;cursor:pointer}
+    .pswp-close-btn:after{content:'×';font-size:18px;line-height:1}
     @media(min-width:1024px){.pswp-close-btn{display:flex}}
   `;
   document.head.appendChild(st);
