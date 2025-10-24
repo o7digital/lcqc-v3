@@ -8,6 +8,7 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 ---
 
 <!doctype html>
@@ -22,6 +23,34 @@ const { title } = Astro.props;
 		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=La+Belle+Aurore&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		{isVercelPreview && (
+		  <>
+		    <style is:inline>
+		      {`/* Hide Vercel Toolbar only on Preview */
+		      [aria-label="Vercel Toolbar"],
+		      .vercel-toolbar,
+		      #vercel-toolbar,
+		      [data-vercel-toolbar],
+		      [class*="vercel-toolbar"] {
+		        display: none !important;
+		        visibility: hidden !important;
+		        opacity: 0 !important;
+		      }`}
+		    </style>
+		    <script is:inline>
+		      {`try {
+		        // Also set an opt-out cookie if supported
+		        document.cookie = 'vercelToolbar=0; Max-Age=31536000; Path=/';
+		        const hideToolbar = () => {
+		          const nodes = document.querySelectorAll('[aria-label="Vercel Toolbar"], .vercel-toolbar, #vercel-toolbar, [data-vercel-toolbar]');
+		          nodes.forEach(n => n.remove());
+		        };
+		        new MutationObserver(() => hideToolbar()).observe(document.documentElement, { childList: true, subtree: true });
+		        hideToolbar();
+		      } catch (e) { /* noop */ }`}
+		    </script>
+		  </>
+		)}
 		<script>
 			setTimeout(function() {
 			  var script = document.createElement('script');
