@@ -36,12 +36,8 @@ items:
         <p class="text-sm md:text-base max-w-xl mx-auto text-balance mb-4 text-black/90">
           Las reservas en línea están disponibles hasta con 24 horas de anticipación. Para reservas el mismo día, por favor llámanos: <a href="tel:+527555557030">+52 755 555 7030</a>.
         </p>
-        <form id="spaReservationForm" action="https://formsubmit.co/ajax/el/loxamo" method="POST" class="space-y-4 max-w-3xl mx-auto">
+        <form id="spaReservationForm" action="https://formspree.io/f/xdkpoedy" method="POST" class="space-y-4 max-w-3xl mx-auto">
           <input type="hidden" name="_subject" value="Reserva Spa - Sitio web">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_cc" value="olivier.steineur@gmail.com">
-          <input type="hidden" name="_next" value="/es/activities/spa?sent=1">
           <div class="grid md:grid-cols-2 gap-4">
             <div>
               <label for="firstName" class="text-base text-left font-medium text-black/90 block">Nombre</label>
@@ -152,7 +148,7 @@ items:
                 } catch(_) {}
               }
               if (msg.toLowerCase().includes('domain') || msg.toLowerCase().includes('origin')) {
-                msg = 'El proveedor rechazó este dominio. Agrega tu dominio de previsualización de Vercel a los dominios permitidos en FormSubmit.';
+                msg = 'El proveedor rechazó este dominio. Agrega tu dominio de previsualización de Vercel a Dominios Permitidos en Formspree.';
               }
               err.textContent = msg || 'Lo sentimos, hubo un problema enviando tu solicitud. Intenta de nuevo o escribe a sales.reservations@lacasaquecanta.com.';
               err.classList.remove('hidden');
