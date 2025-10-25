@@ -15,4 +15,4 @@ Con equipos de cardio de última generación y áreas pensadas para fuerza y est
 
 Empieza al amanecer o relájate al atardecer: deja que el ritmo de la bahía marque tu paso.
 
-Lunes a domingo — 10:00 – 18:00 hrs.
+<p class="text-xl font-bold">Lunes a domingo — 10:00 – 18:00 hrs.</p>
