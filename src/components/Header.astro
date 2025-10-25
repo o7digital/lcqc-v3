@@ -35,10 +35,9 @@ const menu = isES
 const offersLabel = isES ? 'Ofertas' : 'Offers';
 const bookingLabel = isES ? 'Reservar' : 'Book Now';
 const bestRateLabel = isES ? 'Mejor tarifa garantizada' : 'Best Rate Guarentee';
-// En dev, pointer to temp URL; adjust per language
-const offersHref = isES
-  ? 'https://lcqc.tempurl.host/es/ahorros/'
-  : 'https://lcqc.tempurl.host/savings/';
+
+// Always point to internal forward routes; Vercel handles external redirect
+const offersHref = isES ? '/es/ahorros/' : '/savings/';
 const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
 ---
 <nav id="navbar" class="p-4 pt-[env(safe-area-inset-top)] z-50 fixed flex justify-between items-center w-full">
