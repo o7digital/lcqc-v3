@@ -136,15 +136,27 @@ items:
         try {
           const fd = new FormData(form);
           const res = await fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd });
-          const data = await res.json().catch(() => ({}));
+          let data = {};
+          try { data = await res.json(); } catch(_) {}
           if (res.ok) {
             ok?.classList.remove('hidden');
             form.reset();
             setTimeout(() => { popup.classList.add('hidden'); }, 1600);
           } else {
             if (err) {
-              err.textContent = (data && (data.message || data.error)) ? String(data.message || data.error) : 'Lo sentimos, hubo un problema enviando tu solicitud. Intenta de nuevo o escribe a sales.reservations@lacasaquecanta.com.';
+              let msg = (data && (data.message || data.error)) ? String(data.message || data.error) : '';
+              if (!msg) {
+                try {
+                  const txt = await res.text();
+                  msg = txt?.slice(0, 300) || '';
+                } catch(_) {}
+              }
+              if (msg.toLowerCase().includes('domain') || msg.toLowerCase().includes('origin')) {
+                msg = 'El proveedor rechazó este dominio. Agrega tu dominio de previsualización de Vercel a los dominios permitidos en FormSubmit.';
+              }
+              err.textContent = msg || 'Lo sentimos, hubo un problema enviando tu solicitud. Intenta de nuevo o escribe a sales.reservations@lacasaquecanta.com.';
               err.classList.remove('hidden');
+              console.error('Spa form error', res.status, msg);
             }
           }
         } catch (_) {
