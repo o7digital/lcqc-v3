@@ -26,8 +26,7 @@ Esta valiosa tradición, transmitida por generaciones de pescadores locales, con
 
 ---
 
-**Cena**  
-De 18:00 a 22:30
+<p class="text-xl font-bold">Cena — De 18:00 a 22:30 hrs.</p>
 
 <div class="mt-8 flex justify-center">
   <a href="https://www.opentable.com.mx/r/mar-y-cielo-zihuatanejo" target="_blank"
