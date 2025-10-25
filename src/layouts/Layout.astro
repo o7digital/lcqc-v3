@@ -202,6 +202,13 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 		opacity:1!important;
 	}
 
+	/* Hide all Swiper pagination dots sitewide (EN/ES, all sliders) */
+	.swiper-pagination,
+	.swiper-pagination-bullets,
+	.swiper-pagination-bullet { 
+		display: none !important; 
+	}
+
 	mark{
 		font-family: "La Belle Aurore", cursive;
 		background-color: transparent;
