@@ -1,11 +1,9 @@
 {
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "x-vercel-toolbar", "value": "0" },
-        { "key": "Set-Cookie", "value": "vercelToolbar=0; Path=/; Max-Age=31536000" }
-      ]
-    }
+  "redirects": [
+    { "source": "/savings",  "destination": "https://lcqc.tempurl.host/savings/",  "permanent": false },
+    { "source": "/savings/", "destination": "https://lcqc.tempurl.host/savings/",  "permanent": false },
+    { "source": "/es/ahorros",  "destination": "https://lcqc.tempurl.host/es/ahorros/",  "permanent": false },
+    { "source": "/es/ahorros/", "destination": "https://lcqc.tempurl.host/es/ahorros/",  "permanent": false }
   ]
 }
+

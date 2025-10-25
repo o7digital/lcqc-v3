@@ -36,11 +36,8 @@ const offersLabel = isES ? 'Ofertas' : 'Offers';
 const bookingLabel = isES ? 'Reservar' : 'Book Now';
 const bestRateLabel = isES ? 'Mejor tarifa garantizada' : 'Best Rate Guarentee';
 
-// Use temp URLs on preview/dev, production URLs on prod
-const isVercelPreview = process.env.VERCEL_ENV !== 'production';
-const offersHref = isES
-  ? (isVercelPreview ? 'https://lcqc.tempurl.host/es/ahorros/' : 'https://lacasaquecanta.com/es/ahorros/')
-  : (isVercelPreview ? 'https://lcqc.tempurl.host/savings/' : 'https://lacasaquecanta.com/savings/');
+// Always point to internal forward routes; Vercel handles external redirect
+const offersHref = isES ? '/es/ahorros/' : '/savings/';
 const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
 ---
 <nav id="navbar" class="p-4 pt-[env(safe-area-inset-top)] z-50 fixed flex justify-between items-center w-full">
