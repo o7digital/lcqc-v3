@@ -4,10 +4,16 @@ import Footer from "../components/Footer.astro"
 import CookieBanner from "../components/CookieBanner.astro"
 import "../styles/global.css";
 interface Props {
-	title: string;
+    title: string;
+    description?: string;
+    ogImage?: string;
 }
 
-const { title } = Astro.props;
+const { title, description, ogImage } = Astro.props as Props;
+const defaultDescription =
+  'La Casa Que Canta, the iconic luxury hotel in Zihuatanejo, Guerrero, Mexico. Official website – experience timeless elegance, sea views, and Mexican artistry.';
+const metaDescription = description ?? defaultDescription;
+const metaOgImage = ogImage ?? '/panorama-lcqc.jpg';
 const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 ---
 
@@ -15,7 +21,7 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
+		<meta name="description" content={metaDescription} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,6 +29,16 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=La+Belle+Aurore&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+
+		<!-- Open Graph -->
+		<meta property="og:title" content={title}>
+		<meta property="og:description" content={metaDescription}>
+		<meta property="og:image" content={metaOgImage}>
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:title" content={title}>
+		<meta name="twitter:description" content={metaDescription}>
 		{isVercelPreview && (
 		  <>
 		    <style is:inline>
