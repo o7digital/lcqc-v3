@@ -40,6 +40,8 @@ items:
           <input type="hidden" name="_subject" value="Reserva Spa - Sitio web">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_cc" value="sales.reservations@lacasaquecanta.com">
+          <input type="hidden" name="_next" value="/es/activities/spa?sent=1">
           <div class="grid md:grid-cols-2 gap-4">
             <div>
               <label for="firstName" class="text-base text-left font-medium text-black/90 block">Nombre</label>
@@ -106,6 +108,7 @@ items:
             Reservar tu sesión de spa
           </button>
         </form>
+        <div id="spa-alert" class="hidden mt-4 text-green-700">Gracias. Tu solicitud ha sido enviada.</div>
       </div>
     </div>
   </div>
@@ -120,6 +123,12 @@ items:
       openButton.addEventListener('click', (e) => { e.preventDefault(); popup.classList.remove('hidden'); });
     }
     // dejar que el formulario envíe normalmente al backend de email
+    try {
+      const params = new URLSearchParams(location.search);
+      if (params.get('sent') === '1') {
+        document.getElementById('spa-alert')?.classList.remove('hidden');
+      }
+    } catch(_) {}
   }
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initSpaReservation); } else { initSpaReservation(); }
 </script>

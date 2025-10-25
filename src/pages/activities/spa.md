@@ -43,6 +43,8 @@ items:
   <input type="hidden" name="_subject" value="Spa Reservation - Website">
   <input type="hidden" name="_template" value="table">
   <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_cc" value="sales.reservations@lacasaquecanta.com">
+  <input type="hidden" name="_next" value="/activities/spa?sent=1">
   <div class="grid md:grid-cols-2 gap-4">
     <div>
       <label for="firstName" class="text-base text-left font-medium text-black/90 block">First name</label>
@@ -113,6 +115,7 @@ items:
     Book your spa session
   </button>
 </form>
+        <div id="spa-alert" class="hidden mt-4 text-green-700">Thank you. Your request has been sent.</div>
       </div>
     </div>
   </div>
@@ -140,6 +143,12 @@ items:
     }
 
     // let the form submit naturally to email backend
+    try {
+      const params = new URLSearchParams(location.search);
+      if (params.get('sent') === '1') {
+        document.getElementById('spa-alert')?.classList.remove('hidden');
+      }
+    } catch(_) {}
   }
 
   // Kept for safety; clickable handler is inline now
