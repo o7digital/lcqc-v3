@@ -75,9 +75,14 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
             <div>
                 <h4 class="font-bold">{isEs ? 'Amenidades' : 'Amenities'}</h4>
                 <ul>
-                    {frontmatter.amenities.map((amenitie) => (
-                        <li>{amenitie.a}</li>
-                    ))}
+                    {frontmatter.amenities.map((amenitie) => {
+                        const text = amenitie.a || '';
+                        const lower = text.toLowerCase();
+                        const highlight = lower.includes('internet access') || lower.includes('acceso a internet');
+                        return (
+                            <li>{highlight ? <strong>{text}</strong> : text}</li>
+                        );
+                    })}
                 </ul>
             </div>
         </div>
