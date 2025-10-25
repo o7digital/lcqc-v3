@@ -55,7 +55,7 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
                             </dialog>
                         </>
                     )}
-                    <a href="/accomodations" class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
+                    <a href={isEs ? '/es/accomodations' : '/accomodations'} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
                         {isEs ? 'REGRESO A SUITES' : 'Back to accomodations'}
                     </a>
                 </div>
