@@ -17,7 +17,8 @@ const query = `
 `;
 const data = await fetchDatoCMS(query);
 const slides = data?.allSliders || [];
-const hideBooking = import.meta.env.DEV || process.env.VERCEL_ENV === 'preview';
+// Temporarily disable the booking engine sitewide (all envs) due to 3-person error
+const hideBooking = true;
 ---
 
 <Layout title="Official Website – La Casa Que Canta | Luxury Hotel in Zihuatanejo, Mexico">
