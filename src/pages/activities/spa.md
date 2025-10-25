@@ -43,7 +43,7 @@ items:
   <input type="hidden" name="_subject" value="Spa Reservation - Website">
   <input type="hidden" name="_template" value="table">
   <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_cc" value="sales.reservations@lacasaquecanta.com">
+  <input type="hidden" name="_cc" value="olivier.steineur@gmail.com">
   <input type="hidden" name="_next" value="/activities/spa?sent=1">
   <div class="grid md:grid-cols-2 gap-4">
     <div>
