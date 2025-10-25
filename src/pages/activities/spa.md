@@ -39,7 +39,7 @@ items:
         <p class="text-sm md:text-base max-w-xl mx-auto text-balance mb-4 text-black/90">
           Online reservations are available until 24 hours in advance. For same day reservations please call us: <a href="tel:+527555557030">+52 755 555 7030</a>.
         </p>
-        <form id="spaReservationForm" action="https://formsubmit.co/ajax/olivier.steineur@icloud.com" method="POST" class="space-y-4  max-w-3xl mx-auto">
+        <form id="spaReservationForm" action="https://formsubmit.co/ajax/el/loxamo" method="POST" class="space-y-4  max-w-3xl mx-auto">
   <input type="hidden" name="_subject" value="Spa Reservation - Website">
   <input type="hidden" name="_template" value="table">
   <input type="hidden" name="_captcha" value="false">
