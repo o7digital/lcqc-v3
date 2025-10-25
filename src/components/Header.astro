@@ -35,7 +35,10 @@ const menu = isES
 const offersLabel = isES ? 'Ofertas' : 'Offers';
 const bookingLabel = isES ? 'Reservar' : 'Book Now';
 const bestRateLabel = isES ? 'Mejor tarifa garantizada' : 'Best Rate Guarentee';
-const offersHref = isES ? 'https://lacasaquecanta.com/es/ahorros/' : 'https://lacasaquecanta.com/savings/';
+// En dev, pointer to temp URL; adjust per language
+const offersHref = isES
+  ? 'https://lcqc.tempurl.host/es/ahorros/'
+  : 'https://lcqc.tempurl.host/savings/';
 const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
 ---
 <nav id="navbar" class="p-4 pt-[env(safe-area-inset-top)] z-50 fixed flex justify-between items-center w-full">
