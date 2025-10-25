@@ -9,7 +9,9 @@ if (isES) {
     // On ajoute /es devant l'URL
     switchLangHref = '/es' + (Astro.url.pathname === '/' ? '' : Astro.url.pathname);
 }
-const onWhiteHeader = Astro.url.pathname.includes('/luxury-villas');
+const onWhiteHeader =
+  Astro.url.pathname.includes('/luxury-villas') ||
+  Astro.url.pathname.includes('/activities/spa');
 const menu = isES
     ? [
         { label: 'Inicio', href: '/es/' },
