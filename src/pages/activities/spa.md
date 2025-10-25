@@ -39,10 +39,10 @@ items:
         <p class="text-sm md:text-base max-w-xl mx-auto text-balance mb-4 text-black/90">
           Online reservations are available until 24 hours in advance. For same day reservations please call us: <a href="tel:+527555557030">+52 755 555 7030</a>.
         </p>
-        <form id="spaReservationForm" action="https://formsubmit.co/olivier.steineur@icloud.com" method="POST" class="space-y-4  max-w-3xl mx-auto">
-  <input type="hidden" name="_subject" value="Spa Reservation - Website">
-  <input type="hidden" name="_template" value="table">
-  <input type="hidden" name="_captcha" value="false">
+        <form id="spaReservationForm" action="https://formspree.io/f/xdkpoedy" method="POST" class="space-y-4  max-w-3xl mx-auto">
+          <input type="hidden" name="_subject" value="Spa Reservation - Website">
+          <input type="hidden" name="_to" value="concierge@lacasaquecanta.com">
+          <input type="hidden" name="_cc" value="olivier.steineur@gmail.com">
   <div class="grid md:grid-cols-2 gap-4">
     <div>
       <label for="firstName" class="text-base text-left font-medium text-black/90 block">First name</label>
@@ -113,6 +113,8 @@ items:
     Book your spa session
   </button>
 </form>
+        <div id="spa-alert" class="hidden mt-4 text-green-700">Thank you. Your request has been sent.</div>
+        <div id="spa-error" class="hidden mt-4 text-red-700">Sorry, there was a problem sending your request. Please try again or email sales.reservations@lacasaquecanta.com.</div>
       </div>
     </div>
   </div>
@@ -139,7 +141,52 @@ items:
       });
     }
 
-    // let the form submit naturally to email backend
+    // Handle AJAX submit to avoid page navigation
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        const ok = document.getElementById('spa-alert');
+        const err = document.getElementById('spa-error');
+        ok?.classList.add('hidden');
+        err?.classList.add('hidden');
+        if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+        try {
+          const fd = new FormData(form);
+          const res = await fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd });
+          let data = {};
+          try { data = await res.json(); } catch(_) {}
+          if (res.ok) {
+            ok?.classList.remove('hidden');
+            form.reset();
+            setTimeout(() => { popup.classList.add('hidden'); }, 1600);
+          } else {
+            if (err) {
+              let msg = (data && (data.message || data.error)) ? String(data.message || data.error) : '';
+              if (!msg) {
+                try {
+                  const txt = await res.text();
+                  msg = txt?.slice(0, 300) || '';
+                } catch(_) {}
+              }
+              if (msg.toLowerCase().includes('domain') || msg.toLowerCase().includes('origin')) {
+                msg = 'Provider rejected this domain. Please add your Vercel preview domain to Allowed Domains in Formspree.';
+              }
+              err.textContent = msg || 'Sorry, there was a problem sending your request. Please try again or email sales.reservations@lacasaquecanta.com.';
+              err.classList.remove('hidden');
+              console.error('Spa form error', res.status, msg);
+            }
+          }
+        } catch (_) {
+          if (err) {
+            err.textContent = 'Network error. Please check your connection and try again.';
+            err.classList.remove('hidden');
+          }
+        } finally {
+          if (btn) { btn.disabled = false; btn.textContent = 'Book your spa session'; }
+        }
+      });
+    }
   }
 
   // Kept for safety; clickable handler is inline now

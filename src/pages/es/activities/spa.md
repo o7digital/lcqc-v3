@@ -36,10 +36,10 @@ items:
         <p class="text-sm md:text-base max-w-xl mx-auto text-balance mb-4 text-black/90">
           Las reservas en línea están disponibles hasta con 24 horas de anticipación. Para reservas el mismo día, por favor llámanos: <a href="tel:+527555557030">+52 755 555 7030</a>.
         </p>
-        <form id="spaReservationForm" action="https://formsubmit.co/olivier.steineur@icloud.com" method="POST" class="space-y-4 max-w-3xl mx-auto">
+        <form id="spaReservationForm" action="https://formspree.io/f/xdkpoedy" method="POST" class="space-y-4 max-w-3xl mx-auto">
           <input type="hidden" name="_subject" value="Reserva Spa - Sitio web">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_to" value="concierge@lacasaquecanta.com">
+          <input type="hidden" name="_cc" value="olivier.steineur@gmail.com">
           <div class="grid md:grid-cols-2 gap-4">
             <div>
               <label for="firstName" class="text-base text-left font-medium text-black/90 block">Nombre</label>
@@ -106,6 +106,8 @@ items:
             Reservar tu sesión de spa
           </button>
         </form>
+        <div id="spa-alert" class="hidden mt-4 text-green-700">Gracias. Tu solicitud ha sido enviada.</div>
+        <div id="spa-error" class="hidden mt-4 text-red-700">Lo sentimos, hubo un problema enviando tu solicitud. Intenta de nuevo o escribe a sales.reservations@lacasaquecanta.com.</div>
       </div>
     </div>
   </div>
@@ -119,7 +121,52 @@ items:
     if (openButton) {
       openButton.addEventListener('click', (e) => { e.preventDefault(); popup.classList.remove('hidden'); });
     }
-    // dejar que el formulario envíe normalmente al backend de email
+    // Envío con AJAX para no salir del sitio
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        const ok = document.getElementById('spa-alert');
+        const err = document.getElementById('spa-error');
+        ok?.classList.add('hidden');
+        err?.classList.add('hidden');
+        if (btn) { btn.disabled = true; btn.textContent = 'Enviando…'; }
+        try {
+          const fd = new FormData(form);
+          const res = await fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd });
+          let data = {};
+          try { data = await res.json(); } catch(_) {}
+          if (res.ok) {
+            ok?.classList.remove('hidden');
+            form.reset();
+            setTimeout(() => { popup.classList.add('hidden'); }, 1600);
+          } else {
+            if (err) {
+              let msg = (data && (data.message || data.error)) ? String(data.message || data.error) : '';
+              if (!msg) {
+                try {
+                  const txt = await res.text();
+                  msg = txt?.slice(0, 300) || '';
+                } catch(_) {}
+              }
+              if (msg.toLowerCase().includes('domain') || msg.toLowerCase().includes('origin')) {
+                msg = 'El proveedor rechazó este dominio. Agrega tu dominio de previsualización de Vercel a Dominios Permitidos en Formspree.';
+              }
+              err.textContent = msg || 'Lo sentimos, hubo un problema enviando tu solicitud. Intenta de nuevo o escribe a sales.reservations@lacasaquecanta.com.';
+              err.classList.remove('hidden');
+              console.error('Spa form error', res.status, msg);
+            }
+          }
+        } catch (_) {
+          if (err) {
+            err.textContent = 'Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.';
+            err.classList.remove('hidden');
+          }
+        } finally {
+          if (btn) { btn.disabled = false; btn.textContent = 'Reservar tu sesión de spa'; }
+        }
+      });
+    }
   }
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initSpaReservation); } else { initSpaReservation(); }
 </script>
