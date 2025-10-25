@@ -38,6 +38,8 @@ items:
         </p>
         <form id="spaReservationForm" action="https://formspree.io/f/xdkpoedy" method="POST" class="space-y-4 max-w-3xl mx-auto">
           <input type="hidden" name="_subject" value="Reserva Spa - Sitio web">
+          <input type="hidden" name="_to" value="concierge@lacasaquecanta.com">
+          <input type="hidden" name="_cc" value="olivier.steineur@gmail.com">
           <div class="grid md:grid-cols-2 gap-4">
             <div>
               <label for="firstName" class="text-base text-left font-medium text-black/90 block">Nombre</label>
