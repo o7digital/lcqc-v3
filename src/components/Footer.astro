@@ -1,25 +1,29 @@
 ---
 const isES = Astro.url.pathname.startsWith('/es');
 const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
+const contactHref = isES ? '/es/contact' : '/contact';
 ---
 <section class="py-6 max-w-7xl mx-auto px-4 bg-[url('/palm-bg-footer.png')] bg-cover bg-bottom bg-no-repeat">
   <div class="w-full">
     
   </div>
 
-  <div class="flex-col md:flex-row flex justify-around gap-4 pt-8">
-
+  <div class="flex flex-col md:flex-row justify-around gap-4 pt-8">
     <div class="flex flex-col justify-between">
-      <div class="flex flex-col md:flex-row justify-between gap-4">
+      <div class="flex flex-col md:flex-row justify-between gap-6 md:items-start">
+        <!-- Logo aligned left, same line as ENLACES on desktop -->
+        <div class="mb-6 md:mb-0 shrink-0 self-start md:translate-x-[-3cm]">
+          <img src="/images/logo/logo.jpg" alt="La Casa Que Canta" class="w-40 md:w-48 lg:w-56" />
+        </div>
         <div>
-          <h3 class="uppercase mb-6 text-4xl font-bold">Links</h3>
+          <h3 class="uppercase mb-6 text-4xl font-bold">{isES ? 'Enlaces' : 'Links'}</h3>
           <div class="grid gap-y-4 md:gap-y-2 text-sm">
-            <a href="/contact">Contact</a>
-            <a href={privacyHref}>Privacy Policy</a>
+            <a href={contactHref}>{isES ? 'Contacto' : 'Contact'}</a>
+            <a href={privacyHref}>{isES ? 'Política de privacidad' : 'Privacy Policy'}</a>
           </div>
         </div>
         <div>
-          <h3 class="uppercase mb-6 text-4xl font-bold">Details</h3>
+          <h3 class="uppercase mb-6 text-4xl font-bold">{isES ? 'Detalles' : 'Details'}</h3>
           <div class="grid gap-y-2 text-sm">
             <a class="max-w-xs" href="https://maps.app.goo.gl/nstPh6dN5pwWDLXB7" target="_blank">Camino Escénico at Playa La Ropa S / N, La Ropa Beach, 40880 Zihuatanejo, Guerrero, México</a>
             <ul class="space-y-1">
@@ -58,7 +62,7 @@ const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
     </div>
 
     <div>
-      <h3 class="uppercase mb-6 text-4xl font-bold">Follow</h3>
+      <h3 class="uppercase mb-6 text-4xl font-bold">{isES ? 'Síguenos' : 'Follow'}</h3>
       <div class="grid gap-y-4 text-sm">
         <a class="flex gap-2 items-center" href="https://www.facebook.com/LaCasaQueCantaLuxuryHotel/">
           <svg class="fill-black" role="img" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Facebook</title><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>
