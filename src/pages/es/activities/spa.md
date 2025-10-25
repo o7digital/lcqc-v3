@@ -136,15 +136,22 @@ items:
         try {
           const fd = new FormData(form);
           const res = await fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd });
+          const data = await res.json().catch(() => ({}));
           if (res.ok) {
             ok?.classList.remove('hidden');
             form.reset();
             setTimeout(() => { popup.classList.add('hidden'); }, 1600);
           } else {
-            err?.classList.remove('hidden');
+            if (err) {
+              err.textContent = (data && (data.message || data.error)) ? String(data.message || data.error) : 'Lo sentimos, hubo un problema enviando tu solicitud. Intenta de nuevo o escribe a sales.reservations@lacasaquecanta.com.';
+              err.classList.remove('hidden');
+            }
           }
         } catch (_) {
-          err?.classList.remove('hidden');
+          if (err) {
+            err.textContent = 'Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.';
+            err.classList.remove('hidden');
+          }
         } finally {
           if (btn) { btn.disabled = false; btn.textContent = 'Reservar tu sesión de spa'; }
         }

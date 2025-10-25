@@ -156,15 +156,22 @@ items:
         try {
           const fd = new FormData(form);
           const res = await fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd });
+          const data = await res.json().catch(() => ({}));
           if (res.ok) {
             ok?.classList.remove('hidden');
             form.reset();
             setTimeout(() => { popup.classList.add('hidden'); }, 1600);
           } else {
-            err?.classList.remove('hidden');
+            if (err) {
+              err.textContent = (data && (data.message || data.error)) ? String(data.message || data.error) : 'Sorry, there was a problem sending your request. Please try again or email sales.reservations@lacasaquecanta.com.';
+              err.classList.remove('hidden');
+            }
           }
         } catch (_) {
-          err?.classList.remove('hidden');
+          if (err) {
+            err.textContent = 'Network error. Please check your connection and try again.';
+            err.classList.remove('hidden');
+          }
         } finally {
           if (btn) { btn.disabled = false; btn.textContent = 'Book your spa session'; }
         }
