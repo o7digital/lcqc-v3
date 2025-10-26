@@ -128,8 +128,8 @@ const hotelId = "78821";
         if (next) {
           // Ensure minimum stay of 1 night
           depart.min = next;
-          // If no departure chosen yet or chosen date is before min, set to min; otherwise keep user selection
-          depart.value = clampToMin(depart.value, next);
+          // Default departure to arrival + 1 night when arrival is chosen/changed
+          depart.value = next;
         }
       } else {
         // Without arrival, at least prevent past departures: min = today + 1
