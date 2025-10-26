@@ -41,17 +41,26 @@ const hotelId = "78821";
           max="2"
           value="1" 
           required 
+          step="1"
           class="mt-1 block w-full border-b border-white bg-transparent text-white focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+          oninput="if(this.value>2)this.value=2;if(this.value<1)this.value=1;"
         />
       </div>
 
       <!-- Submit Button -->
-      <div class="w-full sm:w-auto">
+      <div class="w-full sm:w-auto flex gap-2">
         <button 
           type="submit" 
           class="text-black/90 px-6 py-3 font-bold block text-base hover:border-l hover:border-white/90 uppercase bg-white"
         >
           {Astro.url.pathname.startsWith('/es') ? 'Consultar Disponibilidad' : 'Check Availability'}
+        </button>
+        <button 
+          type="button"
+          id="clear-dates"
+          class="text-white px-4 py-3 font-bold block text-base bg-black/40 border border-white/40 rounded hover:bg-black/70"
+        >
+          Effacer
         </button>
       </div>
     </form>
@@ -116,29 +125,46 @@ const hotelId = "78821";
     const arrival = document.getElementById('arrival-date');
     const depart = document.getElementById('departure-date');
     const adults = document.getElementById('num-adults');
+    const clearBtn = document.getElementById('clear-dates');
     if (!arrival || !depart || !adults) return;
+
+    // Par défaut : arrivée = aujourd'hui + 1, départ = aujourd'hui + 2
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const defaultArrival = new Date(today);
+    defaultArrival.setDate(today.getDate() + 1);
+    const defaultDepart = new Date(today);
+    defaultDepart.setDate(today.getDate() + 2);
+    const formatDate = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    arrival.value = formatDate(defaultArrival);
+    depart.value = formatDate(defaultDepart);
+    arrival.min = formatDate(today);
+    depart.min = formatDate(defaultArrival);
 
     const clampAndSync = () => {
       // Clamp adults between 1 and 2
       adults.value = String(clampAdults(adults.value));
       // Prevent past arrivals
-      const today = todayStr();
-      arrival.min = today;
+      const todayStrVal = todayStr();
+      arrival.min = todayStrVal;
       if (arrival.value) {
-        arrival.value = clampToMin(arrival.value, today);
+        arrival.value = clampToMin(arrival.value, todayStrVal);
       }
       // If arrival is set, auto set departure = arrival + 1 day
       if (arrival.value) {
         const next = addDays(arrival.value, 1);
         if (next) {
-          // Ensure minimum stay of 1 night
           depart.min = next;
-          // Default departure to arrival + 1 night when arrival is chosen/changed
-          depart.value = next;
+          // Default departure to arrival + 1 night when arrival est changée
+          if (!depart.value || depart.value < next) {
+            depart.value = next;
+          }
         }
       } else {
-        // Without arrival, at least prevent past departures: min = today + 1
-        const minDep = addDays(today, 1);
+        // Sans arrivée, min départ = aujourd'hui + 1
+        const minDep = addDays(todayStrVal, 1);
         if (minDep) {
           depart.min = minDep;
           depart.value = clampToMin(depart.value, minDep);
@@ -149,17 +175,23 @@ const hotelId = "78821";
     // Initialize on load
     clampAndSync();
     arrival.addEventListener('change', clampAndSync);
-    // Some browsers/devices fire input instead of change for date pickers
     arrival.addEventListener('input', clampAndSync);
     adults.addEventListener('change', clampAndSync);
     adults.addEventListener('input', clampAndSync);
-    // When departure changes manually, enforce min constraint
     depart.addEventListener('change', () => {
       if (arrival.value) {
         const min = addDays(arrival.value, 1);
         if (min) depart.value = clampToMin(depart.value, min);
       }
     });
+
+    // Effacer les dates
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        arrival.value = '';
+        depart.value = '';
+      });
+    }
   })();
 
 </script>
