@@ -18,7 +18,7 @@ const hotelId = "78821";
         />
       </div>
 
-      <!-- Departure Date -->
+      <!-- Departure Date (auto: +1 night by default, editable) -->
       <div class="w-full sm:w-auto">
         <label for="departure-date" class="block text-sm font-medium text-white">Departure Date</label>
         <input 
@@ -30,7 +30,7 @@ const hotelId = "78821";
         />
       </div>
 
-      <!-- Number of Adults -->
+      <!-- Number of Adults (limited 1–2) -->
       <div class="w-full sm:w-auto">
         <label for="num-adults" class="block text-sm font-medium text-white">Number of Adults</label>
         <input 
@@ -38,7 +38,8 @@ const hotelId = "78821";
           id="num-adults" 
           name="num-adults" 
           min="1" 
-          value="2" 
+          max="2"
+          value="1" 
           required 
           class="mt-1 block w-full border-b border-white bg-transparent text-white focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
         />
@@ -58,10 +59,37 @@ const hotelId = "78821";
 </div>
 
 <script define:vars={{ chainId, hotelId }}>
+  function clampAdults(n) { return Math.min(2, Math.max(1, Number(n) || 1)); }
+
+  function addDays(dateStr, days) {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return '';
+    d.setDate(d.getDate() + days);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  function clampToMin(value, min) {
+    if (!value) return min;
+    const v = new Date(value).getTime();
+    const m = new Date(min).getTime();
+    return isNaN(v) || v < m ? min : value;
+  }
+
+  function todayStr() {
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
   function buildBookingUrl() {
     const arrivalDate = document.getElementById('arrival-date').value;
     const departureDate = document.getElementById('departure-date').value;
-    const numAdults = document.getElementById('num-adults').value;
+    const numAdults = clampAdults(document.getElementById('num-adults').value);
 
     const baseUrl = "https://be.synxis.com/";
     let url = `${baseUrl}?Chain=${chainId}&Hotel=${hotelId}`;
@@ -77,6 +105,55 @@ const hotelId = "78821";
     event.preventDefault();
     buildBookingUrl();
   });
+
+  // Automatically set departure to arrival + 1 night
+  (function(){
+    const arrival = document.getElementById('arrival-date');
+    const depart = document.getElementById('departure-date');
+    const adults = document.getElementById('num-adults');
+    if (!arrival || !depart || !adults) return;
+
+    const clampAndSync = () => {
+      // Clamp adults between 1 and 2
+      adults.value = String(clampAdults(adults.value));
+      // Prevent past arrivals
+      const today = todayStr();
+      arrival.min = today;
+      if (arrival.value) {
+        arrival.value = clampToMin(arrival.value, today);
+      }
+      // If arrival is set, auto set departure = arrival + 1 day
+      if (arrival.value) {
+        const next = addDays(arrival.value, 1);
+        if (next) {
+          // Ensure minimum stay of 1 night
+          depart.min = next;
+          // Default departure to arrival + 1 night when arrival is chosen/changed
+          depart.value = next;
+        }
+      } else {
+        // Without arrival, at least prevent past departures: min = today + 1
+        const minDep = addDays(today, 1);
+        if (minDep) {
+          depart.min = minDep;
+          depart.value = clampToMin(depart.value, minDep);
+        }
+      }
+    };
+
+    // Initialize on load
+    clampAndSync();
+    arrival.addEventListener('change', clampAndSync);
+    adults.addEventListener('change', clampAndSync);
+    adults.addEventListener('input', clampAndSync);
+    // When departure changes manually, enforce min constraint
+    depart.addEventListener('change', () => {
+      if (arrival.value) {
+        const min = addDays(arrival.value, 1);
+        if (min) depart.value = clampToMin(depart.value, min);
+      }
+    });
+  })();
 
 </script>
 <script>

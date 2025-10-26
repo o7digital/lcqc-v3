@@ -37,7 +37,7 @@ const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontma
                     </span>
                 </div>
                 <div class="flex gap-4 flex-wrap">
-                    <a href={frontmatter.book} target="_blank" class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
+                    <a href={frontmatter.book} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">
                         {isEs ? 'RESERVAR' : 'Book Now'}
                     </a>
                     {frontmatter.floorplan && (
