@@ -44,8 +44,8 @@ const bestRateLabel = isES ? 'Mejor tarifa garantizada' : 'Best Rate Guarentee';
 // Always point to internal forward routes; Vercel handles external redirect
 const offersHref = isES ? '/es/ahorros/' : '/savings/';
 const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
-// Hide booking actions on Spanish locale
-const showBooking = !isES;
+// Reactivate booking actions for testing on DEV
+const showBooking = true;
 ---
 <nav id="navbar" class="p-4 pt-[env(safe-area-inset-top)] z-50 fixed flex justify-between items-center w-full">
     <div id="header-scroll" class="fixed w-full left-0 h-[150px] right-0 top-0 hidden"></div>

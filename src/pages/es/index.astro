@@ -17,8 +17,8 @@ const query = `
 `;
 const data = await fetchDatoCMS(query);
 const slides = data?.allSliders || [];
-// Hide booking engine on ES homepage (parity with EN)
-const hideBooking = true;
+// Reactivate booking on DEV branch for testing
+const hideBooking = false;
 ---
 
 <Layout title="Bienvenido a La Casa Que Canta">
