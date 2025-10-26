@@ -128,20 +128,17 @@ const hotelId = "78821";
     const clearBtn = document.getElementById('clear-dates');
     if (!arrival || !depart || !adults) return;
 
-    // Par défaut : arrivée = aujourd'hui + 1, départ = aujourd'hui + 2
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    const defaultArrival = new Date(today);
-    defaultArrival.setDate(today.getDate() + 1);
-    const defaultDepart = new Date(today);
-    defaultDepart.setDate(today.getDate() + 2);
-    const formatDate = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    arrival.value = formatDate(defaultArrival);
-    depart.value = formatDate(defaultDepart);
-    arrival.min = formatDate(today);
-    depart.min = formatDate(defaultArrival);
+  // Par défaut : arrivée = aujourd'hui, départ = aujourd'hui + 1
+  const today = new Date();
+  const formatDate = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const defaultArrival = formatDate(today);
+  const defaultDepartDate = new Date(today);
+  defaultDepartDate.setDate(today.getDate() + 1);
+  const defaultDepart = formatDate(defaultDepartDate);
+  arrival.value = defaultArrival;
+  depart.value = defaultDepart;
+  arrival.min = defaultArrival;
+  depart.min = defaultDepart;
 
     const clampAndSync = () => {
       // Clamp adults between 1 and 2
