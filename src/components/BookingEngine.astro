@@ -88,12 +88,17 @@ const hotelId = "78821";
 
   function buildBookingUrl() {
     const arrivalDate = document.getElementById('arrival-date').value;
-    const departureDate = document.getElementById('departure-date').value;
+    let departureDate = document.getElementById('departure-date').value;
     const numAdults = clampAdults(document.getElementById('num-adults').value);
 
     const baseUrl = "https://be.synxis.com/";
     let url = `${baseUrl}?Chain=${chainId}&Hotel=${hotelId}`;
     if (arrivalDate) url += `&arrive=${arrivalDate}`;
+    // Fallback: if no departure chosen, default to arrival + 1 night
+    if (!departureDate && arrivalDate) {
+      const dflt = addDays(arrivalDate, 1);
+      if (dflt) departureDate = dflt;
+    }
     if (departureDate) url += `&depart=${departureDate}`;
     url += `&adult=${numAdults}`;
     url += `&rooms=1`; // Assuming 1 room for simplicity
@@ -144,6 +149,8 @@ const hotelId = "78821";
     // Initialize on load
     clampAndSync();
     arrival.addEventListener('change', clampAndSync);
+    // Some browsers/devices fire input instead of change for date pickers
+    arrival.addEventListener('input', clampAndSync);
     adults.addEventListener('change', clampAndSync);
     adults.addEventListener('input', clampAndSync);
     // When departure changes manually, enforce min constraint
