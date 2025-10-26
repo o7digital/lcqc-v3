@@ -18,7 +18,7 @@ const hotelId = "78821";
         />
       </div>
 
-      <!-- Departure Date (auto: +1 night) -->
+      <!-- Departure Date (auto: +1 night by default, editable) -->
       <div class="w-full sm:w-auto">
         <label for="departure-date" class="block text-sm font-medium text-white">Departure Date</label>
         <input 
@@ -26,7 +26,6 @@ const hotelId = "78821";
           id="departure-date" 
           name="departure-date" 
           required 
-          readonly 
           class="mt-1 block w-full border-b border-white bg-transparent text-white focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
         />
       </div>
@@ -72,6 +71,13 @@ const hotelId = "78821";
     return `${yyyy}-${mm}-${dd}`;
   }
 
+  function clampToMin(value, min) {
+    if (!value) return min;
+    const v = new Date(value).getTime();
+    const m = new Date(min).getTime();
+    return isNaN(v) || v < m ? min : value;
+  }
+
   function buildBookingUrl() {
     const arrivalDate = document.getElementById('arrival-date').value;
     const departureDate = document.getElementById('departure-date').value;
@@ -106,8 +112,10 @@ const hotelId = "78821";
       if (arrival.value) {
         const next = addDays(arrival.value, 1);
         if (next) {
-          depart.value = next;
-          depart.min = next; // ensure at least 1 night
+          // Ensure minimum stay of 1 night
+          depart.min = next;
+          // If no departure chosen yet or chosen date is before min, set to min; otherwise keep user selection
+          depart.value = clampToMin(depart.value, next);
         }
       }
     };
@@ -117,6 +125,13 @@ const hotelId = "78821";
     arrival.addEventListener('change', clampAndSync);
     adults.addEventListener('change', clampAndSync);
     adults.addEventListener('input', clampAndSync);
+    // When departure changes manually, enforce min constraint
+    depart.addEventListener('change', () => {
+      if (arrival.value) {
+        const min = addDays(arrival.value, 1);
+        if (min) depart.value = clampToMin(depart.value, min);
+      }
+    });
   })();
 
 </script>
