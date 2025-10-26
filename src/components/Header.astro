@@ -10,10 +10,8 @@ if (isES) {
     switchLangHref = '/es' + (Astro.url.pathname === '/' ? '' : Astro.url.pathname);
 }
 const path = Astro.url.pathname;
+// Only enforce dark (black) header on specific white-background pages
 const onWhiteHeader =
-  // Force dark (black) header elements on Home (EN/ES) for visibility
-  path === '/' || path === '/es/' ||
-  // Existing pages requiring dark header UI
   path.includes('/luxury-villas') ||
   path.includes('/activities/spa');
 const menu = isES
