@@ -78,6 +78,14 @@ const hotelId = "78821";
     return isNaN(v) || v < m ? min : value;
   }
 
+  function todayStr() {
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
   function buildBookingUrl() {
     const arrivalDate = document.getElementById('arrival-date').value;
     const departureDate = document.getElementById('departure-date').value;
@@ -108,6 +116,12 @@ const hotelId = "78821";
     const clampAndSync = () => {
       // Clamp adults between 1 and 2
       adults.value = String(clampAdults(adults.value));
+      // Prevent past arrivals
+      const today = todayStr();
+      arrival.min = today;
+      if (arrival.value) {
+        arrival.value = clampToMin(arrival.value, today);
+      }
       // If arrival is set, auto set departure = arrival + 1 day
       if (arrival.value) {
         const next = addDays(arrival.value, 1);
@@ -116,6 +130,13 @@ const hotelId = "78821";
           depart.min = next;
           // If no departure chosen yet or chosen date is before min, set to min; otherwise keep user selection
           depart.value = clampToMin(depart.value, next);
+        }
+      } else {
+        // Without arrival, at least prevent past departures: min = today + 1
+        const minDep = addDays(today, 1);
+        if (minDep) {
+          depart.min = minDep;
+          depart.value = clampToMin(depart.value, minDep);
         }
       }
     };
