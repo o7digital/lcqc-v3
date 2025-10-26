@@ -9,9 +9,13 @@ if (isES) {
     // On ajoute /es devant l'URL
     switchLangHref = '/es' + (Astro.url.pathname === '/' ? '' : Astro.url.pathname);
 }
+const path = Astro.url.pathname;
 const onWhiteHeader =
-  Astro.url.pathname.includes('/luxury-villas') ||
-  Astro.url.pathname.includes('/activities/spa');
+  // Force dark (black) header elements on Home (EN/ES) for visibility
+  path === '/' || path === '/es/' ||
+  // Existing pages requiring dark header UI
+  path.includes('/luxury-villas') ||
+  path.includes('/activities/spa');
 const menu = isES
     ? [
         { label: 'Inicio', href: '/es/' },
