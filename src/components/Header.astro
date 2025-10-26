@@ -77,7 +77,7 @@ const showBooking = !isES;
                                                 </menu>
                                                 {showBooking && (
                                                   <menu class="flex uppercase flex-col text-xl md:text-2xl space-y-6 font-medium  py-8 ">
-                                                    <li class="grid hover:underline"><a target="_blank" href={bookingHref}>{bookingLabel}</a><span class="text-base">{bestRateLabel}</span></li>
+                                                    <li class="grid hover:underline"><a href={bookingHref}>{bookingLabel}</a><span class="text-base">{bestRateLabel}</span></li>
                                                   </menu>
                                                 )}
                         
@@ -105,7 +105,7 @@ const showBooking = !isES;
         <!-- Mobile fine-tuning: push Book Now ~0.2cm down (~8px) -->
         {showBooking && (
           <div class="relative mt-[8px] md:mt-0">
-              <a target="_blank" href={bookingHref} class="uppercase py-2.5 md:py-3 px-4 md:px-6 bg-white font-semibold tracking-widest text-black/90">{bookingLabel}</a>
+              <a href={bookingHref} class="uppercase py-2.5 md:py-3 px-4 md:px-6 bg-white font-semibold tracking-widest text-black/90">{bookingLabel}</a>
           </div>
         )}
         <!-- Mobile fine-tuning: push Offers ~0.3cm down (~11px) and adjust horizontally (+~0.05cm to the right) -->
