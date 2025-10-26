@@ -18,7 +18,7 @@ const hotelId = "78821";
         />
       </div>
 
-      <!-- Departure Date -->
+      <!-- Departure Date (auto: +1 night) -->
       <div class="w-full sm:w-auto">
         <label for="departure-date" class="block text-sm font-medium text-white">Departure Date</label>
         <input 
@@ -26,11 +26,12 @@ const hotelId = "78821";
           id="departure-date" 
           name="departure-date" 
           required 
+          readonly 
           class="mt-1 block w-full border-b border-white bg-transparent text-white focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
         />
       </div>
 
-      <!-- Number of Adults -->
+      <!-- Number of Adults (limited 1–2) -->
       <div class="w-full sm:w-auto">
         <label for="num-adults" class="block text-sm font-medium text-white">Number of Adults</label>
         <input 
@@ -38,6 +39,7 @@ const hotelId = "78821";
           id="num-adults" 
           name="num-adults" 
           min="1" 
+          max="2"
           value="2" 
           required 
           class="mt-1 block w-full border-b border-white bg-transparent text-white focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
@@ -58,10 +60,22 @@ const hotelId = "78821";
 </div>
 
 <script define:vars={{ chainId, hotelId }}>
+  function clampAdults(n) { return Math.min(2, Math.max(1, Number(n) || 1)); }
+
+  function addDays(dateStr, days) {
+    const d = new Date(dateStr);
+    if (isNaN(d)) return '';
+    d.setDate(d.getDate() + days);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
   function buildBookingUrl() {
     const arrivalDate = document.getElementById('arrival-date').value;
     const departureDate = document.getElementById('departure-date').value;
-    const numAdults = document.getElementById('num-adults').value;
+    const numAdults = clampAdults(document.getElementById('num-adults').value);
 
     const baseUrl = "https://be.synxis.com/";
     let url = `${baseUrl}?Chain=${chainId}&Hotel=${hotelId}`;
@@ -77,6 +91,33 @@ const hotelId = "78821";
     event.preventDefault();
     buildBookingUrl();
   });
+
+  // Automatically set departure to arrival + 1 night
+  (function(){
+    const arrival = document.getElementById('arrival-date');
+    const depart = document.getElementById('departure-date');
+    const adults = document.getElementById('num-adults');
+    if (!arrival || !depart || !adults) return;
+
+    const clampAndSync = () => {
+      // Clamp adults between 1 and 2
+      adults.value = String(clampAdults(adults.value));
+      // If arrival is set, auto set departure = arrival + 1 day
+      if (arrival.value) {
+        const next = addDays(arrival.value, 1);
+        if (next) {
+          depart.value = next;
+          depart.min = next; // ensure at least 1 night
+        }
+      }
+    };
+
+    // Initialize on load
+    clampAndSync();
+    arrival.addEventListener('change', clampAndSync);
+    adults.addEventListener('change', clampAndSync);
+    adults.addEventListener('input', clampAndSync);
+  })();
 
 </script>
 <script>
