@@ -13,10 +13,6 @@ items:
 
 ---
 
-Where movement meets mindfulness. Bathed in natural light and open to the ocean breeze, our gym invites you to reconnect with your energy while gazing over Zihuatanejo Bay.
-
-From state-of-the-art cardio to thoughtful strength and stretching zones, every detail is designed to help you feel stronger, lighter, and more present.
-
-Begin at sunrise or unwind at sunset — let the rhythm of the bay set your pace.
+Where movement meets calm. Bathed in natural light and open to the ocean breeze, our gym invites you to reconnect with your energy while gazing over Zihuatanejo Bay. With state-of-the-art cardio equipment and thoughtfully designed areas for strength and stretching, every detail is crafted to help you feel stronger, lighter, and more present. Start at sunrise or unwind at sunset — let the rhythm of the bay set your pace.
 
 <p class="text-xl font-bold">Monday through Sunday — 10:00 – 18:00 hrs.</p>
