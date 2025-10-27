@@ -12,7 +12,7 @@ roomfeatures:
 - rf: "Escritorio de trabajo"
 - rf: "Vestidor tipo walk-in"
 - rf: "Caja de seguridad"
-- rf: "Terraza con vista al mar de 180°"
+ 
 amenities:
 - a: "Minibar de cortesía"
 - a: "Fruta fresca repuesta diariamente"

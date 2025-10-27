@@ -12,7 +12,7 @@ roomfeatures:
 - rf: "Work desk"
 - rf: "Walk-in dressing room"
 - rf: "Safety deposit box"
-- rf: "180° ocean view terrace"
+ 
 
 amenities:
 - a: "Complimentary Mini bar"
@@ -35,6 +35,5 @@ items:
 
 ---
 All the redesigned 10 suites are now even more comfortable and roomy with double views of the bay. Each suite is singular in its layout, with distinctive colors, furniture and authentic Mexican decoration. The newly renovated bathrooms are ample, luminous, some with sea views.
-
 
 
