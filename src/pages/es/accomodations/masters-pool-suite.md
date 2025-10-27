@@ -29,4 +29,4 @@ items:
 - image: "/master-pool-suite/5.jpg"
 - image: "/master-pool-suite/6.jpg"
 ---
-Disfruta de la majestuosidad de la bahía de Zihuatanejo en nuestra suite penthouse y más privada. Este penthouse tiene una decoración elegante con artesanías seleccionadas por nuestros fundadores. La impresionante vista al mar de 180° desde la gran terraza y la alberca privada es única. La Master Pool Suite incluye todas las comodidades para hacer de tu estancia una experiencia memorable.
+Estas 9 suites tipo apartamento son todas diferentes por su atractivo y decoración mexicana. Cuentan con amplias terrazas privadas con albercas infinity y vistas a la bahía. Sus espacios vastos e iluminados, artesanías únicas y vegetación se suman a su encanto.
