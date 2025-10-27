@@ -7,12 +7,11 @@ beds: "King Size Bed"
 guest: "2 Guests"
 layout: "@layouts/LayoutAccomo.astro"
 roomfeatures:
-- rf: "Living room terrace with 2 tables, chairs and sun loungers"
+- rf: "Living room terrace with table, chairs and sun loungers"
 - rf: "Plunge pool"
 - rf: "Work desk"
 - rf: "Walk-in dressing room"
 - rf: "Safety deposit box"
-- rf: "180° ocean view terrace"
 
 amenities:
 - a: "Complimentary Mini bar"
@@ -35,4 +34,3 @@ items:
 
 ---
 These 9 different apartment-suites are all different in their attractiveness and Mexican decoration. They feature large private living terraces with infinity pools and terraces overlooking the bay. Their vast illuminated spaces, unique handicrafts and greenery add to their charm.
-
