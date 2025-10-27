@@ -1,5 +1,5 @@
 ---
-title: "Ocean Water Pool & jacuzzi"
+title: "Piscina de agua de mar y jacuzzi"
 description: ""
 showBack: false
 justifyText: true
