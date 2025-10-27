@@ -34,6 +34,5 @@ items:
 
 
 ---
-Appreciate the majesty of Zihuatanejo bay in our penthouse and most private suite. This penthouse has an elegant décor with hand-picked crafts chosen by our founders. The stunning 180° ocean view from the large living terrace and plunge pool are unique. The owner’s suite includes all commodities to make your stay a memorable experience.
-
+These 9 different apartment-suites are all different in their attractiveness and Mexican decoration. They feature large private living terraces with infinity pools and terraces overlooking the bay. Their vast illuminated spaces, unique handicrafts and greenery add to their charm.
 
