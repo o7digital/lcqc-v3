@@ -8,7 +8,6 @@ guest: "2 Guests"
 layout: "@layouts/LayoutAccomo.astro"
 roomfeatures:
 - rf: "Living room terrace with table, chairs and sun lounger"
-- rf: "Plunge pool"
 - rf: "Work desk"
 - rf: "Walk-in dressing room"
 - rf: "Safety deposit box"
@@ -35,5 +34,4 @@ items:
 
 ---
 All the redesigned 10 suites are now even more comfortable and roomy with double views of the bay. Each suite is singular in its layout, with distinctive colors, furniture and authentic Mexican decoration. The newly renovated bathrooms are ample, luminous, some with sea views.
-
 
