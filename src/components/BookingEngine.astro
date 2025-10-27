@@ -8,7 +8,9 @@ const hotelId = "78821";
     <form id="booking-form" class="flex flex-wrap items-center gap-4">
       <!-- Arrival Date -->
       <div class="w-full sm:w-auto">
-        <label for="arrival-date" class="block text-sm font-medium text-white">Arrival Date</label>
+        <label for="arrival-date" class="block text-sm font-medium text-white">
+          {Astro.url.pathname.startsWith('/es') ? 'Fecha de llegada' : 'Arrival Date'}
+        </label>
         <input 
           type="date" 
           id="arrival-date" 
@@ -20,7 +22,9 @@ const hotelId = "78821";
 
       <!-- Departure Date (auto: +1 night by default, editable) -->
       <div class="w-full sm:w-auto">
-        <label for="departure-date" class="block text-sm font-medium text-white">Departure Date</label>
+        <label for="departure-date" class="block text-sm font-medium text-white">
+          {Astro.url.pathname.startsWith('/es') ? 'Fecha de salida' : 'Departure Date'}
+        </label>
         <input 
           type="date" 
           id="departure-date" 
@@ -32,7 +36,9 @@ const hotelId = "78821";
 
       <!-- Number of Adults (limited 1–2) -->
       <div class="w-full sm:w-auto">
-        <label for="num-adults" class="block text-sm font-medium text-white">Number of Adults</label>
+        <label for="num-adults" class="block text-sm font-medium text-white">
+          {Astro.url.pathname.startsWith('/es') ? 'Número de adultos' : 'Number of Adults'}
+        </label>
         <input 
           type="number" 
           id="num-adults" 
@@ -41,17 +47,26 @@ const hotelId = "78821";
           max="2"
           value="1" 
           required 
+          step="1"
           class="mt-1 block w-full border-b border-white bg-transparent text-white focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+          oninput="if(this.value>2)this.value=2;if(this.value<1)this.value=1;"
         />
       </div>
 
       <!-- Submit Button -->
-      <div class="w-full sm:w-auto">
+      <div class="w-full sm:w-auto flex gap-2">
         <button 
           type="submit" 
           class="text-black/90 px-6 py-3 font-bold block text-base hover:border-l hover:border-white/90 uppercase bg-white"
         >
           {Astro.url.pathname.startsWith('/es') ? 'Consultar Disponibilidad' : 'Check Availability'}
+        </button>
+        <button 
+          type="button"
+          id="clear-dates"
+          class="text-white px-4 py-3 font-bold block text-base bg-black/40 border border-white/40 rounded hover:bg-black/70"
+        >
+          {Astro.url.pathname.startsWith('/es') ? 'Borrar' : 'Clear'}
         </button>
       </div>
     </form>
@@ -88,12 +103,17 @@ const hotelId = "78821";
 
   function buildBookingUrl() {
     const arrivalDate = document.getElementById('arrival-date').value;
-    const departureDate = document.getElementById('departure-date').value;
+    let departureDate = document.getElementById('departure-date').value;
     const numAdults = clampAdults(document.getElementById('num-adults').value);
 
     const baseUrl = "https://be.synxis.com/";
     let url = `${baseUrl}?Chain=${chainId}&Hotel=${hotelId}`;
     if (arrivalDate) url += `&arrive=${arrivalDate}`;
+    // Fallback: if no departure chosen, default to arrival + 1 night
+    if (!departureDate && arrivalDate) {
+      const dflt = addDays(arrivalDate, 1);
+      if (dflt) departureDate = dflt;
+    }
     if (departureDate) url += `&depart=${departureDate}`;
     url += `&adult=${numAdults}`;
     url += `&rooms=1`; // Assuming 1 room for simplicity
@@ -111,29 +131,43 @@ const hotelId = "78821";
     const arrival = document.getElementById('arrival-date');
     const depart = document.getElementById('departure-date');
     const adults = document.getElementById('num-adults');
+    const clearBtn = document.getElementById('clear-dates');
     if (!arrival || !depart || !adults) return;
+
+  // Par défaut : arrivée = aujourd'hui, départ = aujourd'hui + 1
+  const today = new Date();
+  const formatDate = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const defaultArrival = formatDate(today);
+  const defaultDepartDate = new Date(today);
+  defaultDepartDate.setDate(today.getDate() + 1);
+  const defaultDepart = formatDate(defaultDepartDate);
+  arrival.value = defaultArrival;
+  depart.value = defaultDepart;
+  arrival.min = defaultArrival;
+  depart.min = defaultDepart;
 
     const clampAndSync = () => {
       // Clamp adults between 1 and 2
       adults.value = String(clampAdults(adults.value));
       // Prevent past arrivals
-      const today = todayStr();
-      arrival.min = today;
+      const todayStrVal = todayStr();
+      arrival.min = todayStrVal;
       if (arrival.value) {
-        arrival.value = clampToMin(arrival.value, today);
+        arrival.value = clampToMin(arrival.value, todayStrVal);
       }
       // If arrival is set, auto set departure = arrival + 1 day
       if (arrival.value) {
         const next = addDays(arrival.value, 1);
         if (next) {
-          // Ensure minimum stay of 1 night
           depart.min = next;
-          // Default departure to arrival + 1 night when arrival is chosen/changed
-          depart.value = next;
+          // Default departure to arrival + 1 night when arrival est changée
+          if (!depart.value || depart.value < next) {
+            depart.value = next;
+          }
         }
       } else {
-        // Without arrival, at least prevent past departures: min = today + 1
-        const minDep = addDays(today, 1);
+        // Sans arrivée, min départ = aujourd'hui + 1
+        const minDep = addDays(todayStrVal, 1);
         if (minDep) {
           depart.min = minDep;
           depart.value = clampToMin(depart.value, minDep);
@@ -144,15 +178,23 @@ const hotelId = "78821";
     // Initialize on load
     clampAndSync();
     arrival.addEventListener('change', clampAndSync);
+    arrival.addEventListener('input', clampAndSync);
     adults.addEventListener('change', clampAndSync);
     adults.addEventListener('input', clampAndSync);
-    // When departure changes manually, enforce min constraint
     depart.addEventListener('change', () => {
       if (arrival.value) {
         const min = addDays(arrival.value, 1);
         if (min) depart.value = clampToMin(depart.value, min);
       }
     });
+
+    // Effacer les dates
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        arrival.value = '';
+        depart.value = '';
+      });
+    }
   })();
 
 </script>

@@ -7,12 +7,11 @@ beds: "Cama King Size"
 guest: "2 huéspedes"
 layout: "@layouts/LayoutAccomo.astro"
 roomfeatures:
-- rf: "Terraza con sala, 2 mesas, sillas y tumbonas"
-- rf: "Alberca pequeña privada"
+- rf: "Terraza con sala, mesa, sillas y tumbona"
 - rf: "Escritorio de trabajo"
 - rf: "Vestidor tipo walk-in"
 - rf: "Caja de seguridad"
-- rf: "Terraza con vista al mar de 180°"
+ 
 amenities:
 - a: "Minibar de cortesía"
 - a: "Fruta fresca repuesta diariamente"
