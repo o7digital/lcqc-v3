@@ -26,6 +26,6 @@ items:
 - image: "/deluxe-grand-suites/3.jpg"
 - image: "/deluxe-grand-suites/4.jpg"
 - image: "/deluxe-grand-suites/5.jpg"
-- image: "/deluxe-grand-suites/6.jpg"
+ 
 ---
 Las 10 suites rediseñadas son ahora aún más cómodas y espaciosas, con doble vista a la bahía. Cada suite es única en su distribución, con colores distintivos, mobiliario y decoración mexicana auténtica. Los baños renovados son amplios, luminosos y algunos con vistas al mar.
