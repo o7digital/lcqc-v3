@@ -12,12 +12,12 @@ roomfeatures:
 - rf: "Escritorio de trabajo"
 - rf: "Vestidor tipo walk-in"
 - rf: "Caja de seguridad"
-- rf: "Terraza con vista al mar de 180°"
+ 
 amenities:
 - a: "Minibar de cortesía"
 - a: "Fruta fresca repuesta diariamente"
 - a: "Bebida de bienvenida"
-- a: "Colcha artística decorada con flores frescas"
+- a: "Tapiz cubrecama artístico decorada con flores frescas"
 - a: "Revistas y libros en la habitación"
 - a: "Acceso a internet"
 - a: "Wi-Fi de cortesía."
@@ -27,6 +27,6 @@ items:
 - image: "/deluxe-grand-suites/3.jpg"
 - image: "/deluxe-grand-suites/4.jpg"
 - image: "/deluxe-grand-suites/5.jpg"
-- image: "/deluxe-grand-suites/6.jpg"
+ 
 ---
 Las 10 suites rediseñadas son ahora aún más cómodas y espaciosas, con doble vista a la bahía. Cada suite es única en su distribución, con colores distintivos, mobiliario y decoración mexicana auténtica. Los baños renovados son amplios, luminosos y algunos con vistas al mar.

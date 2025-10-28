@@ -18,6 +18,6 @@ Founded in 1992 above Zihuatanejo Bay, La Casa Que Canta is an intimate, handcra
 
 This adults-only boutique hotel offers 25 uniquely decorated suites, many with private pools and terraces overlooking La Ropa Beach. Its hanging gardens, winding stairways, and two distinctive pools—an infinity pool and a seawater pool carved into the rock—reflect its authentic charm.  
 
-Guests may also enjoy three exclusive Luxury Villas—El Murmullo, El Ensueño, and Villa de la Roca—for a more private experience. Dining at Mar & Cielo, perched above the sea, combines contemporary Mexican cuisine with subtle European influences.  
+Guests may also enjoy two exclusive Luxury Villas—El Murmullo and El Ensueño—for a more private experience. Dining at Mar & Cielo, perched above the sea, combines contemporary Mexican cuisine with subtle European influences.  
 
 Today, La Casa Que Canta remains a sanctuary of intimacy and authenticity, where every stay is a profound encounter with nature, art, and the spirit of Mexico.  

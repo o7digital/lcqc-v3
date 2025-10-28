@@ -14,7 +14,7 @@ amenities:
 - a: "Minibar de cortesía"
 - a: "Fruta fresca repuesta diariamente"
 - a: "Bebida de bienvenida"
-- a: "Colcha artística decorada con flores frescas"
+- a: "Tapiz cubrecama artístico decorada con flores frescas"
 - a: "Revistas y libros en la habitación"
 - a: "Acceso a internet"
 - a: "Wi-Fi de cortesía."
