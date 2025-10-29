@@ -19,23 +19,15 @@ const suggestedoffers = offers.filter(
       />
     </div>
   )}
-  <div
-    class="max-w-7xl mx-auto py-16 px-4 grid md:gap-8 items-center"
-  >
-    <div class="h-full">
-      <div class="">
-        <h1 class="text-5xl lg:text-7xl font-bold">
-          {frontmatter.title}
-        </h1>
-        <p class="mb-3">
-          Offer available from <b>{frontmatter.date}</b>
-        </p>
+  <div class="max-w-7xl mx-auto py-16 px-4 grid gap-8 md:grid-cols-2 items-start">
+    <!-- Left column: constrained promo content -->
+    <div class="h-full max-w-xl">
+      <div>
+        <h1 class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
+        <p class="mb-3">Offer available from <b>{frontmatter.date}</b></p>
       </div>
       <div class="flex gap-4 flex-wrap mb-8">
-        <a
-          href={frontmatter.book}
-          class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60"
-          >Book Now</a>
+        <a href={frontmatter.book} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Book Now</a>
       </div>
       <div class="text-sm md:text-base">
         <slot />
@@ -44,15 +36,17 @@ const suggestedoffers = offers.filter(
             Direct : 755 555 7000<br />
             USA : 1 888 523 5050<br />
             552 564 1838<br />
-            <a
-              class="underline"
-              href="mailto:sales.reservations@lacasaquecanta.com"
-              >sales.reservations@lacasaquecanta.com</a
-            >
+            <a class="underline" href="mailto:sales.reservations@lacasaquecanta.com">sales.reservations@lacasaquecanta.com</a>
           </p>
         </div>
       </div>
     </div>
+    <!-- Right column: side image only when hero is hidden -->
+    {frontmatter.hideHero && (
+      <div class="w-full">
+        <img class="w-full h-full object-cover" src={frontmatter.imagefront} alt="" />
+      </div>
+    )}
   </div>
 
   
