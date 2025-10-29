@@ -5,6 +5,7 @@ date: "June 01st until October 31st , 2024"
 imagefront: "/offers/lcqc-enchanting.jpg"
 layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=en-US&rooms=1&src=24C"
+hideHero: true
 
 ---
 <div class="grid gap-4">
@@ -31,7 +32,6 @@ book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&curr
 
 A deposit is required to guarantee the reservation. Rate per night in single or double occupancy subject to 19% tax and  10% service fee. Early departure fees may apply. The offer is subject to availability at time of booking. Restrictions may apply. It is not combinable with any other promotion.
 </div>
-
 
 
 

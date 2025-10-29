@@ -10,13 +10,15 @@ const suggestedoffers = offers.filter(
 <Layout title={`${frontmatter.title} Offers - La Casa Que Canta`}>
 
 <section class="">
-  <div>
-    <img
-      class="h-72 w-full object-cover"
-      src={frontmatter.imagefront}
-      alt=""
-    />
-  </div>
+  {(!frontmatter.hideHero) && (
+    <div>
+      <img
+        class="h-72 w-full object-cover"
+        src={frontmatter.imagefront}
+        alt=""
+      />
+    </div>
+  )}
   <div
     class="max-w-7xl mx-auto py-16 px-4 grid md:gap-8 items-center"
   >
