@@ -21,9 +21,12 @@ const offers = await Astro.glob('/src/pages/savings/*.md');
   </div>
   <div class="relative w-full py-8">
     {backgroundImage && (
-      <div class="absolute inset-0 opacity-20" style={`background-image:url(${backgroundImage}); background-size:cover; background-position:center; background-repeat:no-repeat;`}></div>
+      <>
+        <div class="absolute inset-0 -z-10" style={`background-image:url(${backgroundImage}); background-size:cover; background-position:center; background-repeat:no-repeat;`}></div>
+        <div class="absolute inset-0 z-0 bg-gradient-to-b from-black/25 via-black/10 to-transparent"></div>
+      </>
     )}
-    <div class="relative grid gap-6 grid-cols-1 px-4 md:grid-cols-3 max-w-7xl mx-auto">
+    <div class="relative z-10 grid gap-6 grid-cols-1 px-4 md:grid-cols-3 max-w-7xl mx-auto">
     {offers.slice(0, 6).map((post) => (
       <div class="group relative bg-cover bg-center aspect-square grid items-end text-white overflow-hidden">
         <div class="absolute z-10 w-full h-full top-0 bg-gradient-to-br from-transparent to-gray-900 opacity-60"></div>
