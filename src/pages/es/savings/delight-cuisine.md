@@ -5,6 +5,10 @@ description: "Mariscos frescos de la costa de Zihuatanejo.<br>&nbsp;"
 imagefront: "/offers/lcqc-delight.jpg"
 layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=es-ES&rooms=1&src=24C"
+hideHero: true
+bookLabel: "Reservar"
+overlayOffsetX: "-5.5cm"
+offsetX: "2cm"
 ---
 <div class="grid gap-4">
 <p class="">Mariscos frescos de la costa de Zihuatanejo. Recetas tradicionales mexicanas y platillos mediterráneos con vegetales e ingredientes orgánicos.
@@ -23,6 +27,14 @@ book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&curr
   <li>Wi-Fi gratis.</li>
   <li>Colcha artística decorada con flores frescas.</li>
 </ul>
+<hr class="border-white/30 my-4" />
+
 <b>Términos y Condiciones</b>
 Se requiere un depósito para garantizar la reservación. Tarifa por noche en ocupación sencilla o doble sujeta a 19% de impuestos y 10% de cargo por servicio. Pueden aplicar cargos por salida anticipada. La oferta está sujeta a disponibilidad al momento de reservar. Pueden aplicar restricciones. No es combinable con otras promociones.
+
+<hr class="border-white/30 my-4" />
+
+<b>Viaje:</b>
+
+Del 1 de junio al 31 de octubre de 2024.
 </div>
