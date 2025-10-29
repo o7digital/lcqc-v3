@@ -1,0 +1,10 @@
+---
+import Layout from "@layouts/Layout.astro";
+const target = "/es/savings/oferta-para-nacionales";
+---
+<Layout title="Oferta para nacionales">
+  <meta http-equiv="refresh" content={`0; url=${target}`} />
+  <script>window.location.href = "{target}";</script>
+  <p>Redirigiendo a {target}…</p>
+</Layout>
+
