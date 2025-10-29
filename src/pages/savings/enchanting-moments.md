@@ -28,11 +28,18 @@ hideHero: true
   <li>Artistic tapestry bedspread made with fresh flowers.</li>
 </ul>
 
+<hr class="border-white/30 my-4" />
+
 <b>Terms & Conditions</b>
 
 A deposit is required to guarantee the reservation. Rate per night in single or double occupancy subject to 19% tax and  10% service fee. Early departure fees may apply. The offer is subject to availability at time of booking. Restrictions may apply. It is not combinable with any other promotion.
-</div>
 
+<hr class="border-white/30 my-4" />
+
+<b>Travel:</b>
+
+From October 1st to December 22nd, 2025.
+</div>
 
 
 
