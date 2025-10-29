@@ -31,5 +31,5 @@ Se requiere un depósito para garantizar la reservación. Tarifa por noche en oc
 
 <b>Viaje:</b>
 
-De junio al 22 de diciembre de 2024.
+Del 1 de octubre al 22 de diciembre de 2025.
 </div>
