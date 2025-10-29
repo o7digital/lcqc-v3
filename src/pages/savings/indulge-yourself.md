@@ -6,8 +6,6 @@ imagefront: "/offers/lcqc-indulge.jpg"
 layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=en-US&rooms=1&src=24C"
 hideHero: true
-objectPosition: "80% 25%"
-offsetX: "5cm"
 
 ---
 <div class="grid gap-4">
@@ -44,6 +42,5 @@ A deposit is required to guarantee the reservation. Rate per night per Villa sub
 
 From October 1st to December 22nd, 2025.
 </div>
-
 
 
