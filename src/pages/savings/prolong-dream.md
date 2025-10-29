@@ -39,9 +39,8 @@ Available for stays of 3 nights or more. Full prepayment is required at time of 
 
 <b>Travel:</b>
 
-From June 01st until October 31st, 2024.
+From October 1st to December 22nd, 2025.
 </div>
-
 
 
 
