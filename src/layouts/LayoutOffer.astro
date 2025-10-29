@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro"; // 🔹 Ruta relativa corregida
 const { frontmatter } = Astro.props;
+const bookLabel = frontmatter.bookLabel ?? 'Book Now';
 const offers = await Astro.glob("../pages/savings/*.md"); // 🔹 Ajuste ruta relativa a savings
 const suggestedoffers = offers.filter(
   (room) => room.frontmatter.title !== frontmatter.title
@@ -45,7 +46,7 @@ const suggestedoffers = offers.filter(
               </p>
             </div>
             <div class="mt-6 flex justify-end">
-              <a href={frontmatter.book} class="text-sm bg-[#CE33A1] hover:bg-[#d647ad] font-semibold uppercase py-3 px-6 text-white">Book Now</a>
+              <a href={frontmatter.book} class="text-sm bg-[#CE33A1] hover:bg-[#d647ad] font-semibold uppercase py-3 px-6 text-white">{bookLabel}</a>
             </div>
           </div>
           </div>
@@ -61,7 +62,7 @@ const suggestedoffers = offers.filter(
           <p class="mb-3">Offer available from <b>{frontmatter.date}</b></p>
         </div>
         <div class="flex gap-4 flex-wrap mb-8">
-          <a href={frontmatter.book} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Book Now</a>
+          <a href={frontmatter.book} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{bookLabel}</a>
         </div>
         <div class="text-sm md:text-base">
           <slot />
