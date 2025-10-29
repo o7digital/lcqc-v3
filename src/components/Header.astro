@@ -9,6 +9,16 @@ if (isES) {
     // On ajoute /es devant l'URL
     switchLangHref = '/es' + (Astro.url.pathname === '/' ? '' : Astro.url.pathname);
 }
+// Overrides for pages with different EN/ES slugs
+const langSwap = new Map([
+  ['/es/savings/oferta-para-nacionales', '/savings/offer-for-nationals'],
+  ['/savings/offer-for-nationals', '/es/savings/oferta-para-nacionales'],
+  ['/es/aprove/savings/oferta-para-nacionales', '/aprove/savings/offer-for-nationals'],
+  ['/aprove/savings/offer-for-nationals', '/es/aprove/savings/oferta-para-nacionales'],
+]);
+if (langSwap.has(Astro.url.pathname)) {
+  switchLangHref = langSwap.get(Astro.url.pathname) || switchLangHref;
+}
 const path = Astro.url.pathname;
 // Force dark (black) burger for Offers: grids and all detail pages (EN/ES, incl. /aprove)
 const isOffersSection = (
