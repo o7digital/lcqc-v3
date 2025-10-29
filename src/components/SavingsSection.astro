@@ -8,7 +8,9 @@ const {
   backgroundImage = undefined,
 } = Astro.props;
 
-const offers = await Astro.glob('/src/pages/savings/*.md');
+// Load EN or ES offers based on current path
+const isES = Astro.url.pathname.startsWith('/es');
+const offers = await Astro.glob(isES ? '/src/pages/es/savings/*.md' : '/src/pages/savings/*.md');
 ---
 <section id={sectionId} class="py-32">
   <div class="grid max-w-7xl mx-auto">
