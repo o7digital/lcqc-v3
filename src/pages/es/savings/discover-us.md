@@ -7,6 +7,8 @@ date: "Junio a 22 de diciembre de 2024"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=es-ES&rooms=1&src=24C"
 hideHero: true
 bookLabel: "Reservar"
+overlayOffsetX: "-5.5cm"
+offsetX: "2cm"
 ---
 <div class="grid gap-4">
 <p class="mt-4"> Sigue disfrutando de La Casa Que Canta con nuestra tarifa Prolonga el Sueño. Recibe una noche de cortesía en nuestras Suites frente al mar. El desglose de precios diario mostrará cada tercera noche como gratuita.</p>

@@ -6,6 +6,8 @@ layout: "@layouts/LayoutOffer.astro"
 date: "June to December 22, 2024"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=en-US&rooms=1&src=24C"
 hideHero: true
+overlayOffsetX: "-5.5cm"
+offsetX: "2cm"
 
 ---
 <div class="grid gap-4">
@@ -38,7 +40,6 @@ A deposit is required to guarantee the reservation. Rate per night in single or 
 
 From October 1st to December 22nd, 2025.
 </div>
-
 
 
 
