@@ -10,19 +10,19 @@ if (isES) {
     switchLangHref = '/es' + (Astro.url.pathname === '/' ? '' : Astro.url.pathname);
 }
 const path = Astro.url.pathname;
-// Force dark (black) burger for specific white-background sections
-const isOffersGrid = (
-  path === '/savings' || path === '/savings/' ||
-  path === '/es/savings' || path === '/es/savings/' ||
-  path === '/aprove/savings' || path === '/aprove/savings/' ||
-  path === '/es/aprove/savings' || path === '/es/aprove/savings/'
+// Force dark (black) burger for Offers: grids and all detail pages (EN/ES, incl. /aprove)
+const isOffersSection = (
+  path.startsWith('/savings') ||
+  path.startsWith('/es/savings') ||
+  path.startsWith('/aprove/savings') ||
+  path.startsWith('/es/aprove/savings')
 );
 // Enforce dark (black) header on white-background pages (including Offers grids and Privacy Policy)
 const onWhiteHeader =
   path.includes('/luxury-villas') ||
   path.includes('/activities/spa') ||
   path.includes('/privacy-policy') ||
-  isOffersGrid;
+  isOffersSection;
 const menu = isES
     ? [
         { label: 'Inicio', href: '/es/' },
