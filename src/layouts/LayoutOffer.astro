@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro"; // 🔹 Ruta relativa corregida
 const { frontmatter } = Astro.props;
+const objectPosition = frontmatter.objectPosition || 'center 25%';
 const bookLabel = frontmatter.bookLabel ?? 'Book Now';
 const offers = await Astro.glob("../pages/savings/*.md"); // 🔹 Ajuste ruta relativa a savings
 const suggestedoffers = offers.filter(
@@ -31,7 +32,7 @@ const suggestedoffers = offers.filter(
 
       <!-- Full-bleed background image starts BELOW the header -->
       <div class="relative w-full min-h-[90vh] md:min-h-screen">
-        <img class="absolute inset-0 w-full h-full object-cover object-[center_25%]" src={frontmatter.imagefront} alt="" />
+        <img class="absolute inset-0 w-full h-full object-cover" style={`object-position: ${objectPosition};`} src={frontmatter.imagefront} alt="" />
         <div class="relative z-10 max-w-7xl mx-auto h-full px-4 py-12 md:py-16 flex items-start md:items-center">
         <div class="max-w-xl">
           <div class="relative bg-gradient-to-b from-gray-900/40 to-gray-900/70 backdrop-blur-sm p-6 md:p-8 pb-[2cm] text-sm md:text-base text-white">
