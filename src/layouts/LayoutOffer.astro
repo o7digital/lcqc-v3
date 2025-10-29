@@ -19,7 +19,7 @@ const suggestedoffers = offers.filter(
       />
     </div>
   )}
-  <div class="max-w-7xl mx-auto py-16 px-4 grid gap-8 md:grid-cols-2 items-start">
+  <div class="max-w-7xl mx-auto py-16 px-4 grid gap-8 md:grid-cols-2 items-stretch md:min-h-[80vh]">
     <!-- Left column: constrained promo content -->
     <div class="h-full max-w-xl">
       <div>
@@ -43,8 +43,8 @@ const suggestedoffers = offers.filter(
     </div>
     <!-- Right column: side image only when hero is hidden -->
     {frontmatter.hideHero && (
-      <div class="w-full">
-        <img class="w-full h-full object-cover" src={frontmatter.imagefront} alt="" />
+      <div class="w-full h-full">
+        <img class="w-full h-full object-cover object-[center_25%]" src={frontmatter.imagefront} alt="" />
       </div>
     )}
   </div>
