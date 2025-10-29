@@ -5,6 +5,9 @@ date: "June 01st until October 31st , 2024"
 imagefront: "/offers/lcqc_prolongue.jpg"
 layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=en-US&rooms=1&src=24C"
+hideHero: true
+overlayOffsetX: "-5.5cm"
+offsetX: "2cm"
 
 ---
 <div class="grid gap-4">
@@ -26,11 +29,18 @@ book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&curr
   <li>Artistic tapestry bedspread made with fresh flowers.</li>
 </ul>
 
+<hr class="border-white/30 my-4" />
+
 <b>Terms & Conditions</b>
 
 Available for stays of 3 nights or more. Full prepayment is required at time of booking and it is not refundable in case of cancellation or modification. The rate shown is the average nightly rate after the free night is applied. Free night must be applied to original stay. Rate per night in single or double occupancy subject to 19% tax and 10% service fee. Early departure fees may apply. The offer is subject to availability at time of booking. Restrictions may apply. It is not combinable with any other promotion.
-</div>
 
+<hr class="border-white/30 my-4" />
+
+<b>Travel:</b>
+
+From June 01st until October 31st, 2024.
+</div>
 
 
 
