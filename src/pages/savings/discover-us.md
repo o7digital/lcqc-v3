@@ -36,9 +36,8 @@ A deposit is required to guarantee the reservation. Rate per night in single or 
 
 <b>Travel:</b>
 
-From June to December 22, 2024.
+From October 1st to December 22nd, 2025.
 </div>
-
 
 
 
