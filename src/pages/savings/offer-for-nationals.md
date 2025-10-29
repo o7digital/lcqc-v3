@@ -5,7 +5,7 @@ imagefront: "/offers/lcqc-oferta-nacionales.jpg"
 layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=en-US&rooms=1&src=24C"
 hideHero: true
-overlayOffsetX: "-5.5cm"
+overlayOffsetX: "3cm"
 offsetX: "2cm"
 
 ---
@@ -36,4 +36,3 @@ offsetX: "2cm"
 An official ID proving Mexican nationality is required at check‑in to validate this promotion. A deposit is required to guarantee the reservation. Rate per night in single or double occupancy is subject to 20% tax and 10% service fee. Early departure fees may apply. The offer is subject to availability at time of booking. Restrictions may apply. It is not combinable with any other promotion.
 
 </div>
-

@@ -7,7 +7,7 @@ layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=es-ES&rooms=1&src=24C"
 hideHero: true
 bookLabel: "Reservar"
-overlayOffsetX: "-5.5cm"
+overlayOffsetX: "3cm"
 offsetX: "2cm"
 
 ---
@@ -43,4 +43,3 @@ Válida para estancias de 3 noches o más. Se requiere prepago total al reservar
 Del 1 de octubre al 22 de diciembre de 2025.
 
 </div>
-
