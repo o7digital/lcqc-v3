@@ -13,6 +13,7 @@ offsetX: "2cm"
 <div class="grid gap-4">
 
 <p>Disfrute de nuestra oferta única en un ambiente de lujo y tranquilidad.</p>
+<p>1 de Octubre a 31 de Octubre 2025</p>
 
 <i>No se requiere una estancia mínima.</i>
 
