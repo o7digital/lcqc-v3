@@ -12,11 +12,11 @@ offsetX: "2cm"
 ---
 <div class="grid gap-4">
 
-<p class=""> Continue enjoying La Casa Que Canta with our Prolong the Dream rate. Receive a complimentary night in our Oceanfront Suites. Your daily price breakdown will show every third night as free.</p>
+<p class="">Private Villa with 4 Oceanfront Suites, King size bed and private pools. Sleeps up to 8 people.</p>
 
-<i>3 nights minimum required</i>
+<i>No minimum stay required.</i>
 
-<b>Incluye</b>:
+<b>Includes</b>:
 <ul class="list-disc ml-4">
   <li> Four spacious suites, all with pool and terrace overlooking the ocean.</li>
   <li>Private Chef and Butler service from 7 am to 10 pm.
@@ -25,7 +25,7 @@ offsetX: "2cm"
   <li>Complimentary minibar.</li>
   <li>Fresh fruit daily.</li>
   <li>In-Suite VIP welcome amenity.</li>
-  <li>Cleaning service twice daily.</li>
+  <li>Cleaning service once a day.</li>
   <li>Early Check-In (subject to availability)</li>
   <li>Late Check-Out (subject to availability)</li>
   <li>Free Wi-Fi.</li>
