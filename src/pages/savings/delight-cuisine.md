@@ -1,6 +1,6 @@
 ---
 title: "Delight with 'our Cuisine'"
-date: "June 01st until October 31st , 2024"
+date: "November 01st until November 30th, 2025"
 description: "Fresh seafood from Zihuatanejo´s coast.<br>&nbsp"
 imagefront: "/offers/lcqc-delight.jpg"
 layout: "@layouts/LayoutOffer.astro"
@@ -42,9 +42,8 @@ A deposit is required to guarantee the reservation. Rate per night in single or 
 
 <b>Travel:</b>
 
-From June 1st until October 31st, 2024.
+From November 1st until November 30th, 2025.
 </div>
-
 
 
 

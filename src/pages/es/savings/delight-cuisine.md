@@ -1,6 +1,6 @@
 ---
 title: "Deléitate con 'nuestra Cocina'"
-date: "01 de junio al 31 de octubre de 2024"
+date: "01 de noviembre al 30 de noviembre de 2025"
 description: "Mariscos frescos de la costa de Zihuatanejo.<br>&nbsp;"
 imagefront: "/offers/lcqc-delight.jpg"
 layout: "@layouts/LayoutOffer.astro"
@@ -36,5 +36,5 @@ Se requiere un depósito para garantizar la reservación. Tarifa por noche en oc
 
 <b>Viaje:</b>
 
-Del 1 de junio al 31 de octubre de 2024.
+Del 1 de noviembre al 30 de noviembre de 2025.
 </div>
