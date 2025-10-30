@@ -34,7 +34,7 @@ offsetX: "2cm"
 
 <b>Términos y Condiciones</b>
 
-Válida para estancias de 3 noches o más. Se requiere prepago total al reservar y no es reembolsable en caso de cancelación o modificación. La tarifa mostrada es el promedio por noche después de aplicar la noche gratis. La noche de cortesía debe aplicarse a la estancia original. Tarifa por noche en ocupación sencilla o doble sujeta a 19% de impuestos y 10% de cargo por servicio. Pueden aplicar cargos por salida anticipada. La oferta está sujeta a disponibilidad al momento de reservar. Pueden aplicar restricciones. No es combinable con otras promociones.
+Válida para estancias de 3 noches o más. Se requiere prepago total al reservar y no es reembolsable en caso de cancelación o modificación. La tarifa mostrada es el promedio por noche después de aplicar la noche gratis. La noche de cortesía debe aplicarse a la estancia original. Tarifa por noche en ocupación sencilla o doble sujeta a 20% de impuestos y 10% de cargo por servicio. Pueden aplicar cargos por salida anticipada. La oferta está sujeta a disponibilidad al momento de reservar. Pueden aplicar restricciones. No es combinable con otras promociones.
 
 <hr class="border-white/30 my-4" />
 

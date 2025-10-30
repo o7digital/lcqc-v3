@@ -35,7 +35,7 @@ bookLabel: "Reservar"
 
 <b>Términos y Condiciones</b>
 
-Se requiere un depósito para garantizar la reservación. Tarifa por noche en ocupación sencilla o doble sujeta a 19% de impuestos y 10% de cargo por servicio. Pueden aplicar cargos por salida anticipada. La oferta está sujeta a disponibilidad al momento de reservar. Pueden aplicar restricciones. No es combinable con ninguna otra promoción.
+Se requiere un depósito para garantizar la reservación. Tarifa por noche en ocupación sencilla o doble sujeta a 20% de impuestos y 10% de cargo por servicio. Pueden aplicar cargos por salida anticipada. La oferta está sujeta a disponibilidad al momento de reservar. Pueden aplicar restricciones. No es combinable con ninguna otra promoción.
 
 <hr class="border-white/30 my-4" />
 

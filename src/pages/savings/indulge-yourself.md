@@ -36,7 +36,7 @@ offsetX: "2cm"
 
 <b>Terms & Conditions</b>
 
-A deposit is required to guarantee the reservation. Rate per night per Villa subject to 19% tax and 10% service fee. Early departure fees may apply. The offer is subject to availability at time of booking. Restrictions may apply. It is not combinable with any other promotion.
+A deposit is required to guarantee the reservation. Rate per night per Villa subject to 20% tax and 10% service fee. Early departure fees may apply. The offer is subject to availability at time of booking. Restrictions may apply. It is not combinable with any other promotion.
 
 <hr class="border-white/30 my-4" />
 

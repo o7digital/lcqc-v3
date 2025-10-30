@@ -33,7 +33,7 @@ offsetX: "2cm"
 
 <b>Terms & Conditions</b>
 
-Available for stays of 3 nights or more. Full prepayment is required at time of booking and it is not refundable in case of cancellation or modification. The rate shown is the average nightly rate after the free night is applied. Free night must be applied to original stay. Rate per night in single or double occupancy subject to 19% tax and 10% service fee. Early departure fees may apply. The offer is subject to availability at time of booking. Restrictions may apply. It is not combinable with any other promotion.
+Available for stays of 3 nights or more. Full prepayment is required at time of booking and it is not refundable in case of cancellation or modification. The rate shown is the average nightly rate after the free night is applied. Free night must be applied to original stay. Rate per night in single or double occupancy subject to 20% tax and 10% service fee. Early departure fees may apply. The offer is subject to availability at time of booking. Restrictions may apply. It is not combinable with any other promotion.
 
 <hr class="border-white/30 my-4" />
 
@@ -41,7 +41,6 @@ Available for stays of 3 nights or more. Full prepayment is required at time of 
 
 From October 1st to December 22nd, 2025.
 </div>
-
 
 
 
