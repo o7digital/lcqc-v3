@@ -40,13 +40,23 @@ const suggestedoffers = offers.filter(
           <div class="relative bg-gradient-to-b from-gray-900/40 to-gray-900/70 backdrop-blur-sm p-6 md:p-8 pb-[2cm] text-sm md:text-base text-white" style={`transform: translateX(${overlayOffsetX});`}>
             <slot />
             <hr class="border-white/30 my-4" />
-            <div class="mt-4">
-              <p class="text-[#CE33A1]">
-                Direct : 755 555 7000<br />
-                USA : 1 888 523 5050<br />
-                552 564 1838<br />
+            <div class="mt-4 text-[#CE33A1] space-y-2">
+              <div class="flex items-center gap-2">
+                <span aria-hidden="true">📞</span>
+                <a href="tel:+527555557000" class="hover:underline">Direct : 755 555 7000</a>
+              </div>
+              <div class="flex items-center gap-2">
+                <span aria-hidden="true">📞</span>
+                <a href="tel:+18885235050" class="hover:underline">USA : 1 888 523 5050</a>
+              </div>
+              <div class="flex items-center gap-2">
+                <span aria-hidden="true">📞</span>
+                <a href="tel:+525525641838" class="hover:underline">552 564 1838</a>
+              </div>
+              <div class="flex items-center gap-2">
+                <span aria-hidden="true">✉️</span>
                 <a class="underline text-[#CE33A1]" href="mailto:sales.reservations@lacasaquecanta.com">sales.reservations@lacasaquecanta.com</a>
-              </p>
+              </div>
             </div>
             <div class="mt-6 flex justify-end">
               <a href={frontmatter.book} class="text-sm bg-[#CE33A1] hover:bg-[#d647ad] font-semibold uppercase py-3 px-6 text-white">{bookLabel}</a>
@@ -69,13 +79,23 @@ const suggestedoffers = offers.filter(
         </div>
         <div class="text-sm md:text-base">
           <slot />
-          <div class="mt-4">
-            <p>
-              Direct : 755 555 7000<br />
-              USA : 1 888 523 5050<br />
-              552 564 1838<br />
+          <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-2">
+              <span aria-hidden="true">📞</span>
+              <a href="tel:+527555557000" class="hover:underline">Direct : 755 555 7000</a>
+            </div>
+            <div class="flex items-center gap-2">
+              <span aria-hidden="true">📞</span>
+              <a href="tel:+18885235050" class="hover:underline">USA : 1 888 523 5050</a>
+            </div>
+            <div class="flex items-center gap-2">
+              <span aria-hidden="true">📞</span>
+              <a href="tel:+525525641838" class="hover:underline">552 564 1838</a>
+            </div>
+            <div class="flex items-center gap-2">
+              <span aria-hidden="true">✉️</span>
               <a class="underline" href="mailto:sales.reservations@lacasaquecanta.com">sales.reservations@lacasaquecanta.com</a>
-            </p>
+            </div>
           </div>
         </div>
       </div>
