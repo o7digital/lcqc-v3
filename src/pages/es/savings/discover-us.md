@@ -22,7 +22,7 @@ offsetX: "2cm"
   <li>Early Check-In (sujeto a disponibilidad)</li>
   <li>Late Check-Out (sujeto a disponibilidad)</li>
   <li>Wi-Fi gratis.</li>
-  <li>Colcha artística decorada con flores frescas.</li>
+  <li>Tapiz cubrecama artístico con flores frescas.</li>
 </ul>
 <hr class="border-white/30 my-4" />
 
