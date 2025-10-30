@@ -11,8 +11,8 @@ overlayOffsetX: "3cm"
 offsetX: "2cm"
 ---
 <div class="grid gap-4">
-<p class="mt-4"> Sigue disfrutando de La Casa Que Canta con nuestra tarifa Prolonga el Sueño. Recibe una noche de cortesía en nuestras Suites frente al mar. El desglose de precios diario mostrará cada tercera noche como gratuita.</p>
-<i>Estancia mínima de 3 noches requerida</i>
+<p class="mt-4">Ahorros importantes en todas nuestras Suites frente al mar.</p>
+<i>No se requiere estancia mínima.</i>
 <b>Incluye</b>:
 <ul class="list-disc ml-4">
   <li>Minibar de cortesía.</li>

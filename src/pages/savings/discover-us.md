@@ -12,11 +12,11 @@ offsetX: "2cm"
 ---
 <div class="grid gap-4">
 
-<p class="mt-4"> Continue enjoying La Casa Que Canta with our Prolong the Dream rate. Receive a complimentary night in our Oceanfront Suites. Your daily price breakdown will show every third night as free.</p>
+<p class="mt-4">Important savings on all of our Oceanfront Suites.</p>
 
-<i>3 nights minimum required</i>
+<i>No minimum stay required.</i>
 
-<b>Incluye</b>:
+<b>Includes</b>:
 <ul class="list-disc ml-4">
   <li>Complimentary minibar.</li>
   <li>Fresh fruit daily.</li>
@@ -40,6 +40,5 @@ A deposit is required to guarantee the reservation. Rate per night in single or 
 
 From October 1st to December 22nd, 2025.
 </div>
-
 
 
