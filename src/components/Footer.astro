@@ -11,9 +11,9 @@ const contactHref = isES ? '/es/contact' : '/contact';
   <div class="flex flex-col md:flex-row justify-around gap-4 pt-8">
     <div class="flex flex-col justify-between">
       <div class="flex flex-col md:flex-row justify-between gap-6 md:items-start">
-        <!-- Logo aligned left, same line as ENLACES on desktop -->
-        <div class="mb-6 md:mb-0 shrink-0 self-start md:translate-x-[-3cm]">
-          <img src="/images/logo/logo.jpg" alt="La Casa Que Canta" class="w-40 md:w-48 lg:w-56" />
+        <!-- Logo responsive; on desktop shifted ~2cm to the right of Links -->
+        <div class="mb-6 md:mb-0 shrink-0 self-center md:self-start mx-auto md:mx-0 footer-logo-shift">
+          <img src="/images/logo/logo.jpg" alt="La Casa Que Canta" class="w-40 md:w-48 lg:w-56 xl:w-64" />
         </div>
         <div>
           <h3 class="uppercase mb-6 text-4xl font-bold">{isES ? 'Enlaces' : 'Links'}</h3>
@@ -81,6 +81,20 @@ const contactHref = isES ? '/es/contact' : '/contact';
       : 'Created by O7 DIGITAL'}
   </div>
 </section>
+
+<style>
+  /* Responsive offset for footer logo: align nicely next to Enlaces/Links */
+  .footer-logo-shift { transform: translateX(0); }
+  @media (min-width: 768px) { /* md */
+    .footer-logo-shift { transform: translateX(1.5cm); }
+  }
+  @media (min-width: 1024px) { /* lg */
+    .footer-logo-shift { transform: translateX(2cm); }
+  }
+  @media (min-width: 1280px) { /* xl - keep consistent */
+    .footer-logo-shift { transform: translateX(2cm); }
+  }
+</style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
