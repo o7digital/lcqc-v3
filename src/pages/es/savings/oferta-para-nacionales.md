@@ -33,8 +33,12 @@ offsetX: "2cm"
 
 <b>Términos y Condiciones</b>
 
-Se requiere una identificación oficial al momento del registro que lo acredite como Mexicano para validar esta promoción.<br />
-1 de Octubre a 31 de Octubre 2025<br />
-Se requiere un depósito para garantizar la reserva. Tarifa por noche en ocupación sencilla o doble sujeta al 20% de impuestos y 10% de cargo por servicio. Se pueden aplicar cargos por salida anticipada. La oferta está sujeta a disponibilidad en el momento de la reserva. Aplica restricciones. No es combinable con ninguna otra promoción.
+Se requiere una identificación oficial al momento del registro que lo acredite como Mexicano para validar esta promoción. Se requiere un depósito para garantizar la reserva. Tarifa por noche en ocupación sencilla o doble sujeta al 20% de impuestos y 10% de cargo por servicio. Se pueden aplicar cargos por salida anticipada. La oferta está sujeta a disponibilidad en el momento de la reserva. Aplica restricciones. No es combinable con ninguna otra promoción.
+
+<hr class="border-white/30 my-4" />
+
+<b>Viaje:</b>
+
+1 de Octubre a 31 de Octubre 2025
 
 </div>
