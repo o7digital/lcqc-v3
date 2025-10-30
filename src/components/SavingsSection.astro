@@ -7,6 +7,7 @@ const {
   sectionId = "savings-section",
   backgroundImage = undefined,
   offsetX = '0',
+  includeSlugs = undefined,
 } = Astro.props;
 
 // Load EN or ES offers based on current path (Astro.glob must be static)
@@ -14,6 +15,14 @@ const isES = Astro.url.pathname.startsWith('/es');
 const offersES = await Astro.glob('/src/pages/es/savings/*.md');
 const offersEN = await Astro.glob('/src/pages/savings/*.md');
 const offers = isES ? offersES : offersEN;
+// Optional filtering by slug (filename). If provided, only include matching pages.
+const selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
+  ? offers.filter((post) => {
+      const segs = (post.url || '').split('/').filter(Boolean);
+      const last = segs[segs.length - 1] || '';
+      return includeSlugs.includes(last);
+    })
+  : offers;
 ---
 <section id={sectionId} class="py-32">
   <div class="grid max-w-7xl mx-auto">
@@ -36,7 +45,7 @@ const offers = isES ? offersES : offersEN;
       </>
     )}
     <div class="relative z-10 grid gap-6 grid-cols-1 px-4 md:grid-cols-3 max-w-7xl mx-auto" style={`transform: translateX(${offsetX});`}>
-    {offers.slice(0, 6).map((post) => (
+    {(includeSlugs ? selectedOffers : offers.slice(0, 6)).map((post) => (
       <div class="group relative bg-cover bg-center aspect-square grid items-end text-white overflow-hidden">
         <div class="absolute z-10 w-full h-full top-0 bg-gradient-to-br from-transparent to-gray-900 opacity-60"></div>
         <img class="absolute z-0 w-full h-full top-0 object-cover group-hover:scale-[1.02] transition duration-300 ease-in-out" src={post.frontmatter.imagefront} alt="" />
