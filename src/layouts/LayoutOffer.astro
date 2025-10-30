@@ -9,6 +9,9 @@ const offers = await Astro.glob("../pages/savings/*.md"); // 🔹 Ajuste ruta re
 const suggestedoffers = offers.filter(
   (room) => room.frontmatter.title !== frontmatter.title
 );
+const isES = Astro.url.pathname.startsWith('/es');
+const moreOffersLabel = isES ? 'Ver más Ofertas' : 'View more Offers';
+const moreOffersHref = isES ? '/es/aprove/savings' : '/aprove/savings';
 ---
 
 <Layout title={`${frontmatter.title} Offers - La Casa Que Canta`}>
@@ -58,7 +61,8 @@ const suggestedoffers = offers.filter(
                 <a class="underline text-[#CE33A1]" href="mailto:sales.reservations@lacasaquecanta.com">sales.reservations@lacasaquecanta.com</a>
               </div>
             </div>
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 flex items-center justify-between gap-4">
+              <a href={moreOffersHref} class="text-sm underline text-white hover:opacity-90">{moreOffersLabel}</a>
               <a href={frontmatter.book} class="text-sm bg-[#CE33A1] hover:bg-[#d647ad] font-semibold uppercase py-3 px-6 text-white">{bookLabel}</a>
             </div>
           </div>
@@ -74,7 +78,8 @@ const suggestedoffers = offers.filter(
           <h1 class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
           <p class="mb-3">Offer available from <b>{frontmatter.date}</b></p>
         </div>
-        <div class="flex gap-4 flex-wrap mb-8">
+        <div class="flex items-center justify-between gap-4 flex-wrap mb-8">
+          <a href={moreOffersHref} class="text-sm underline hover:opacity-80">{moreOffersLabel}</a>
           <a href={frontmatter.book} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{bookLabel}</a>
         </div>
         <div class="text-sm md:text-base">
