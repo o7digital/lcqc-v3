@@ -17,7 +17,7 @@ offsetX: "2cm"
 
 <i>No minimum stay required.</i>
 
-<b>Incluye</b>:
+<b>Includes</b>:
 <ul class="list-disc ml-4">
   <li>Daily “Encanto Mexicano” breakfast for two guests</li>
   <li>Complimentary minibar.</li>
@@ -42,5 +42,4 @@ A deposit is required to guarantee the reservation. Rate per night in single or 
 
 From October 1st to December 22nd, 2025.
 </div>
-
 
