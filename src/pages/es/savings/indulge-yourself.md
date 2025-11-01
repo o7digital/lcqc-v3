@@ -36,5 +36,5 @@ Se requiere un depósito para garantizar la reservación. Tarifa por noche por V
 
 <b>Viaje:</b>
 
-Del 1 de octubre al 22 de diciembre de 2025.
+Del 1 de noviembre al 22 de diciembre de 2025.
 </div>
