@@ -8,6 +8,7 @@ guest: "2 huéspedes"
 layout: "@layouts/LayoutAccomo.astro"
 roomfeatures:
 - rf: "Terraza con sala, mesa, sillas y tumbona"
+- rf: "Alberca pequeña privada"
 - rf: "Escritorio de trabajo"
 - rf: "Vestidor tipo walk-in"
 - rf: "Caja de seguridad"

@@ -8,6 +8,7 @@ guest: "2 Guests"
 layout: "@layouts/LayoutAccomo.astro"
 roomfeatures:
 - rf: "Living room terrace with table, chairs and sun lounger"
+- rf: "Plunge pool"
 - rf: "Work desk"
 - rf: "Walk-in dressing room"
 - rf: "Safety deposit box"

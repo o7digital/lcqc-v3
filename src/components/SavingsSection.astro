@@ -5,11 +5,29 @@ const {
   moreLabel = "More details",
   bookLabel = "Book Now",
   sectionId = "savings-section",
+  backgroundImage = undefined,
+  backgroundOpacity = 0.25,
+  backgroundOffsetX = '0',
+  backgroundOffsetY = '0',
+  offsetX = '0',
+  includeSlugs = undefined,
 } = Astro.props;
 
-const offers = await Astro.glob('/src/pages/savings/*.md');
+// Load EN or ES offers based on current path (Astro.glob must be static)
+const isES = Astro.url.pathname.startsWith('/es');
+const offersES = await Astro.glob('/src/pages/es/savings/*.md');
+const offersEN = await Astro.glob('/src/pages/savings/*.md');
+const offers = isES ? offersES : offersEN;
+// Optional filtering by slug (filename). If provided, only include matching pages.
+const selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
+  ? offers.filter((post) => {
+      const segs = (post.url || '').split('/').filter(Boolean);
+      const last = segs[segs.length - 1] || '';
+      return includeSlugs.includes(last);
+    })
+  : offers;
 ---
-<section id={sectionId} class="py-32">
+<section id={sectionId} class="pt-20 md:pt-32 pb-0">
   <div class="grid max-w-7xl mx-auto">
     <div class="max-w-4xl px-4 mx-auto mb-10 text-center">
       <h1 class="text-3xl md:text-5xl lg:text-7xl mb-6 font-bold">{title}</h1>
@@ -17,23 +35,37 @@ const offers = await Astro.glob('/src/pages/savings/*.md');
         <p>{description}</p>
       )}
     </div>
-    <div class="grid gap-6 grid-cols-1 px-4 md:grid-cols-3">
-      {offers.slice(0, 6).map((post) => (
-        <div class="group relative bg-cover bg-center aspect-square grid items-end text-white overflow-hidden">
-          <div class="absolute z-10 w-full h-full top-0 bg-gradient-to-br from-transparent to-gray-900 opacity-60"></div>
-          <img class="absolute z-0 w-full h-full top-0 object-cover group-hover:scale-[1.02] transition duration-300 ease-in-out" src={post.frontmatter.imagefront} alt="" />
-          <h3 class="text-3xl md:text-5xl z-20 relative text-center">{post.frontmatter.title}</h3>
-          <div>
-            <p class="text-white relative z-10 p-4 text-center" set:html={post.frontmatter.description}></p>
-            <div class="flex flex-wrap p-4 gap-4 justify-center md:justify-between">
-              <a href={post.url} class="relative text-sm z-10 bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{moreLabel}</a>
-              <a href={post.url} class="relative text-sm z-10 bg-white/90 font-semibold uppercase py-3 px-6 text-black hover:bg-white/60">{bookLabel}</a>
-            </div>
+  </div>
+  <!-- Background block extends down to just before footer -->
+  <div class="relative w-full pt-8 pb-20 md:pb-32">
+    {backgroundImage && (
+      <>
+        <div
+          class="absolute inset-0 -z-10"
+          style={`background-image:url(${backgroundImage}); background-size:100% auto; background-position-x: calc(50% + ${backgroundOffsetX}); background-position-y: calc(100% - ${backgroundOffsetY}); background-repeat:no-repeat;`}
+        ></div>
+        <div
+          class="absolute inset-0 z-0"
+          style={`background-color: rgba(0,0,0, ${backgroundOpacity});`}
+        ></div>
+      </>
+    )}
+    <div class="relative z-10 grid gap-6 grid-cols-1 px-4 md:grid-cols-3 max-w-7xl mx-auto" style={`transform: translateX(${offsetX});`}>
+    {(includeSlugs ? selectedOffers : offers.slice(0, 6)).map((post) => (
+      <div class="group relative bg-cover bg-center aspect-square grid items-end text-white overflow-hidden">
+        <div class="absolute z-10 w-full h-full top-0 bg-gradient-to-br from-transparent to-gray-900 opacity-60"></div>
+        <img class="absolute z-0 w-full h-full top-0 object-cover group-hover:scale-[1.02] transition duration-300 ease-in-out" src={post.frontmatter.imagefront} alt="" />
+        <h3 class="text-3xl md:text-5xl z-20 relative text-center">{post.frontmatter.title}</h3>
+        <div>
+          <p class="text-white relative z-10 p-4 text-center" set:html={post.frontmatter.description}></p>
+          <div class="flex flex-wrap p-4 gap-4 justify-center md:justify-between">
+            <a href={post.url} class="relative text-sm z-10 bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{moreLabel}</a>
+            <a href={post.url} class="relative text-sm z-10 bg-white/90 font-semibold uppercase py-3 px-6 text-black hover:bg-white/60">{bookLabel}</a>
           </div>
         </div>
-      ))}
+      </div>
+    ))}
     </div>
   </div>
   
 </section>
-

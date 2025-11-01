@@ -11,9 +11,9 @@ const contactHref = isES ? '/es/contact' : '/contact';
   <div class="flex flex-col md:flex-row justify-around gap-4 pt-8">
     <div class="flex flex-col justify-between">
       <div class="flex flex-col md:flex-row justify-between gap-6 md:items-start">
-        <!-- Logo aligned left, same line as ENLACES on desktop -->
-        <div class="mb-6 md:mb-0 shrink-0 self-start md:translate-x-[-3cm]">
-          <img src="/images/logo/logo.jpg" alt="La Casa Que Canta" class="w-40 md:w-48 lg:w-56" />
+        <!-- Logo responsive; on desktop shifted ~2cm to the right of Links -->
+        <div class="mb-6 md:mb-0 shrink-0 self-center md:self-start mx-auto md:mx-0 md:ml-[1cm]">
+          <img src="/images/logo/logo.jpg" alt="La Casa Que Canta" class="w-40 md:w-48 lg:w-56 xl:w-64" />
         </div>
         <div>
           <h3 class="uppercase mb-6 text-4xl font-bold">{isES ? 'Enlaces' : 'Links'}</h3>
@@ -81,6 +81,10 @@ const contactHref = isES ? '/es/contact' : '/contact';
       : 'Created by O7 DIGITAL'}
   </div>
 </section>
+
+<style>
+  /* No absolute transforms; spacing via margin keeps flow intact */
+</style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
