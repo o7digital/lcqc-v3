@@ -42,10 +42,8 @@ const offersLabel = isES ? 'Ofertas' : 'Offers';
 const bookingLabel = isES ? 'Reservar' : 'Book Now';
 const bestRateLabel = isES ? 'Mejor tarifa garantizada' : 'Best Rate Guarentee';
 
-// Point OFFERS to Aprove preview (absolute URL), EN/ES
-const offersHref = isES
-  ? 'https://lcqc-v3-git-aprove-olivier-steineur.vercel.app/es/aprove/savings2/'
-  : 'https://lcqc-v3-git-aprove-olivier-steineur.vercel.app/aprove/savings2/';
+// Always point to internal forward routes; Vercel handles external redirect
+const offersHref = isES ? '/es/ahorros/' : '/savings/';
 const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
 // DEV: show booking actions also on ES for testing
 const showBooking = true;
