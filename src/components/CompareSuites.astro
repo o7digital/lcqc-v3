@@ -1,0 +1,84 @@
+---
+// Ce composant affiche une comparaison des suites, non visible par défaut
+const suites = [
+  {
+    name: "Owner Suite",
+    capacity: 2,
+    size: "45m²",
+    bed: "King Size",
+    image: "/public/images/owner-suite.jpg",
+    description: "Suite luxueuse avec vue sur la mer, terrasse privée, salle de bain spacieuse."
+  },
+  {
+    name: "Mexico Lindo Suite",
+    capacity: 2,
+    size: "40m²",
+    bed: "Queen Size",
+    image: "/public/images/mexico-lindo.jpg",
+    description: "Ambiance mexicaine, balcon, vue jardin, salle de bain moderne."
+  },
+  {
+    name: "Terrace Suite",
+    capacity: 2,
+    size: "38m²",
+    bed: "King Size",
+    image: "/public/images/terrace-suite.jpg",
+    description: "Grande terrasse, vue panoramique, salon séparé."
+  },
+  {
+    name: "Master Pool Suite",
+    capacity: 2,
+    size: "50m²",
+    bed: "King Size",
+    image: "/public/images/master-pool.jpg",
+    description: "Piscine privée, espace lounge, salle de bain premium."
+  },
+  {
+    name: "Deluxe Suite",
+    capacity: 2,
+    size: "35m²",
+    bed: "Queen Size",
+    image: "/public/images/deluxe-suite.jpg",
+    description: "Décor raffiné, balcon, salle de bain avec baignoire."
+  }
+];
+---
+
+<section class="compare-suites" style="display:none">
+  <h2>Comparer les Suites</h2>
+  <div class="suites-grid">
+    {suites.map(suite => (
+      <div class="suite-card">
+        <img src={suite.image} alt={suite.name} style="width:100%;height:auto;" />
+        <h3>{suite.name}</h3>
+        <ul>
+          <li>Capacité : {suite.capacity} adultes</li>
+          <li>Surface : {suite.size}</li>
+          <li>Lit : {suite.bed}</li>
+        </ul>
+        <p>{suite.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+.compare-suites {
+  padding: 2rem 0;
+}
+.suites-grid {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.suite-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1rem;
+  width: 250px;
+}
+.suite-card img {
+  border-radius: 6px;
+}
+</style>

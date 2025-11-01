@@ -9,12 +9,30 @@ if (isES) {
     // On ajoute /es devant l'URL
     switchLangHref = '/es' + (Astro.url.pathname === '/' ? '' : Astro.url.pathname);
 }
+// Overrides for pages with different EN/ES slugs
+const langSwap = new Map([
+  ['/es/savings/oferta-para-nacionales', '/savings/offer-for-nationals'],
+  ['/savings/offer-for-nationals', '/es/savings/oferta-para-nacionales'],
+  ['/es/aprove/savings/oferta-para-nacionales', '/aprove/savings/offer-for-nationals'],
+  ['/aprove/savings/offer-for-nationals', '/es/aprove/savings/oferta-para-nacionales'],
+]);
+if (langSwap.has(Astro.url.pathname)) {
+  switchLangHref = langSwap.get(Astro.url.pathname) || switchLangHref;
+}
 const path = Astro.url.pathname;
-// Enforce dark (black) header on white-background pages (including Privacy Policy)
+// Force dark (black) burger for Offers: grids and all detail pages (EN/ES, incl. /aprove)
+const isOffersSection = (
+  path.startsWith('/savings') ||
+  path.startsWith('/es/savings') ||
+  path.startsWith('/aprove/savings') ||
+  path.startsWith('/es/aprove/savings')
+);
+// Enforce dark (black) header on white-background pages (including Offers grids and Privacy Policy)
 const onWhiteHeader =
   path.includes('/luxury-villas') ||
   path.includes('/activities/spa') ||
-  path.includes('/privacy-policy');
+  path.includes('/privacy-policy') ||
+  isOffersSection;
 const menu = isES
     ? [
         { label: 'Inicio', href: '/es/' },
@@ -42,8 +60,8 @@ const offersLabel = isES ? 'Ofertas' : 'Offers';
 const bookingLabel = isES ? 'Reservar' : 'Book Now';
 const bestRateLabel = isES ? 'Mejor tarifa garantizada' : 'Best Rate Guarentee';
 
-// Always point to internal forward routes; Vercel handles external redirect
-const offersHref = isES ? '/es/ahorros/' : '/savings/';
+// For Aprove previews, route Offers to the v2 preview grid
+const offersHref = isES ? '/es/aprove/savings2/' : '/aprove/savings2/';
 const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
 // DEV: show booking actions also on ES for testing
 const showBooking = true;

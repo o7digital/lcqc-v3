@@ -9,6 +9,7 @@ const query = `
     id
     media {
       url
+      focalPoint { x y }
     }
     description
     sortOrder
@@ -17,6 +18,7 @@ const query = `
 `;
 const data = await fetchDatoCMS(query);
 const slides = data?.allSliders || [];
+const fpParams = (fp) => (fp && typeof fp.x === 'number' && typeof fp.y === 'number') ? `&fp-x=${fp.x}&fp-y=${fp.y}` : '';
 // DEV: re-enable booking engine for testing
 const hideBooking = false;
 ---
@@ -65,32 +67,45 @@ const hideBooking = false;
       </div>
     </div>
 
-    <!-- Slider Mobile -->
-    <div class="md:!hidden swiper mySwiper !absolute h-full w-full top-0 overflow-hidden aspect-[16/6]">
+    <!-- Slider Mobile (better crop + hint on last) -->
+    <div class="md:!hidden swiper mySwiper !absolute h-full w-full top-0 overflow-hidden">
       <div class="swiper-wrapper">
         {slides.length > 0 ? slides.map((slide, i) => (
-          <div class="swiper-slide">
+          <div class="swiper-slide relative">
             <picture>
               <source
                 type="image/avif"
-                srcset={`${slide.media.url}?fm=avif&q=60&w=320 320w, ${slide.media.url}?fm=avif&q=60&w=640 640w, ${slide.media.url}?fm=avif&q=60&w=1024 1024w`}
-                sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
+                srcset={`${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(slide.media.focalPoint)} 320w, ${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)} 640w, ${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(slide.media.focalPoint)} 1024w`}
+                sizes="100vw"
               />
               <source
                 type="image/webp"
-                srcset={`${slide.media.url}?fm=webp&q=60&w=320 320w, ${slide.media.url}?fm=webp&q=60&w=640 640w, ${slide.media.url}?fm=webp&q=60&w=1024 1024w`}
-                sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
+                srcset={`${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(slide.media.focalPoint)} 320w, ${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)} 640w, ${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(slide.media.focalPoint)} 1024w`}
+                sizes="100vw"
               />
               <img
-                src={`${slide.media.url}?auto=compress&q=70&w=640`}
-                srcset={`${slide.media.url}?auto=compress&q=70&w=320 320w, ${slide.media.url}?auto=compress&q=70&w=640 640w, ${slide.media.url}?auto=compress&q=70&w=1024 1024w`}
-                sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
-                class="w-full h-full object-cover"
+                src={`${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)}`}
+                srcset={`${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(slide.media.focalPoint)} 320w, ${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)} 640w, ${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(slide.media.focalPoint)} 1024w`}
+                sizes="100vw"
+                class="w-full h-full object-cover object-center"
                 alt={slide.description || 'Slide'}
                 loading={i === 0 ? 'eager' : 'lazy'}
                 decoding="async"
               />
             </picture>
+            <!-- Subtle gradient for readability -->
+            <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent pointer-events-none"></div>
+            {i === slides.length - 1 && (
+              <div class="md:hidden absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-white text-xs font-semibold flex items-center gap-2 px-3 py-2 bg-black/40 rounded-full backdrop-blur-sm rotate-hint">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 12a10 10 0 0118.36-4.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M22 12a10 10 0 01-18.36 4.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M16 4l4 2-2-4" fill="currentColor"/>
+                  <path d="M8 20l-4-2 2 4" fill="currentColor"/>
+                </svg>
+                <span>Gira tu teléfono</span>
+              </div>
+            )}
           </div>
         )) : (
           <div class="swiper-slide bg-black text-white flex items-center justify-center">
@@ -148,5 +163,10 @@ const hideBooking = false;
     .scroll-section .swiper-pagination { display: none !important; }
     .booking-hover-zone .bg-black\/10 {
       transition: opacity 0.3s, transform 0.3s;
+    }
+    .rotate-hint { animation: hint-pulse 2.4s ease-in-out infinite; }
+    @keyframes hint-pulse {
+      0%, 100% { transform: translate(-50%, 0) scale(1); opacity: .95; }
+      50% { transform: translate(-50%, -3px) scale(1.02); opacity: 1; }
     }
   </style>
