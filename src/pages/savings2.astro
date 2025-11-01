@@ -1,0 +1,20 @@
+---
+import Layout from "@layouts/Layout.astro";
+import SavingsSection from "@components/SavingsSection.astro";
+
+const includeSlugs = ['discover-us','enchanting-moments','indulge-yourself'];
+---
+<Layout title="Offers (v2) – La Casa Que Canta">
+  <SavingsSection
+    title="Discover our offers"
+    description="Curated selection of three offers."
+    moreLabel="More details"
+    bookLabel="Book Now"
+    sectionId="savings2"
+    includeSlugs={includeSlugs}
+    backgroundImage="/offers/foto-oceano.png?v=3"
+    backgroundOpacity={0.25}
+    backgroundOffsetY="-2.5cm"
+  />
+</Layout>
+
