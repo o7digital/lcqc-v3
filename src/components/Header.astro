@@ -60,9 +60,8 @@ const offersLabel = isES ? 'Ofertas' : 'Offers';
 const bookingLabel = isES ? 'Reservar' : 'Book Now';
 const bestRateLabel = isES ? 'Mejor tarifa garantizada' : 'Best Rate Guarentee';
 
-// For approve previews, route Offers to the approve savings preview
-// Note: branch 'Aprove' will deploy to Vercel preview; linking directly here
-const offersHref = '/aprove/savings';
+// For Aprove previews, route Offers to the v2 preview grid
+const offersHref = isES ? '/es/aprove/savings2/' : '/aprove/savings2/';
 const bookingHref = 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C';
 // DEV: show booking actions also on ES for testing
 const showBooking = true;
