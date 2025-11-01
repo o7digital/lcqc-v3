@@ -9,6 +9,7 @@ const query = `
     id
     media {
       url
+      focalPoint { x y }
     }
     description
     sortOrder
@@ -17,6 +18,7 @@ const query = `
 `;
 const data = await fetchDatoCMS(query);
 const slides = data?.allSliders || [];
+const fpParams = (fp) => (fp && typeof fp.x === 'number' && typeof fp.y === 'number') ? `&fp-x=${fp.x}&fp-y=${fp.y}` : '';
 // DEV: re-enable booking engine for testing
 const hideBooking = false;
 ---
@@ -73,17 +75,17 @@ const hideBooking = false;
             <picture>
               <source
                 type="image/avif"
-                srcset={`${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320 320w, ${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640 640w, ${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024 1024w`}
+                srcset={`${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(slide.media.focalPoint)} 320w, ${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)} 640w, ${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(slide.media.focalPoint)} 1024w`}
                 sizes="100vw"
               />
               <source
                 type="image/webp"
-                srcset={`${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320 320w, ${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640 640w, ${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024 1024w`}
+                srcset={`${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(slide.media.focalPoint)} 320w, ${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)} 640w, ${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(slide.media.focalPoint)} 1024w`}
                 sizes="100vw"
               />
               <img
-                src={`${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640`}
-                srcset={`${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=320 320w, ${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640 640w, ${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=1024 1024w`}
+                src={`${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)}`}
+                srcset={`${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(slide.media.focalPoint)} 320w, ${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)} 640w, ${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(slide.media.focalPoint)} 1024w`}
                 sizes="100vw"
                 class="w-full h-full object-cover object-center"
                 alt={slide.description || 'Slide'}
