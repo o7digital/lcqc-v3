@@ -1,16 +1,26 @@
 ---
-import Layout from "@layouts/Layout.astro";
+import Layout from "../../../layouts/Layout.astro";
 import SavingsSection from "@components/SavingsSection.astro";
+
+// Lista curada sin "oferta para nacionales"
+const includeSlugs = [
+  'delight-cuisine',
+  'discover-us',
+  'enchanting-moments',
+  'indulge-yourself',
+  'prolong-dream',
+];
 ---
-<Layout title="Aprove – Ahorros (Vista Previa) 2">
+<Layout title="Aprove – Ofertas (v2)">
   <SavingsSection
     title="Descubre nuestras ofertas"
+    description="Previsualización del grid de ofertas con fondo personalizado."
     moreLabel="Más detalles"
-    bookLabel="Reservar ahora"
+    bookLabel="Reservar"
     sectionId="aprove-savings2-es"
-    backgroundImage="/offers/fond-playa.jpg"
-    offsetX="2cm"
-    includeSlugs={["enchanting-moments", "discover-us", "indulge-yourself", "oferta-para-nacionales"]}
+    includeSlugs={includeSlugs}
+    backgroundImage="/infinity-pool/6.jpg"
+    backgroundOpacity={0.25}
   />
 </Layout>
 
