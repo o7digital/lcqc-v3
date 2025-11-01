@@ -25,7 +25,7 @@ const selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
     })
   : offers;
 ---
-<section id={sectionId} class="py-32">
+<section id={sectionId} class="pt-20 md:pt-32 pb-0">
   <div class="grid max-w-7xl mx-auto">
     <div class="max-w-4xl px-4 mx-auto mb-10 text-center">
       <h1 class="text-3xl md:text-5xl lg:text-7xl mb-6 font-bold">{title}</h1>
@@ -34,7 +34,8 @@ const selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
       )}
     </div>
   </div>
-  <div class="relative w-full py-8">
+  <!-- Background block extends down to just before footer -->
+  <div class="relative w-full pt-8 pb-20 md:pb-32">
     {backgroundImage && (
       <>
         <div
