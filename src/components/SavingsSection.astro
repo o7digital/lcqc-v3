@@ -42,7 +42,7 @@ const selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
       <>
         <div
           class="absolute inset-0 -z-10"
-          style={`background-image:url(${backgroundImage}); background-size:100% auto; background-position: center ${backgroundOffsetX} bottom ${backgroundOffsetY}; background-repeat:no-repeat;`}
+          style={`background-image:url(${backgroundImage}); background-size:100% auto; background-position-x: calc(50% + ${backgroundOffsetX}); background-position-y: calc(100% - ${backgroundOffsetY}); background-repeat:no-repeat;`}
         ></div>
         <div
           class="absolute inset-0 z-0"
