@@ -69,13 +69,13 @@ export async function fetchSuiteDetails(slug, locale) {
     try {
       const r = await fetchDatoCMS(qList1, { locale: loc });
       const arr = r?.allAccomodationsDetails || [];
-      const m = arr.find((x) => String(x?.slug || '').toLowerCase() === String(slug).toLowerCase());
+      const m = arr.find((x) => String(x?.slug || '').trim().toLowerCase() === String(slug).trim().toLowerCase());
       if (m) return m;
     } catch (_) {}
     try {
       const r = await fetchDatoCMS(qList2, { locale: loc });
       const arr = r?.allAccommodationsDetails || [];
-      const m = arr.find((x) => String(x?.slug || '').toLowerCase() === String(slug).toLowerCase());
+      const m = arr.find((x) => String(x?.slug || '').trim().toLowerCase() === String(slug).trim().toLowerCase());
       if (m) return m;
     } catch (_) {}
   }
