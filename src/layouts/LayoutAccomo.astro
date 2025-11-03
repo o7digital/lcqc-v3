@@ -2,11 +2,19 @@
 import Layout from "../layouts/Layout.astro"; // 🔹 Cambio de alias @layouts a ruta relativa
 const { frontmatter } = Astro.props;
 const isEs = Astro.url.pathname.startsWith('/es');
-// Charger les chambres selon la langue courante (Astro.glob nécessite des littéraux)
-const roomsEn = await Astro.glob('/src/pages/accomodations/*.md');
-const roomsEs = await Astro.glob('/src/pages/es/accomodations/*.md');
+// Charger les chambres selon la langue courante
+let roomsEn = [];
+let roomsEs = [];
+try {
+  roomsEn = await Astro.glob('/src/pages/accomodations/*.md');
+} catch (_) { roomsEn = []; }
+try {
+  roomsEs = await Astro.glob('/src/pages/es/accomodations/*.md');
+} catch (_) { roomsEs = []; }
 const rooms = isEs ? roomsEs : roomsEn;
-const suggestedRooms = rooms.filter((room) => room.frontmatter.title !== frontmatter.title);
+const suggestedRooms = Array.isArray(rooms)
+  ? rooms.filter((room) => room?.frontmatter?.title !== frontmatter.title)
+  : [];
 ---
 
 <Layout title={`${frontmatter.title} - La Casa Que Canta`}>
