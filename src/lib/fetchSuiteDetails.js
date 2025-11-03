@@ -1,8 +1,9 @@
 import { fetchDatoCMS } from '@lib/datocms';
 
 export async function fetchSuiteDetails(slug, locale) {
-  // Try API key spelling with single 'm' first (accomodations_details)
-  const q1 = `
+  const tryLocales = locale === 'es' ? ['es', 'en'] : ['en', 'es'];
+
+  const qBySlug1 = `
     query Suite($slug: String, $locale: SiteLocale) {
       allAccomodationsDetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
         subtitle
@@ -13,8 +14,7 @@ export async function fetchSuiteDetails(slug, locale) {
       }
     }
   `;
-  // Fallback: spelling with two 'm' (accommodations_details)
-  const q2 = `
+  const qBySlug2 = `
     query Suite($slug: String, $locale: SiteLocale) {
       allAccommodationsDetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
         subtitle
@@ -25,22 +25,7 @@ export async function fetchSuiteDetails(slug, locale) {
       }
     }
   `;
-  try {
-    const res1 = await fetchDatoCMS(q1, { slug, locale });
-    const v1 = res1?.allAccomodationsDetails?.[0];
-    if (v1) return v1;
-  } catch (_) {
-    // ignore, try alternate
-  }
-  try {
-    const res2 = await fetchDatoCMS(q2, { slug, locale });
-    const v2 = res2?.allAccommodationsDetails?.[0];
-    if (v2) return v2;
-  } catch (_) {
-    // ignore
-  }
-  // Fallback: fetch all and match by slug on client side (handles edge-cases with filters/localization)
-  const q3 = `
+  const qList1 = `
     query SuiteList($locale: SiteLocale) {
       allAccomodationsDetails(locale: $locale) {
         slug
@@ -52,7 +37,7 @@ export async function fetchSuiteDetails(slug, locale) {
       }
     }
   `;
-  const q4 = `
+  const qList2 = `
     query SuiteList($locale: SiteLocale) {
       allAccommodationsDetails(locale: $locale) {
         slug
@@ -64,17 +49,36 @@ export async function fetchSuiteDetails(slug, locale) {
       }
     }
   `;
-  try {
-    const r3 = await fetchDatoCMS(q3, { locale });
-    const arr3 = r3?.allAccomodationsDetails || [];
-    const m3 = arr3.find((x) => String(x?.slug || '').toLowerCase() === String(slug).toLowerCase());
-    if (m3) return m3;
-  } catch (_) {}
-  try {
-    const r4 = await fetchDatoCMS(q4, { locale });
-    const arr4 = r4?.allAccommodationsDetails || [];
-    const m4 = arr4.find((x) => String(x?.slug || '').toLowerCase() === String(slug).toLowerCase());
-    if (m4) return m4;
-  } catch (_) {}
+
+  // Try exact filter on both API keys and locales
+  for (const loc of tryLocales) {
+    try {
+      const r = await fetchDatoCMS(qBySlug1, { slug, locale: loc });
+      const v = r?.allAccomodationsDetails?.[0];
+      if (v) return v;
+    } catch (_) {}
+    try {
+      const r = await fetchDatoCMS(qBySlug2, { slug, locale: loc });
+      const v = r?.allAccommodationsDetails?.[0];
+      if (v) return v;
+    } catch (_) {}
+  }
+
+  // Fallback: list all then match slug (both API keys & locales)
+  for (const loc of tryLocales) {
+    try {
+      const r = await fetchDatoCMS(qList1, { locale: loc });
+      const arr = r?.allAccomodationsDetails || [];
+      const m = arr.find((x) => String(x?.slug || '').toLowerCase() === String(slug).toLowerCase());
+      if (m) return m;
+    } catch (_) {}
+    try {
+      const r = await fetchDatoCMS(qList2, { locale: loc });
+      const arr = r?.allAccommodationsDetails || [];
+      const m = arr.find((x) => String(x?.slug || '').toLowerCase() === String(slug).toLowerCase());
+      if (m) return m;
+    } catch (_) {}
+  }
+
   return null;
 }
