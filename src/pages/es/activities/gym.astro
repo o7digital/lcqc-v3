@@ -1,0 +1,56 @@
+---
+import LayoutOneCol from '../../../layouts/LayoutOneCol.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'gym';
+const locale = 'es';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+
+const fallbackFrontmatter = {
+  title: 'Gym',
+  layout: '@layouts/LayoutOneCol.astro',
+  showBack: false,
+  justifyText: true,
+  items: [
+    { image: '/activities/gym-1.jpg' },
+    { image: '/activities/gym-2.jpg' },
+    { image: '/activities/gym-3.jpg' },
+    { image: '/activities/gym-4.jpg' },
+  ],
+};
+
+const frontmatter = {
+  ...fallbackFrontmatter,
+  ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? '' } : {}),
+};
+
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutOneCol frontmatter={frontmatter}>
+  {introText ? (
+    introParas.map((p) => (<p>{p}</p>))
+  ) : (
+    <>
+      <p>
+        Donde el movimiento se encuentra con la calma. Bañado por la luz natural y abierto a la brisa del océano, nuestro gimnasio te invita a reconectar con tu energía mientras contemplas la bahía de Zihuatanejo. Con equipo de cardio de última generación y áreas pensadas para fuerza y estiramientos, cada detalle está diseñado para ayudarte a sentirte más fuerte, liviano y presente.
+      </p>
+      <p class="text-xl font-bold">Lunes a domingo — 10:00 – 18:00 hrs.</p>
+    </>
+  )}
+</LayoutOneCol>
+

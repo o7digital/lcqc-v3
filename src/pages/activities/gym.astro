@@ -1,0 +1,56 @@
+---
+import LayoutOneCol from '@layouts/LayoutOneCol.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'gym';
+const locale = 'en';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+
+const fallbackFrontmatter = {
+  title: 'Gym',
+  layout: '@layouts/LayoutOneCol.astro',
+  showBack: false,
+  justifyText: true,
+  items: [
+    { image: '/activities/gym-1.jpg' },
+    { image: '/activities/gym-2.jpg' },
+    { image: '/activities/gym-3.jpg' },
+    { image: '/activities/gym-4.jpg' },
+  ],
+};
+
+const frontmatter = {
+  ...fallbackFrontmatter,
+  ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? '' } : {}),
+};
+
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutOneCol frontmatter={frontmatter}>
+  {introText ? (
+    introParas.map((p) => (<p>{p}</p>))
+  ) : (
+    <>
+      <p>
+        Where movement meets calm. Bathed in natural light and open to the ocean breeze, our gym invites you to reconnect with your energy while gazing over Zihuatanejo Bay. With state-of-the-art cardio equipment and thoughtfully designed areas for strength and stretching, every detail is crafted to help you feel stronger, lighter, and more present. Start at sunrise or unwind at sunset — let the rhythm of the bay set your pace.
+      </p>
+      <p class="text-xl font-bold">Monday through Sunday — 10:00 – 18:00 hrs.</p>
+    </>
+  )}
+</LayoutOneCol>
+
