@@ -39,6 +39,42 @@ export async function fetchSuiteDetails(slug, locale) {
   } catch (_) {
     // ignore
   }
+  // Fallback: fetch all and match by slug on client side (handles edge-cases with filters/localization)
+  const q3 = `
+    query SuiteList($locale: SiteLocale) {
+      allAccomodationsDetails(locale: $locale) {
+        slug
+        subtitle
+        intro
+        roomFeatures
+        amenities
+        internetAccess
+      }
+    }
+  `;
+  const q4 = `
+    query SuiteList($locale: SiteLocale) {
+      allAccommodationsDetails(locale: $locale) {
+        slug
+        subtitle
+        intro
+        roomFeatures
+        amenities
+        internetAccess
+      }
+    }
+  `;
+  try {
+    const r3 = await fetchDatoCMS(q3, { locale });
+    const arr3 = r3?.allAccomodationsDetails || [];
+    const m3 = arr3.find((x) => String(x?.slug || '').toLowerCase() === String(slug).toLowerCase());
+    if (m3) return m3;
+  } catch (_) {}
+  try {
+    const r4 = await fetchDatoCMS(q4, { locale });
+    const arr4 = r4?.allAccommodationsDetails || [];
+    const m4 = arr4.find((x) => String(x?.slug || '').toLowerCase() === String(slug).toLowerCase());
+    if (m4) return m4;
+  } catch (_) {}
   return null;
 }
-
