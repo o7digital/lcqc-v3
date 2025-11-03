@@ -1,0 +1,55 @@
+---
+import LayoutOneCol from '@layouts/LayoutOneCol.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'ocean-water-pool';
+const locale = 'es';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+
+const fallbackFrontmatter = {
+  title: 'Piscina de agua de mar y jacuzzi',
+  description: '',
+  layout: '@layouts/LayoutOneCol.astro',
+  justifyText: true,
+  showBack: false,
+  items: [
+    { image: '/ocean-water-pool/1.jpg' },
+    { image: '/ocean-water-pool/2.jpg' },
+    { image: '/ocean-water-pool/3.jpg' },
+    { image: '/ocean-water-pool/4.jpg' },
+    { image: '/ocean-water-pool/5.jpg' },
+  ],
+};
+
+const frontmatter = {
+  ...fallbackFrontmatter,
+  ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? fallbackFrontmatter.description } : {}),
+};
+
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutOneCol frontmatter={frontmatter}>
+  {introText ? (
+    introParas.map((p) => (<p>{p}</p>))
+  ) : (
+    <p>
+      Entre el mar y el cielo, esta alberca de agua de mar, única en su tipo en México y excepcional en el mundo, se confunde con el horizonte. Envuelta por rocas naturales, terrazas doradas por el sol y vegetación tropical, revela una de las vistas más cautivadoras de la bahía de Zihuatanejo. Un santuario de serenidad donde cada ola marca el ritmo del tiempo.
+    </p>
+  )}
+</LayoutOneCol>
+
