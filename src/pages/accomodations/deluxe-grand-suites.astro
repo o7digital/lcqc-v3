@@ -1,25 +1,10 @@
 ---
 import LayoutAccomo from '@layouts/LayoutAccomo.astro';
-import { fetchDatoCMS } from '@lib/datocms';
+import { fetchSuiteDetails } from '@lib/fetchSuiteDetails';
 
 const slug = 'deluxe-grand-suites';
 const locale = 'en';
-let details = null;
-try {
-  const query = `
-    query Suite($slug: String, $locale: SiteLocale) {
-      allAccomodationsDetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
-        subtitle
-        intro
-        roomFeatures
-        amenities
-        internetAccess
-      }
-    }
-  `;
-  const data = await fetchDatoCMS(query, { slug, locale });
-  details = data?.allAccomodationsDetails?.[0] || null;
-} catch(_) { details = null; }
+const details = await fetchSuiteDetails(slug, locale);
 
 const fallbackFrontmatter = {
   title: 'Deluxe Grand Suites',
@@ -70,4 +55,3 @@ const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
     </p>
   )}
 </LayoutAccomo>
-
