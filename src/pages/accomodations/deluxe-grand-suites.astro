@@ -1,0 +1,73 @@
+---
+import LayoutAccomo from '@layouts/LayoutAccomo.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'deluxe-grand-suites';
+const locale = 'en';
+let details = null;
+try {
+  const query = `
+    query Suite($slug: String, $locale: SiteLocale) {
+      allAccomodationsDetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        subtitle
+        intro
+        roomFeatures
+        amenities
+        internetAccess
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  details = data?.allAccomodationsDetails?.[0] || null;
+} catch(_) { details = null; }
+
+const fallbackFrontmatter = {
+  title: 'Deluxe Grand Suites',
+  imagefront: '/deluxe-grand-suites/1.jpg',
+  book: 'https://be.synxis.com/?adult=1&arrive=2024-07-01&chain=22402&child=0&currency=USD&depart=2024-07-02&hotel=78821&level=hotel&locale=en-US&room=DGS&rooms=1&src=24C',
+  square: '760 – 1,280 ft² | 71 – 120 m²',
+  beds: 'King Size Bed',
+  guest: '2 Guests',
+  roomfeatures: [
+    { rf: 'Living room terrace with table, chairs and sun lounger' },
+    { rf: 'Plunge pool' },
+    { rf: 'Work desk' },
+    { rf: 'Walk-in dressing room' },
+    { rf: 'Safety deposit box' },
+  ],
+  amenities: [
+    { a: 'Complimentary Mini bar' },
+    { a: 'Fresh fruit replenished daily' },
+    { a: 'Welcome drink' },
+    { a: 'Artistic bedspread tapestry made with fresh flowers' },
+    { a: 'In-room magazines and books' },
+    { a: 'Internet access' },
+    { a: 'Complimentary Wi-Fi.' },
+  ],
+  items: [
+    { image: '/deluxe-grand-suites/1.jpg' },
+    { image: '/deluxe-grand-suites/2.jpg' },
+    { image: '/deluxe-grand-suites/3.jpg' },
+    { image: '/deluxe-grand-suites/4.jpg' },
+    { image: '/deluxe-grand-suites/5.jpg' },
+  ],
+};
+
+const parseList = (v)=>Array.isArray(v)?v.map(s=>String(s).trim()).filter(Boolean):(typeof v==='string'?v.split(/\r?\n+/).map(s=>s.trim()).filter(Boolean):[]);
+const datoFeatures = parseList(details?.roomFeatures).map((rf)=>({rf}));
+const rawAmenities = parseList(details?.amenities);
+const datoAmenities = (()=>{const arr=rawAmenities.map((a)=>({a})); if(details?.internetAccess && !rawAmenities.some(s=>s.toLowerCase().includes('internet'))) arr.push({a:'Internet access'}); return arr;})();
+
+const frontmatter = { ...fallbackFrontmatter, description: details?.subtitle ?? '', roomfeatures: datoFeatures.length? datoFeatures: fallbackFrontmatter.roomfeatures, amenities: datoAmenities.length? datoAmenities: fallbackFrontmatter.amenities };
+const introText = (details?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutAccomo frontmatter={frontmatter}>
+  {introText ? introParas.map((p)=>(<p>{p}</p>)) : (
+    <p>
+      All the redesigned 10 suites are now even more comfortable and roomy with double views of the bay. Each suite is singular in its layout, with distinctive colors, furniture and authentic Mexican decoration. The newly renovated bathrooms are ample, luminous, some with sea views.
+    </p>
+  )}
+</LayoutAccomo>
+

@@ -1,0 +1,91 @@
+---
+import LayoutAccomo from '@layouts/LayoutAccomo.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'mexico-lindo-suite';
+const locale = 'es';
+let details = null;
+try {
+  const query = `
+    query Suite($slug: String, $locale: SiteLocale) {
+      allAccomodationsDetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        subtitle
+        intro
+        roomFeatures
+        amenities
+        internetAccess
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  details = data?.allAccomodationsDetails?.[0] || null;
+} catch (_) { details = null; }
+
+const fallbackFrontmatter = {
+  title: 'Mexico Lindo Suite',
+  imagefront: '/mexico-lindo-suite/2.jpg',
+  floorplan: '/images/floorplan/lcqc_mexicolindo.png',
+  book: 'https://be.synxis.com/?adult=1&arrive=2024-07-01&chain=22402&child=0&currency=USD&depart=2024-07-02&hotel=78821&level=hotel&locale=es-ES&room=SMS&rooms=1&src=24C',
+  square: '1,760 ft² | 165 m²',
+  beds: 'Cama King Size',
+  guest: '2 huéspedes',
+  roomfeatures: [
+    { rf: 'Terraza con sala, 2 mesas, sillas y tumbonas' },
+    { rf: 'Alberca pequeña privada' },
+    { rf: 'Escritorio de trabajo' },
+    { rf: 'Vestidor tipo walk-in' },
+    { rf: 'Caja de seguridad' },
+    { rf: 'Terraza con vista al mar de 180°' },
+  ],
+  amenities: [
+    { a: 'Minibar de cortesía' },
+    { a: 'Fruta fresca repuesta diariamente' },
+    { a: 'Bebida de bienvenida' },
+    { a: 'Tapiz cubrecama artístico decorada con flores frescas' },
+    { a: 'Revistas y libros en la habitación' },
+    { a: 'Acceso a internet' },
+    { a: 'Wi-Fi de cortesía.' },
+  ],
+  items: [
+    { image: '/mexico-lindo-suite/1.jpg' },
+    { image: '/mexico-lindo-suite/2.jpg' },
+    { image: '/mexico-lindo-suite/3.jpg' },
+    { image: '/mexico-lindo-suite/4.jpg' },
+  ],
+};
+
+const parseList = (val) => Array.isArray(val)
+  ? val.map((s) => String(s).trim()).filter(Boolean)
+  : (typeof val === 'string' ? val.split(/\r?\n+/).map((s) => s.trim()).filter(Boolean) : []);
+
+const datoFeatures = parseList(details?.roomFeatures).map((rf) => ({ rf }));
+const datoAmenitiesRaw = parseList(details?.amenities);
+const datoAmenities = (() => {
+  const arr = datoAmenitiesRaw.map((a) => ({ a }));
+  if (details?.internetAccess && !datoAmenitiesRaw.some((s) => s.toLowerCase().includes('internet'))) {
+    arr.push({ a: 'Acceso a internet' });
+  }
+  return arr;
+})();
+
+const frontmatter = {
+  ...fallbackFrontmatter,
+  description: details?.subtitle ?? '',
+  roomfeatures: datoFeatures.length ? datoFeatures : fallbackFrontmatter.roomfeatures,
+  amenities: datoAmenities.length ? datoAmenities : fallbackFrontmatter.amenities,
+};
+
+const introText = (details?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutAccomo frontmatter={frontmatter}>
+  {introText ? (
+    introParas.map((p) => (<p>{p}</p>))
+  ) : (
+    <p>
+      Como un apartamento, esta suite ofrece una sala excepcionalmente espaciosa con mobiliario mexicano hecho a medida y un amplio baño en piedra de granito azul. La gran terraza con una alberca pequeña privada complementa este apartamento con vistas espectaculares desde todos los ángulos.
+    </p>
+  )}
+</LayoutAccomo>
+
