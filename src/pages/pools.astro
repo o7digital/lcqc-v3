@@ -1,5 +1,28 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+// Read content from Dato (dev env) with safe fallback
+const slug = 'pools';
+const locale = 'en';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+const pageTitle = page?.title || 'Pools';
+const pageSubtitle = page?.subtitle || 'Small Luxury Hotel Boutique';
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
 ---
 
 <Layout title="Discovers our Pools - La Casa Que Canta">
@@ -8,14 +31,17 @@ import Layout from '../layouts/Layout.astro';
     <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
         <div class="px-4 grid md:grid-cols-2 py-16 max-w-7xl items-center mx-auto justify-between ">
             <div class="mb-8">
-                <h2 class="text-3xl md:text-5xl lg:text-7xl text-black/90 text-balance font-bold">
-                    Pools</h2>
-                    <mark class="text-xl font-bold">Small Luxury Hotel Boutique
+                <h2 class="text-3xl md:text-5xl lg:text-7xl text-black/90 text-balance font-bold">{pageTitle}</h2>
+                    <mark class="text-xl font-bold">{pageSubtitle}
                     </mark>
             </div>
             <div class="text-justify text-base grid gap-4">
-                <p>With its two magnificent pools overlooking the Pacific, La Casa Que Canta offers guests a serene space where sea and sky become one.
+                {introText ? (
+                  introParas.map((p) => (<p>{p}</p>))
+                ) : (
+                  <p>With its two magnificent pools overlooking the Pacific, La Casa Que Canta offers guests a serene space where sea and sky become one.
 Nestled among tropical gardens, our pools invite you to relax and enjoy panoramic views of Zihuatanejo Bay — a true sanctuary of calm and beauty.</p>
+                )}
             </div>
         </div>
     </section>
