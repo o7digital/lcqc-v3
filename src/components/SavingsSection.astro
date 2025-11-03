@@ -11,15 +11,56 @@ const {
   backgroundOffsetY = '0',
   offsetX = '0',
   includeSlugs = undefined,
+  // DatoCMS integration (optional)
+  useDato = false,
+  datoLinkBase = undefined,
 } = Astro.props;
 
 // Load EN or ES offers based on current path (Astro.glob must be static)
 const isES = Astro.url.pathname.startsWith('/es');
-const offersES = await Astro.glob('/src/pages/es/savings/*.md');
-const offersEN = await Astro.glob('/src/pages/savings/*.md');
-const offers = isES ? offersES : offersEN;
-// Optional filtering by slug (filename). If provided, only include matching pages.
-const selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
+let offers = [];
+let selectedOffers = [];
+
+if (useDato) {
+  try {
+    const { fetchDatoCMS } = await import('@lib/datocms');
+    const locale = isES ? 'es' : 'en';
+    const query = `
+      query AllOffers($locale: SiteLocale) {
+        allOffers(filter: { active: { eq: true } }, orderBy: order_ASC, locale: $locale) {
+          id
+          title
+          slug
+          description
+          imagefront { url }
+        }
+      }
+    `;
+    const data = await fetchDatoCMS(query, { locale });
+    const base = datoLinkBase ?? (isES ? '/es/savings/' : '/savings/');
+    const datoOffers = (data?.allOffers || []).map((o) => ({
+      url: `${base}${o.slug}`,
+      frontmatter: {
+        title: o.title,
+        description: o.description || '',
+        imagefront: o?.imagefront?.url || '',
+      },
+    }));
+    offers = datoOffers;
+  } catch (e) {
+    // Fail silently and fallback to markdown
+    offers = [];
+  }
+}
+
+if (!useDato || offers.length === 0) {
+  const offersES = await Astro.glob('/src/pages/es/savings/*.md');
+  const offersEN = await Astro.glob('/src/pages/savings/*.md');
+  offers = isES ? offersES : offersEN;
+}
+
+// Optional filtering by slug (filename or dato slug). If provided, only include matching pages.
+selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
   ? offers.filter((post) => {
       const segs = (post.url || '').split('/').filter(Boolean);
       const last = segs[segs.length - 1] || '';

@@ -1,20 +1,38 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+// Optional DatoCMS page content (fallback to static if unavailable)
+const locale = 'en';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        heroImage { url }
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug: 'la-casa-que-canta', locale });
+  page = data?.allPages?.[0] || null;
+} catch(_) { page = null; }
+const pageTitle = page?.title || 'Welcome to La Casa Que Canta';
+const pageSubtitle = page?.subtitle || 'Small Luxury Hotel Boutique';
+const heroUrl = page?.heroImage?.url || '/lobby.jpg';
 ---
 
-<Layout title="Welcome to La Casa Que Canta">
-  <section class="h-72 bg-center bg-[url('/lobby.jpg')] bg-cover">
+<Layout title={pageTitle}>
+  <section class="h-72 bg-center bg-cover" style={`background-image: url(${heroUrl});`}>
   </section>
 
   <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
     <div class="px-4 grid md:grid-cols-2 py-8 max-w-7xl items-center mx-auto justify-between">
       <div class="mb-8">
-        <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">
-          Welcome to La Casa que Canta
-        </h2>
-        <mark class="text-xl font-bold">
-          Small Luxury Hotel Boutique
-        </mark>
+        <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">{pageTitle}</h2>
+        <mark class="text-xl font-bold">{pageSubtitle}</mark>
       </div>
 
       <div class="text-justify text-base grid gap-4">
