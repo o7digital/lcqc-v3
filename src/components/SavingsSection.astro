@@ -25,12 +25,13 @@ if (useDato) {
   try {
     const { fetchDatoCMS } = await import('@lib/datocms');
     const locale = isES ? 'es' : 'en';
-    const query = `
+  const query = `
       query AllOffers($locale: SiteLocale) {
         allOffers(filter: { active: { eq: true } }, orderBy: order_ASC, locale: $locale) {
           id
           title
           slug
+          subtitle
           description
           imagefront { url }
         }
@@ -42,7 +43,8 @@ if (useDato) {
       url: `${base}${o.slug}`,
       frontmatter: {
         title: o.title,
-        description: o.description || '',
+        // Grid text must use the short subtitle; fallback to description if needed
+        description: o.subtitle || o.description || '',
         imagefront: o?.imagefront?.url || '',
       },
     }));
