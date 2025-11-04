@@ -170,5 +170,25 @@ export async function fetchSuiteDetails(slug, locale) {
       console.log('[DatoSuite] introspection candidates', candidates);
     }
   } catch(_) {}
+  // Final fallback: use Page model with identical slug (lets you see content while we align API field name)
+  try {
+    const qPage = `
+      query FallbackPage($slug:String,$locale:SiteLocale){
+        allPages(filter:{ slug:{ eq:$slug } }, locale:$locale, first:1){
+          subtitle
+          intro
+        }
+      }
+    `;
+    for (const loc of tryLocales) {
+      const r = await fetchDatoCMS(qPage, { slug, locale: loc });
+      const p = r?.allPages?.[0];
+      if (p) {
+        try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] fallback PAGE hit', { slug, locale: loc, preview: (p?.subtitle || '').slice(0,60) }); } catch(_){}
+        // Normalize to the expected shape used by suite pages
+        return { subtitle: p.subtitle || '', intro: p.intro || '', roomFeatures: null, amenities: null, internetAccess: null };
+      }
+    }
+  } catch(_){}
   return null;
 }
