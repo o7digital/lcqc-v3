@@ -88,7 +88,7 @@ To move more content into DatoCMS, we suggest next models (in order you requeste
     - `heroImage` (File)
     - `intro` (Text long or Rich text)
   - Start minimal (above fields). Blocks/galleries can be added later.
-- Offer (api key: `offer`): `title` (string, localized), `subtitle` (string, localized — used in grid), `description` (rich text, optional), `imagefront` (file), `ctaLabel` (string), `ctaUrl` (string), `slug` (string, unique), `active` (boolean), `order` (integer for sorting).
+- Offer (api key: `offer`): `title` (string, localized), `subtitle` (string, localized — used in grid), `travel_date` (string, localized — shown in grid; GraphQL: `travelDate`), `description` (rich text, optional), `imagefront` (file), `ctaLabel` (string), `ctaUrl` (string), `slug` (string, unique), `active` (boolean), `order` (integer for sorting).
 - Suite (api key: `suite`): `title`, `slug`, `gallery` (gallery of files), `shortDescription`, `longDescription`, `size`, `view`, `priceFrom`.
 
 You can then replace markdown-based listings (e.g. Savings) with GraphQL queries (`allOffers(filter: { active: { eq: true } })`).
