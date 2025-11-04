@@ -156,5 +156,19 @@ export async function fetchSuiteDetails(slug, locale) {
     }
   }
   try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] no match', { slug, locale, tried: tryLocales }); } catch(_){}
+  // Introspection aid (dev only): list possible root fields containing "Detail" or "Suite"
+  try {
+    if (process?.env?.NODE_ENV !== 'production') {
+      const introspection = `
+        query Q {
+          __schema { queryType { fields { name } } }
+        }
+      `;
+      const res = await fetchDatoCMS(introspection, {});
+      const fields = res?.__schema?.queryType?.fields?.map((f)=>f?.name) || [];
+      const candidates = fields.filter((n)=>/detail|suite|accomod|accommod/i.test(n));
+      console.log('[DatoSuite] introspection candidates', candidates);
+    }
+  } catch(_) {}
   return null;
 }
