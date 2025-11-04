@@ -42,6 +42,18 @@ export async function fetchSuiteDetails(slug, locale) {
       }
     }
   `;
+  // NOTE: requested exact field name (one 'm', lowercase 'details')
+  const qBySlug4 = `
+    query Suite($slug: String, $locale: SiteLocale) {
+      allAccomodationsdetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        subtitle
+        intro
+        roomFeatures
+        amenities
+        internetAccess
+      }
+    }
+  `;
   const qList1 = `
     query SuiteList($locale: SiteLocale) {
       allAccomodationsDetails(locale: $locale) {
@@ -69,6 +81,18 @@ export async function fetchSuiteDetails(slug, locale) {
   const qList3 = `
     query SuiteList($locale: SiteLocale) {
       allAdminDetailSuites(locale: $locale) {
+        slug
+        subtitle
+        intro
+        roomFeatures
+        amenities
+        internetAccess
+      }
+    }
+  `;
+  const qList4 = `
+    query SuiteList($locale: SiteLocale) {
+      allAccomodationsdetails(locale: $locale) {
         slug
         subtitle
         intro
@@ -114,6 +138,17 @@ export async function fetchSuiteDetails(slug, locale) {
     } catch (e) {
       try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] bySlug (admin_detail_suites) error', e?.response?.errors?.[0]?.message || e?.message || String(e)); } catch(_){}
     }
+    try {
+      const r = await fetchDatoCMS(qBySlug4, { slug, locale: loc });
+      const v = r?.allAccomodationsdetails?.[0];
+      try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] bySlug (allAccomodationsdetails) resp keys', Object.keys(r||{})); } catch(_){}
+      if (v) {
+        try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] match by slug (allAccomodationsdetails)', { slug, locale: loc, preview: (v?.subtitle || '').slice(0, 60) }); } catch(_){}
+        return v;
+      }
+    } catch (e) {
+      try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] bySlug (allAccomodationsdetails) error', e?.response?.errors?.[0]?.message || e?.message || String(e)); } catch(_){}
+    }
   }
 
   // Fallback: list all then match slug (both API keys & locales)
@@ -153,6 +188,18 @@ export async function fetchSuiteDetails(slug, locale) {
       }
     } catch (e) {
       try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] list (admin_detail_suites) error', e?.response?.errors?.[0]?.message || e?.message || String(e)); } catch(_){}
+    }
+    try {
+      const r = await fetchDatoCMS(qList4, { locale: loc });
+      const arr = r?.allAccomodationsdetails || [];
+      try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] list (allAccomodationsdetails) length', arr?.length ?? 0); } catch(_){}
+      const m = arr.find((x) => String(x?.slug || '').trim().toLowerCase() === String(slug).trim().toLowerCase());
+      if (m) {
+        try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] match in list (allAccomodationsdetails)', { slug, locale: loc, preview: (m?.subtitle || '').slice(0, 60) }); } catch(_){}
+        return m;
+      }
+    } catch (e) {
+      try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] list (allAccomodationsdetails) error', e?.response?.errors?.[0]?.message || e?.message || String(e)); } catch(_){}
     }
   }
   try { if (process?.env?.NODE_ENV !== 'production') console.log('[DatoSuite] no match', { slug, locale, tried: tryLocales }); } catch(_){}
