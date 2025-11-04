@@ -1,85 +1,47 @@
 ---
 import Layout from "../layouts/Layout.astro"; // 🔹 Ruta relativa corregida
-import { fetchOfferBySlug } from "@lib/fetchOffer";
 const { frontmatter } = Astro.props;
-
-// Compute locale and slug from the current URL
-const isES = Astro.url.pathname.startsWith('/es');
-const locale = isES ? 'es' : 'en';
-const urlPath = Astro.url.pathname.replace(/\/?$/, '');
-const slugFromUrl = urlPath.split('/').filter(Boolean).pop();
-
-// Try to fetch dynamic content from DatoCMS for this offer slug
-let dato = null;
-try {
-  dato = await fetchOfferBySlug(slugFromUrl, locale);
-} catch (_) {}
-
-// Merge frontmatter with Dato data for title/image/date
-const fm = {
-  ...frontmatter,
-  title: dato?.title || frontmatter.title,
-  imagefront: dato?.imagefrontUrl || frontmatter.imagefront,
-  date: dato?.travelDate || frontmatter.date,
-};
-
-const objectPosition = fm.objectPosition || 'center 25%';
-const offsetX = fm.offsetX || '0'; // e.g., '2cm'
-const overlayOffsetX = fm.overlayOffsetX || '0'; // e.g., '-3cm'
-const bookLabel = fm.bookLabel ?? (isES ? 'Reservar' : 'Book Now');
+const objectPosition = frontmatter.objectPosition || 'center 25%';
+const offsetX = frontmatter.offsetX || '0'; // e.g., '2cm'
+const overlayOffsetX = frontmatter.overlayOffsetX || '0'; // e.g., '-3cm'
+const bookLabel = frontmatter.bookLabel ?? 'Book Now';
 const offers = await Astro.glob("../pages/savings/*.md"); // 🔹 Ajuste ruta relativa a savings
 const suggestedoffers = offers.filter(
-  (room) => room.frontmatter.title !== fm.title
+  (room) => room.frontmatter.title !== frontmatter.title
 );
+const isES = Astro.url.pathname.startsWith('/es');
 const moreOffersLabel = isES ? 'Ver más Ofertas' : 'View more Offers';
 const moreOffersHref = isES ? '/es/approve/savings2/' : '/approve/savings2/';
-const tcLabel = isES ? 'Términos y Condiciones' : 'Terms & Conditions';
-const hasDatoContent = Boolean(dato?.description || dato?.terms);
 ---
 
-<Layout title={`${fm.title} Offers - La Casa Que Canta`}>
+<Layout title={`${frontmatter.title} Offers - La Casa Que Canta`}>
 
 <section class="">
-  {(!fm.hideHero) && (
+  {(!frontmatter.hideHero) && (
     <div>
       <img
         class="h-72 w-full object-cover"
-        src={fm.imagefront}
+        src={frontmatter.imagefront}
         alt=""
       />
     </div>
   )}
-  {fm.hideHero ? (
+  {frontmatter.hideHero ? (
     <>
       <!-- Top white header with title/date only -->
       <div class="bg-white">
         <div class="max-w-7xl mx-auto px-4 py-10">
-          <h1 class="text-5xl lg:text-7xl font-bold">{fm.title}</h1>
+          <h1 class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
         </div>
       </div>
 
       <!-- Full-bleed background image starts BELOW the header -->
       <div class="relative w-full min-h-[90vh] md:min-h-screen overflow-hidden">
-        <img class="absolute inset-0 w-full h-full object-cover" style={`object-position: ${objectPosition}; transform: translateX(${offsetX});`} src={fm.imagefront} alt="" />
+        <img class="absolute inset-0 w-full h-full object-cover" style={`object-position: ${objectPosition}; transform: translateX(${offsetX});`} src={frontmatter.imagefront} alt="" />
         <div class="relative z-10 max-w-7xl mx-auto h-full px-4 py-12 md:py-16 flex items-start md:items-center">
         <div class="max-w-xl">
           <div class="relative bg-gradient-to-b from-gray-900/40 to-gray-900/70 backdrop-blur-sm p-6 md:p-8 pb-[2cm] text-sm md:text-base text-white" style={`transform: translateX(${overlayOffsetX});`}>
-            {hasDatoContent ? (
-              <>
-                {dato?.description && (
-                  <div set:html={dato.description} />
-                )}
-                {dato?.terms && (
-                  <>
-                    <hr class="border-white/30 my-4" />
-                    <b>{tcLabel}</b>
-                    <div class="mt-2" set:html={dato.terms} />
-                  </>
-                )}
-              </>
-            ) : (
-              <slot />
-            )}
+            <slot />
             <hr class="border-white/30 my-4" />
             <div class="mt-4 text-[#CE33A1] space-y-2">
               <div class="flex items-center gap-2">
@@ -105,7 +67,7 @@ const hasDatoContent = Boolean(dato?.description || dato?.terms);
             </div>
             <div class="mt-6 flex items-center justify-between gap-4">
               <a href={moreOffersHref} class="text-sm underline text-white hover:opacity-90">{moreOffersLabel}</a>
-              <a href={fm.book} class="text-sm bg-[#CE33A1] hover:bg-[#d647ad] font-semibold uppercase py-3 px-6 text-white">{bookLabel}</a>
+              <a href={frontmatter.book} class="text-sm bg-[#CE33A1] hover:bg-[#d647ad] font-semibold uppercase py-3 px-6 text-white">{bookLabel}</a>
             </div>
           </div>
           </div>
@@ -117,30 +79,15 @@ const hasDatoContent = Boolean(dato?.description || dato?.terms);
     <div class="max-w-7xl mx-auto py-16 px-4">
       <div class="max-w-xl">
         <div>
-          <h1 class="text-5xl lg:text-7xl font-bold">{fm.title}</h1>
-          <p class="mb-3">Offer available from <b>{fm.date}</b></p>
+          <h1 class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
+          <p class="mb-3">Offer available from <b>{frontmatter.date}</b></p>
         </div>
         <div class="flex items-center justify-between gap-4 flex-wrap mb-8">
           <a href={moreOffersHref} class="text-sm underline hover:opacity-80">{moreOffersLabel}</a>
-          <a href={fm.book} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{bookLabel}</a>
+          <a href={frontmatter.book} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{bookLabel}</a>
         </div>
         <div class="text-sm md:text-base">
-          {hasDatoContent ? (
-            <>
-              {dato?.description && (
-                <div set:html={dato.description} />
-              )}
-              {dato?.terms && (
-                <>
-                  <hr class="border-white/30 my-4" />
-                  <b>{tcLabel}</b>
-                  <div class="mt-2" set:html={dato.terms} />
-                </>
-              )}
-            </>
-          ) : (
-            <slot />
-          )}
+          <slot />
           <div class="mt-4 space-y-2">
             <div class="flex items-center gap-2">
               <span aria-hidden="true">📞</span>
