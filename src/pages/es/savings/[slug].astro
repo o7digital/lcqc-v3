@@ -1,0 +1,53 @@
+---
+import LayoutOffer from '@layouts/LayoutOffer.astro';
+import { fetchOfferBySlug } from '@lib/fetchOffer';
+
+const { slug } = Astro.params;
+const locale = 'es';
+
+const dato = await fetchOfferBySlug(slug, locale);
+
+const mods = import.meta.glob('./*.md');
+let md = null;
+for (const [path, loader] of Object.entries(mods)) {
+  if (path.endsWith(`${slug}.md`)) {
+    md = await loader();
+    break;
+  }
+}
+
+const frontmatter = {
+  title: dato?.title || md?.frontmatter?.title || 'Oferta',
+  imagefront: dato?.imagefrontUrl || md?.frontmatter?.imagefront || '',
+  date: dato?.travelDate || md?.frontmatter?.date || '',
+  book: md?.frontmatter?.book || '',
+  hideHero: md?.frontmatter?.hideHero ?? true,
+  objectPosition: md?.frontmatter?.objectPosition,
+  offsetX: md?.frontmatter?.offsetX,
+  overlayOffsetX: md?.frontmatter?.overlayOffsetX,
+  bookLabel: md?.frontmatter?.bookLabel ?? 'Reservar',
+};
+
+const hasDatoContent = Boolean(dato?.description || dato?.terms);
+---
+
+<LayoutOffer frontmatter={frontmatter}>
+  {hasDatoContent ? (
+    <>
+      {dato?.description && (
+        <div set:html={dato.description} />
+      )}
+
+      {dato?.terms && (
+        <>
+          <hr class="border-white/30 my-4" />
+          <b>Términos y Condiciones</b>
+          <div class="mt-2" set:html={dato.terms} />
+        </>
+      )}
+    </>
+  ) : (
+    md ? (<md.Content />) : (<p>Detalles de la oferta próximamente.</p>)
+  )}
+</LayoutOffer>
+
