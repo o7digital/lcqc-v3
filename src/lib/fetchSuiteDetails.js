@@ -2,86 +2,11 @@ import { fetchDatoCMS } from '@lib/datocms';
 
 export async function fetchSuiteDetails(slug, locale) {
   const tryLocales = locale === 'es' ? ['es', 'en'] : ['en', 'es'];
-  try {
-    // Debug log (dev only): helps trace how we matched the suite
-    if (process?.env?.NODE_ENV !== 'production') {
-      console.log('[DatoSuite] start', { slug, locale, tryLocales });
-    }
-  } catch (_) {}
 
-  const qBySlug1 = `
-    query Suite($slug: String, $locale: SiteLocale) {
-      allAccomodationsDetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
-        subtitle
-        intro
-        roomFeatures
-        amenities
-        internetAccess
-      }
-    }
-  `;
-  const qBySlug2 = `
-    query Suite($slug: String, $locale: SiteLocale) {
-      allAccommodationsDetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
-        subtitle
-        intro
-        roomFeatures
-        amenities
-        internetAccess
-      }
-    }
-  `;
-  const qBySlug3 = `
-    query Suite($slug: String, $locale: SiteLocale) {
-      allAdminDetailSuites(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
-        subtitle
-        intro
-        roomFeatures
-        amenities
-        internetAccess
-      }
-    }
-  `;
   // NOTE: requested exact field name (one 'm', lowercase 'details')
   const qBySlug4 = `
     query Suite($slug: String, $locale: SiteLocale) {
       allAccomodationsdetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
-        subtitle
-        intro
-        roomFeatures
-        amenities
-        internetAccess
-      }
-    }
-  `;
-  const qList1 = `
-    query SuiteList($locale: SiteLocale) {
-      allAccomodationsDetails(locale: $locale) {
-        slug
-        subtitle
-        intro
-        roomFeatures
-        amenities
-        internetAccess
-      }
-    }
-  `;
-  const qList2 = `
-    query SuiteList($locale: SiteLocale) {
-      allAccommodationsDetails(locale: $locale) {
-        slug
-        subtitle
-        intro
-        roomFeatures
-        amenities
-        internetAccess
-      }
-    }
-  `;
-  const qList3 = `
-    query SuiteList($locale: SiteLocale) {
-      allAdminDetailSuites(locale: $locale) {
-        slug
         subtitle
         intro
         roomFeatures

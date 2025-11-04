@@ -100,3 +100,4 @@ Important: slugs Dato doivent correspondre EXACTEMENT aux routes (voir section S
 3) Ouvrir PR `dev` → `approve`; configurer Vercel Preview avec `DATOCMS_ENVIRONMENT=approve` (+ Preview API si brouillons).
 4) Merge `approve` → `main` après validation.
 
+— Trigger redeploy dev: commit technique pour lancer le build Vercel (3 nov, 20:xx).
