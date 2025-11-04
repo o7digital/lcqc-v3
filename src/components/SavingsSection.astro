@@ -18,7 +18,6 @@ const {
 
 // Load EN or ES offers based on current path (Astro.glob must be static)
 const isES = Astro.url.pathname.startsWith('/es');
-const travelLabel = isES ? 'Vigencia' : 'Travel';
 let offers = [];
 let selectedOffers = [];
 
@@ -104,11 +103,7 @@ selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
         <h3 class="text-3xl md:text-5xl z-20 relative text-center">{post.frontmatter.title}</h3>
         <div>
           <p class="text-white relative z-10 p-4 text-center" set:html={post.frontmatter.description}></p>
-          {(post.frontmatter?.travel || post.frontmatter?.date) && (
-            <p class="text-white/90 relative z-10 px-4 pb-1 text-center text-sm">
-              {travelLabel}: {post.frontmatter.travel || post.frontmatter.date}
-            </p>
-          )}
+          {/* Travel dates are shown only on the detail page */}
           <div class="flex flex-wrap p-4 gap-4 justify-center md:justify-between">
             <a href={post.url} class="relative text-sm z-10 bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{moreLabel}</a>
             <a href={post.url} class="relative text-sm z-10 bg-white/90 font-semibold uppercase py-3 px-6 text-black hover:bg-white/60">{bookLabel}</a>
