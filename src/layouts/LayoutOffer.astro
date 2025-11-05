@@ -22,7 +22,7 @@ let dato = null;
 try { dato = await fetchOfferBySlug(slugFromUrl, locale); } catch(_) {}
 const useDato = Boolean(dato && (dato.description || dato.terms || dato.subtitle || dato.travelDate));
 const tcLabel = isES ? 'Términos y Condiciones' : 'Terms & Conditions';
-const travelLabel = isES ? 'Travel:' /* could be 'Vigencia:' */ : 'Travel:';
+const travelLabel = isES ? 'Vigencia:' : 'Travel:';
 const toHtml = (s) => (s ? String(s).replace(/\n/g, '<br/>') : '');
 ---
 
