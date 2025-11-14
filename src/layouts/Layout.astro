@@ -14,6 +14,8 @@ const defaultDescription =
   'La Casa Que Canta, the iconic luxury hotel in Zihuatanejo, Guerrero, Mexico. Official website – experience timeless elegance, sea views, and Mexican artistry.';
 const metaDescription = description ?? defaultDescription;
 const metaOgImage = ogImage ?? '/panorama-lcqc.jpg';
+const isEs = Astro.url.pathname.startsWith('/es');
+const metaKeywords = isEs ? '' : 'romantic oceanfront boutique hotel zihuatanejo, best boutique hotels for couples in ixtapa, romantic getaways zihuatanejo mexico, honeymoon boutique hotels in zihuatanejo, small romantic boutique hotel near zihuatanejo, boutique hotels near playa la ropa zihuatanejo, ocean view boutique hotels ixtapa zihuatanejo, quiet boutique hotels in zihuatanejo, best beachfront boutique hotels pacific mexico, seaside boutique hotels in guerrero mexico, adults-only luxury boutique hotels ixtapa zihuatanejo, exclusive oceanfront boutique hotels mexico, high-end boutique hotels pacific coast mexico, best luxury boutique retreats in zihuatanejo, luxury boutique hotels with private pools mexico, boutique hotels with personalized service mexico, boutique hotels with spa in zihuatanejo, wellness boutique hotels pacific mexico, boutique hotels with fine dining zihuatanejo';
 const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 ---
 
@@ -23,6 +25,7 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 		<meta charset="UTF-8" />
 		<meta name="description" content={metaDescription} />
 		<meta name="viewport" content="width=device-width" />
+		{metaKeywords && <meta name="keywords" content={metaKeywords} />}
 		{isVercelPreview && <meta name="robots" content="noindex,nofollow" />}
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
