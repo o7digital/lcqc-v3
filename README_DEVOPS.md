@@ -163,6 +163,11 @@ const slides = data?.allSliders || [];
 - 📱 **Responsive design** desktop/mobile
 - ⚡ **Lazy loading** optimisé pour la performance
 
+### DatoCMS
+- Librairie GraphQL: `graphql-request`
+- Fetcher: `src/lib/datocms.js` (supporte `DATOCMS_ENVIRONMENT` pour sélectionner un environnement DatoCMS: `dev`, `approve`, `main`).
+- Variables d’environnement requises: voir `.env.example` et `docs/datocms-setup.md`.
+
 ---
 
 ## 🎯 ROADMAP - PROCHAINES ACTIONS

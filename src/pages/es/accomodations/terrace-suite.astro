@@ -1,0 +1,70 @@
+---
+import LayoutAccomo from '@layouts/LayoutAccomo.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'terrace-suite';
+const locale = 'es';
+let details = null;
+try {
+  const query = `
+    query Suite($slug: String, $locale: SiteLocale) {
+      allAccomodationsDetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        subtitle
+        intro
+        roomFeatures
+        amenities
+        internetAccess
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  details = data?.allAccomodationsDetails?.[0] || null;
+} catch(_) { details = null; }
+
+const fallbackFrontmatter = {
+  title: 'Terrace Suites',
+  imagefront: '/terrace-suite/4.jpg',
+  book: 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C&room=A1K&locale=es-ES',
+  square: '685-1,035 ft² | 65-95 m²',
+  beds: 'Cama King Size',
+  guest: '2 huéspedes',
+  roomfeatures: [
+    { rf: 'Terraza con sala, mesa, sillas y tumbonas' },
+    { rf: 'Escritorio de trabajo' },
+    { rf: 'Caja de seguridad' },
+  ],
+  amenities: [
+    { a: 'Minibar de cortesía' },
+    { a: 'Fruta fresca repuesta diariamente' },
+    { a: 'Bebida de bienvenida' },
+    { a: 'Tapiz cubrecama artístico decorada con flores frescas' },
+    { a: 'Revistas y libros en la habitación' },
+    { a: 'Acceso a internet' },
+    { a: 'Wi-Fi de cortesía.' },
+  ],
+  items: [
+    { image: '/terrace-suite/1.jpg' },
+    { image: '/terrace-suite/2.jpg' },
+    { image: '/terrace-suite/3.jpg' },
+    { image: '/terrace-suite/4.jpg' },
+  ],
+};
+
+const parseList = (v)=>Array.isArray(v)?v.map(s=>String(s).trim()).filter(Boolean):(typeof v==='string'?v.split(/\r?\n+/).map(s=>s.trim()).filter(Boolean):[]);
+const datoFeatures = parseList(details?.roomFeatures).map((rf)=>({rf}));
+const rawAmenities = parseList(details?.amenities);
+const datoAmenities = (()=>{const arr=rawAmenities.map((a)=>({a})); if(details?.internetAccess && !rawAmenities.some(s=>s.toLowerCase().includes('internet'))) arr.push({a:'Acceso a internet'}); return arr;})();
+
+const frontmatter = { ...fallbackFrontmatter, description: details?.subtitle ?? '', roomfeatures: datoFeatures.length? datoFeatures: fallbackFrontmatter.roomfeatures, amenities: datoAmenities.length? datoAmenities: fallbackFrontmatter.amenities };
+const introText = (details?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutAccomo frontmatter={frontmatter}>
+  {introText ? introParas.map((p)=>(<p>{p}</p>)) : (
+    <p>
+      Íntimas y acogedoras, estas 4 suites tienen algunas de las mejores vistas y terrazas con techo de palma. Cada detalle ha sido cuidado para que disfrutes de paz y tranquilidad.
+    </p>
+  )}
+</LayoutAccomo>
+

@@ -1,0 +1,67 @@
+---
+import LayoutTwoCol from '@layouts/LayoutTwoCol.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'history';
+const locale = 'en';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+
+const fallbackFrontmatter = {
+  title: 'Our History',
+  showBack: false,
+  showMichelin: false,
+  items: [
+    { image: '/history/1.jpg' },
+    { image: '/history/2.jpg' },
+    { image: '/history/3.jpeg' },
+    { image: '/history/4.jpg' },
+    { image: '/history/5.jpeg' },
+    { image: '/history/6.jpg' },
+    { image: '/history/7.jpg' },
+    { image: '/history/8.jpg' },
+  ],
+};
+
+const frontmatter = {
+  ...fallbackFrontmatter,
+  ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? '' } : {}),
+};
+
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutTwoCol frontmatter={frontmatter}>
+  {introText ? (
+    introParas.map((p) => (<p>{p}</p>))
+  ) : (
+    <>
+      <p>
+        Founded in 1992 above Zihuatanejo Bay, La Casa Que Canta is an intimate, handcrafted retreat designed as an ode to romance, serenity, and Mexican art.
+      </p>
+      <p>
+        This adults-only boutique hotel offers 25 uniquely decorated suites, many with private pools and terraces overlooking La Ropa Beach. Its hanging gardens, winding stairways, and two distinctive pools—an infinity pool and a seawater pool carved into the rock—reflect its authentic charm.
+      </p>
+      <p>
+        Guests may also enjoy two exclusive Luxury Villas—El Murmullo and El Ensueño—for a more private experience. Dining at Mar & Cielo, perched above the sea, combines contemporary Mexican cuisine with subtle European influences.
+      </p>
+      <p>
+        Today, La Casa Que Canta remains a sanctuary of intimacy and authenticity, where every stay is a profound encounter with nature, art, and the spirit of Mexico.
+      </p>
+    </>
+  )}
+</LayoutTwoCol>
+

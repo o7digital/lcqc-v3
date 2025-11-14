@@ -1,0 +1,55 @@
+---
+import LayoutOneCol from '@layouts/LayoutOneCol.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'ocean-water-pool';
+const locale = 'en';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+
+const fallbackFrontmatter = {
+  title: 'Ocean Water Pool & jacuzzi',
+  description: '',
+  layout: '@layouts/LayoutOneCol.astro',
+  justifyText: true,
+  showBack: false,
+  items: [
+    { image: '/ocean-water-pool/1.jpg' },
+    { image: '/ocean-water-pool/2.jpg' },
+    { image: '/ocean-water-pool/3.jpg' },
+    { image: '/ocean-water-pool/4.jpg' },
+    { image: '/ocean-water-pool/5.jpg' },
+  ],
+};
+
+const frontmatter = {
+  ...fallbackFrontmatter,
+  ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? fallbackFrontmatter.description } : {}),
+};
+
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutOneCol frontmatter={frontmatter}>
+  {introText ? (
+    introParas.map((p) => (<p>{p}</p>))
+  ) : (
+    <p>
+      Between the sea and the sky, this seawater pool, unique of its kind in Mexico and exceptional in the world, blends seamlessly with the horizon. Surrounded by natural rocks, sun-kissed terraces and tropical greenery, it unveils one of the most captivating views of Zihuatanejo Bay. A sanctuary of serenity where every wave sets the rhythm of time.
+    </p>
+  )}
+</LayoutOneCol>
+

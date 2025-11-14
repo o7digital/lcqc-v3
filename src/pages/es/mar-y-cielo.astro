@@ -1,0 +1,72 @@
+---
+import LayoutOneCol from '../../layouts/LayoutOneCol.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'mar-y-cielo';
+const locale = 'es';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+
+const fallbackFrontmatter = {
+  title: 'Mar y Cielo',
+  description: 'Mariscos de la diversidad de la costa de Zihuatanejo',
+  layout: '@layouts/LayoutOneCol.astro',
+  showAwards: false,
+  justifyText: true,
+  showBack: false,
+  items: [
+    { image: '/mar-y-cielo/1.jpeg' },
+    { image: '/mar-y-cielo/2.jpeg' },
+    { image: '/mar-y-cielo/3.jpeg' },
+    { image: '/mar-y-cielo/4.jpeg' },
+    { image: '/mar-y-cielo/4.jpg' },
+    { image: '/mar-y-cielo/5.jpg' },
+    { image: '/mar-y-cielo/6.jpg' },
+    { image: '/mar-y-cielo/7.jpg' },
+    { image: '/mar-y-cielo/8.jpg' },
+    { image: '/mar-y-cielo/9.jpg' },
+    { image: '/mar-y-cielo/10.jpg' },
+    { image: '/mar-y-cielo/11.jpg' },
+  ],
+};
+
+const frontmatter = {
+  ...fallbackFrontmatter,
+  ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? fallbackFrontmatter.description } : {}),
+};
+
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutOneCol frontmatter={frontmatter}>
+  {introText ? (
+    introParas.map((p) => (<p>{p}</p>))
+  ) : (
+    <>
+      <p>
+        Nuestros mariscos se capturan cada mañana en las aguas cristalinas de la costa de Zihuatanejo, garantizando la frescura y el sabor más puro del Pacífico en cada plato. Cada creación culinaria celebra el encuentro entre la tradición mexicana y la inspiración mediterránea, elaborada con ingredientes de temporada y el toque apasionado de nuestros chefs.
+      </p>
+      <p>
+        Esta valiosa tradición, transmitida por generaciones de pescadores locales, convierte cada comida en una experiencia auténtica frente al mar, donde la frescura, el sabor y la elegancia se fusionan en perfecta armonía.
+      </p>
+      <p class="text-xl font-bold">Cena — De 18:00 a 22:30 hrs.</p>
+      <div class="mt-8 flex justify-center">
+        <a href="https://www.opentable.com.mx/r/mar-y-cielo-zihuatanejo" target="_blank" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Reservar mesa</a>
+      </div>
+    </>
+  )}
+</LayoutOneCol>
+

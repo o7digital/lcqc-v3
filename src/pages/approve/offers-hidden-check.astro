@@ -1,0 +1,72 @@
+---
+import Layout from "@layouts/Layout.astro";
+
+const { fetchDatoCMS } = await import("@lib/datocms");
+
+const hiddenSlugs = [
+  "prolong-dream",
+  "delight-cuisine",
+  "offer-for-nationals",
+  "oferta-para-nacionales", // ES alias
+];
+
+const locales = ["en", "es"];
+
+async function run(locale) {
+  const query = `
+    query Check($locale: SiteLocale, $slugs: [String]) {
+      active: allOffers(filter: { active: { eq: true } }, locale: $locale) {
+        slug
+      }
+      inactive: allOffers(filter: { active: { eq: false } }, locale: $locale) {
+        slug
+      }
+      subsetActive: allOffers(filter: { slug: { in: $slugs }, active: { eq: true } }, locale: $locale) {
+        slug
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { locale, slugs: hiddenSlugs });
+  return {
+    locale,
+    active: (data?.active || []).map((x) => x.slug),
+    inactive: (data?.inactive || []).map((x) => x.slug),
+    subsetActive: (data?.subsetActive || []).map((x) => x.slug),
+  };
+}
+
+const results = [];
+for (const loc of locales) {
+  try { results.push(await run(loc)); } catch (_) {}
+}
+---
+
+<Layout title="Offers – Hidden Check">
+  <section class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="text-3xl md:text-5xl font-bold mb-6">Hidden Offers Check</h1>
+    <p class="mb-6">This page verifies that the following slugs are NOT returned in the active list (hidden):</p>
+    <pre class="bg-gray-100 p-3 rounded mb-8">{JSON.stringify(hiddenSlugs, null, 2)}</pre>
+    {results.map((r) => (
+      <div class="mb-10">
+        <h2 class="text-xl font-semibold">Locale: {r.locale.toUpperCase()}</h2>
+        <p class="mt-2">Active count: <b>{r.active.length}</b> • Inactive count: <b>{r.inactive.length}</b></p>
+        <div class="grid md:grid-cols-2 gap-6 mt-4">
+          <div>
+            <h3 class="font-semibold mb-2">Active slugs</h3>
+            <pre class="bg-gray-50 p-3 rounded overflow-auto">{JSON.stringify(r.active, null, 2)}</pre>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">Inactive slugs</h3>
+            <pre class="bg-gray-50 p-3 rounded overflow-auto">{JSON.stringify(r.inactive, null, 2)}</pre>
+          </div>
+        </div>
+        <div class="mt-4">
+          <h3 class="font-semibold mb-2">Hidden slugs present in ACTIVE?</h3>
+          <pre class="bg-gray-50 p-3 rounded overflow-auto">{JSON.stringify(r.subsetActive, null, 2)}</pre>
+          <p class="mt-2 text-sm text-gray-600">Expected: [] (empty). If empty, hidden offers are not shown in grids that filter active=true.</p>
+        </div>
+      </div>
+    ))}
+  </section>
+</Layout>
+

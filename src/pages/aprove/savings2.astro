@@ -1,24 +1,8 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import SavingsSection from "@components/SavingsSection.astro";
-
-// Curated list without "offer for nationals"
-const includeSlugs = [
-  'discover-us',
-  'enchanting-moments',
-  'indulge-yourself',
-];
 ---
-<Layout title="Aprove – Offers Preview (v2)">
-  <SavingsSection
-    title="Discover our offers"
-    description="Preview of the savings grid with custom background."
-    moreLabel="More details"
-    bookLabel="Book Now"
-    sectionId="aprove-savings2"
-    includeSlugs={includeSlugs}
-    backgroundImage="/offers/foto-oceano.png?v=3"
-    backgroundOpacity={0.25}
-    backgroundOffsetY="-2.5cm"
-  />
+<Layout title="Redirecting…">
+  <meta http-equiv="refresh" content="0; url=/approve/savings2/" />
+  <p>Redirecting to /approve/savings2/…</p>
 </Layout>
+

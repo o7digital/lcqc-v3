@@ -1,9 +1,10 @@
 {
   "redirects": [
+    { "source": "/aprove/:path*", "destination": "/approve/:path*", "permanent": false },
+    { "source": "/es/aprove/:path*", "destination": "/es/approve/:path*", "permanent": false },
     { "source": "/savings",  "destination": "https://lcqc.tempurl.host/savings/",  "permanent": false },
     { "source": "/savings/", "destination": "https://lcqc.tempurl.host/savings/",  "permanent": false },
     { "source": "/es/ahorros",  "destination": "https://lcqc.tempurl.host/es/ahorros/",  "permanent": false },
     { "source": "/es/ahorros/", "destination": "https://lcqc.tempurl.host/es/ahorros/",  "permanent": false }
   ]
 }
-

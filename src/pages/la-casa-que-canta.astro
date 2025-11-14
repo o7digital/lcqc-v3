@@ -1,36 +1,62 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+// Optional DatoCMS page content (fallback to static if unavailable)
+const locale = 'en';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        heroImage { url }
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug: 'la-casa-que-canta', locale });
+  page = data?.allPages?.[0] || null;
+} catch(_) { page = null; }
+const pageTitle = page?.title || 'Welcome to La Casa Que Canta';
+const pageSubtitle = page?.subtitle || 'Small Luxury Hotel Boutique';
+const heroUrl = page?.heroImage?.url || '/lobby.jpg';
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
 ---
 
-<Layout title="Welcome to La Casa Que Canta">
-  <section class="h-72 bg-center bg-[url('/lobby.jpg')] bg-cover">
+<Layout title={pageTitle}>
+  <section class="h-72 bg-center bg-cover" style={`background-image: url(${heroUrl});`}>
   </section>
 
   <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
     <div class="px-4 grid md:grid-cols-2 py-8 max-w-7xl items-center mx-auto justify-between">
       <div class="mb-8">
-        <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">
-          Welcome to La Casa que Canta
-        </h2>
-        <mark class="text-xl font-bold">
-          Small Luxury Hotel Boutique
-        </mark>
+        <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">{pageTitle}</h2>
+        <mark class="text-xl font-bold">{pageSubtitle}</mark>
       </div>
 
       <div class="text-justify text-base grid gap-4">
-        <p>
-          La Casa Que Canta is a small luxury hotel with essence, history and a personality of its own.
-          Located in Zihuatanejo next to the beautiful La Ropa beach, this hotel offers unrivaled panoramic views.
-        </p>
-        <p>
-          Built with Adobe bricks, palapas and tropical woods, the unique architecture of La Casa Que Canta is
-          an icon on the Pacific Coast of Mexico. It’s 25 Oceanfront ample suites, spread out among three buildings and  spacious terraces.
-        </p>
-        <p>
-          Considered The Most Romantic Hotel by famous magazines and travelers. The hotel was chosen for a famous Hollywood
-          movie called “When a Man loves a woman”. Since our opening 33 years ago, we are proud to be amongst the best Boutique
-          Hotels of the World. Our pursuit of constant improvement and excellent service has granted us multiple awards.
-        </p>
+        {introText ? (
+          introParas.map((p) => (<p>{p}</p>))
+        ) : (
+          <>
+            <p>
+              La Casa Que Canta is a small luxury hotel with essence, history and a personality of its own.
+              Located in Zihuatanejo next to the beautiful La Ropa beach, this hotel offers unrivaled panoramic views.
+            </p>
+            <p>
+              Built with Adobe bricks, palapas and tropical woods, the unique architecture of La Casa Que Canta is
+              an icon on the Pacific Coast of Mexico. It’s 25 Oceanfront ample suites, spread out among three buildings and  spacious terraces.
+            </p>
+            <p>
+              Considered The Most Romantic Hotel by famous magazines and travelers. The hotel was chosen for a famous Hollywood
+              movie called “When a Man loves a woman”. Since our opening 33 years ago, we are proud to be amongst the best Boutique
+              Hotels of the World. Our pursuit of constant improvement and excellent service has granted us multiple awards.
+            </p>
+          </>
+        )}
       </div>
     </div>
   </section>

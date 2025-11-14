@@ -1,21 +1,45 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'accomodations';
+const locale = 'es';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+const pageTitle = page?.title || 'Alojamiento';
+const pageSubtitle = page?.subtitle || 'Pequeño hotel boutique de lujo';
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
 ---
 
-<Layout title="Bienvenido a Astro.">
+<Layout title="Alojamiento - La Casa Que Canta">
     <section class="h-72 bg-center bg-cover" style="background-image: image-set(url('/accomodations.webp') type('image/webp'), url('/accomodations.jpg') type('image/jpeg'));">
     </section>
     <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
         <div class="px-4 grid md:grid-cols-2 py-10 max-w-7xl items-center mx-auto justify-between ">
             <div class="mb-8">
-                <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">
-                    Alojamiento</h2>
-                    <mark class="text-xl font-bold">Pequeño hotel boutique de lujo
-                    </mark>
+                <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">{pageTitle}</h2>
+                    <mark class="text-xl font-bold">{pageSubtitle}</mark>
             </div>
             <div class="text-justify text-base grid gap-4">
+              {introText ? (
+                introParas.map((p) => (<p>{p}</p>))
+              ) : (
                 <p>La Casa Que Canta es un pequeño hotel de lujo con esencia, historia y una personalidad propia.
-                    Ubicado en Zihuatanejo junto a la hermosa playa La Ropa, este hotel ofrece vistas panorámicas incomparables.</p>
+                  Ubicado en Zihuatanejo junto a la hermosa playa La Ropa, este hotel ofrece vistas panorámicas incomparables.</p>
+              )}
             </div>
         </div>
     </section>

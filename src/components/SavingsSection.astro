@@ -11,15 +11,60 @@ const {
   backgroundOffsetY = '0',
   offsetX = '0',
   includeSlugs = undefined,
+  // DatoCMS integration (optional)
+  useDato = false,
+  datoLinkBase = undefined,
 } = Astro.props;
 
 // Load EN or ES offers based on current path (Astro.glob must be static)
 const isES = Astro.url.pathname.startsWith('/es');
-const offersES = await Astro.glob('/src/pages/es/savings/*.md');
-const offersEN = await Astro.glob('/src/pages/savings/*.md');
-const offers = isES ? offersES : offersEN;
-// Optional filtering by slug (filename). If provided, only include matching pages.
-const selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
+let offers = [];
+let selectedOffers = [];
+
+if (useDato) {
+  try {
+    const { fetchDatoCMS } = await import('@lib/datocms');
+    const locale = isES ? 'es' : 'en';
+  const query = `
+      query AllOffers($locale: SiteLocale) {
+        allOffers(filter: { active: { eq: true } }, orderBy: order_ASC, locale: $locale) {
+          id
+          title
+          slug
+          subtitle
+          description
+          travelDate
+          imagefront { url }
+        }
+      }
+    `;
+    const data = await fetchDatoCMS(query, { locale });
+    const base = datoLinkBase ?? (isES ? '/es/savings/' : '/savings/');
+    const datoOffers = (data?.allOffers || []).map((o) => ({
+      url: `${base}${o.slug}`,
+      frontmatter: {
+        title: o.title,
+        // Grid text must use the short subtitle; fallback to description if needed
+        description: o.subtitle || o.description || '',
+        travel: o.travelDate || '',
+        imagefront: o?.imagefront?.url || '',
+      },
+    }));
+    offers = datoOffers;
+  } catch (e) {
+    // Fail silently and fallback to markdown
+    offers = [];
+  }
+}
+
+if (!useDato || offers.length === 0) {
+  const offersES = await Astro.glob('/src/pages/es/savings/*.md');
+  const offersEN = await Astro.glob('/src/pages/savings/*.md');
+  offers = isES ? offersES : offersEN;
+}
+
+// Optional filtering by slug (filename or dato slug). If provided, only include matching pages.
+selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
   ? offers.filter((post) => {
       const segs = (post.url || '').split('/').filter(Boolean);
       const last = segs[segs.length - 1] || '';
@@ -58,6 +103,7 @@ const selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
         <h3 class="text-3xl md:text-5xl z-20 relative text-center">{post.frontmatter.title}</h3>
         <div>
           <p class="text-white relative z-10 p-4 text-center" set:html={post.frontmatter.description}></p>
+          {/* Travel dates are shown only on the detail page */}
           <div class="flex flex-wrap p-4 gap-4 justify-center md:justify-between">
             <a href={post.url} class="relative text-sm z-10 bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{moreLabel}</a>
             <a href={post.url} class="relative text-sm z-10 bg-white/90 font-semibold uppercase py-3 px-6 text-black hover:bg-white/60">{bookLabel}</a>

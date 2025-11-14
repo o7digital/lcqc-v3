@@ -10,7 +10,144 @@
         "sortable": true,
         "singleton": false
       }
+  },
+  {
+    "type": "item_type",
+    "id": "page",
+    "attributes": {
+      "name": "Page",
+      "api_key": "page",
+      "draft_mode_active": false,
+      "sortable": true,
+      "singleton": false
+    }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Title",
+      "field_type": "string",
+      "api_key": "title",
+      "localized": true,
+      "validators": { "required": {} }
     },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "page" } } }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Subtitle",
+      "field_type": "string",
+      "api_key": "subtitle",
+      "localized": true
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "page" } } }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Slug",
+      "field_type": "string",
+      "api_key": "slug",
+      "localized": false,
+      "validators": { "required": {}, "unique": {} }
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "page" } } }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Hero Image",
+      "field_type": "file",
+      "api_key": "hero_image",
+      "localized": false
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "page" } } }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Intro",
+      "field_type": "text",
+      "api_key": "intro",
+      "localized": true
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "page" } } }
+  },
+  {
+    "type": "item_type",
+    "id": "offer",
+    "attributes": {
+      "name": "Offer",
+      "api_key": "offer",
+      "draft_mode_active": false,
+      "sortable": true,
+      "singleton": false
+    }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Title",
+      "field_type": "string",
+      "api_key": "title",
+      "localized": true,
+      "validators": { "required": {} }
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "offer" } } }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Slug",
+      "field_type": "string",
+      "api_key": "slug",
+      "localized": false,
+      "validators": { "required": {}, "unique": {} }
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "offer" } } }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Active",
+      "field_type": "boolean",
+      "api_key": "active",
+      "localized": false
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "offer" } } }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Order",
+      "field_type": "integer",
+      "api_key": "order",
+      "localized": false
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "offer" } } }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Front Image",
+      "field_type": "file",
+      "api_key": "imagefront",
+      "localized": false,
+      "validators": { "required": {} }
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "offer" } } }
+  },
+  {
+    "type": "field",
+    "attributes": {
+      "label": "Description",
+      "field_type": "text",
+      "api_key": "description",
+      "localized": true
+    },
+    "relationships": { "item_type": { "data": { "type": "item_type", "id": "offer" } } }
+  }
     {
       "type": "field",
       "attributes": {

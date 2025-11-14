@@ -1,0 +1,63 @@
+---
+import LayoutOneCol from '@layouts/LayoutOneCol.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'infinity-pool';
+const locale = 'en';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+
+const fallbackFrontmatter = {
+  title: 'Infinity Pool',
+  description: '',
+  layout: '@layouts/LayoutOneCol.astro',
+  justifyText: true,
+  showBack: false,
+  items: [
+    { image: '/infinity-pool/1.jpg' },
+    { image: '/infinity-pool/2.jpg' },
+    { image: '/infinity-pool/3.jpg' },
+    { image: '/infinity-pool/4.jpg' },
+    { image: '/infinity-pool/5.jpg' },
+  ],
+};
+
+const frontmatter = {
+  ...fallbackFrontmatter,
+  ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? fallbackFrontmatter.description } : {}),
+};
+
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutOneCol frontmatter={frontmatter}>
+  {introText ? (
+    introParas.map((p) => (<p>{p}</p>))
+  ) : (
+    <>
+      <p>
+        Perched above the Pacific, this stunning infinity pool seems to melt into the ocean and its endless horizon. With a commanding view over the bay of Zihuatanejo, it invites you to feel suspended between sea and sky, where time slows down and every reflection dances with the light.
+      </p>
+      <p>
+        Just steps away from the bar and the restaurant, it is a place to bask in the warmth of the sun, savour a cocktail at sunset, or simply let the rhythm of the waves cradle your thoughts.
+      </p>
+      <p>
+        Here, the horizon is not a limit: it is an experience.
+      </p>
+    </>
+  )}
+</LayoutOneCol>
+

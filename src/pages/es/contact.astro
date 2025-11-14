@@ -1,5 +1,27 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+const slug = 'contact';
+const locale = 'es';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+const pageTitle = page?.title || 'Contacto y Ubicación';
+const pageSubtitle = page?.subtitle || 'Por favor contáctanos en:';
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
 ---
 
 <Layout title="Contacto y Ubicación">
@@ -18,10 +40,15 @@ import Layout from '../../layouts/Layout.astro';
         <div class="md:col-span-1 order-4 md:order-2 contact-right-bg h-full">
             <div class="p-4 md:p-10 flex flex-col flex-wrap gap-2 h-full">
                 <div>
-                    <h1 class="font-bold text-5xl lg:text-7xl text-black/90 text-balance" >Contacto y Ubicación</h1>
-                    <mark class="text-lg">Por favor contáctanos en:</mark>
+                    <h1 class="font-bold text-5xl lg:text-7xl text-black/90 text-balance" >{pageTitle}</h1>
+                    <mark class="text-lg">{pageSubtitle}</mark>
                 </div>
                 <div class="mb-8">
+                    {introText && (
+                      <div class="mb-4 grid gap-3">
+                        {introParas.map((p)=> (<p>{p}</p>))}
+                      </div>
+                    )}
                     <p><strong>Email:</strong><br>
                         <a class="text-sm flex items-center gap-2 hover:underline" href="mailto:sales.reservations@lacasaquecanta.com">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M3 8l9 6 9-6"/><path d="M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2"/></svg>

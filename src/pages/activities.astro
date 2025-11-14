@@ -1,0 +1,68 @@
+---
+import LayoutTwoCol from '@layouts/LayoutTwoCol.astro';
+import { fetchDatoCMS } from '@lib/datocms';
+
+// Fetch DatoCMS Page content (dev env) with fallback to existing static content
+const slug = 'activities';
+const locale = 'en';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+
+const fallbackFrontmatter = {
+  title: 'Activities',
+  description: 'Experiences that make your stay unforgettable',
+  showBack: false,
+  showMichelin: false,
+  items: [
+    { image: '/images/jeremy-bishop-surfing.jpg', text: 'Surfing' },
+    { image: '/images/karl-callwood.jpg', text: 'Scuba Diving' },
+    { image: '/images/jeremy-bishop-voilier.jpg', text: 'Sailing' },
+    { image: '/images/hiroko-yoshii.jpg', text: 'Snorkeling' },
+    { image: '/images/yoga.jpg', text: 'Yoga on the Beach' },
+    { image: '/images/langosta.jpg', text: 'Seafood Experience' },
+    { image: '/images/mexicana.jpg', text: 'Mexican Cuisine' },
+    { image: '/images/robin-davies-diner.jpg', text: 'Romantic Dinner' },
+  ],
+};
+
+const frontmatter = {
+  ...fallbackFrontmatter,
+  ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? fallbackFrontmatter.description } : {}),
+};
+
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutTwoCol frontmatter={frontmatter}>
+  {introText ? (
+    introParas.map((p) => (<p>{p}</p>))
+  ) : (
+    <>
+      <p>
+        Discover a world of unique experiences at La Casa Que Canta. Our activities are designed to immerse you in the beauty of Zihuatanejo and the essence of Mexico.
+      </p>
+      <p><strong>Options include:</strong></p>
+      <ul>
+        <li>Water adventures: surfing, snorkeling, scuba diving, and sailing.</li>
+        <li>Wellness: yoga sessions on the beach to reconnect with your body and mind.</li>
+        <li>Gastronomy: from fresh seafood to traditional Mexican cuisine.</li>
+        <li>Romance: unforgettable dinners by the ocean under the stars.</li>
+      </ul>
+      <p>Every detail is carefully curated to ensure unforgettable moments during your stay.</p>
+    </>
+  )}
+</LayoutTwoCol>
+

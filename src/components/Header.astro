@@ -13,19 +13,19 @@ if (isES) {
 const langSwap = new Map([
   ['/es/savings/oferta-para-nacionales', '/savings/offer-for-nationals'],
   ['/savings/offer-for-nationals', '/es/savings/oferta-para-nacionales'],
-  ['/es/aprove/savings/oferta-para-nacionales', '/aprove/savings/offer-for-nationals'],
-  ['/aprove/savings/offer-for-nationals', '/es/aprove/savings/oferta-para-nacionales'],
+  ['/es/approve/savings/oferta-para-nacionales', '/approve/savings/offer-for-nationals'],
+  ['/approve/savings/offer-for-nationals', '/es/approve/savings/oferta-para-nacionales'],
 ]);
 if (langSwap.has(Astro.url.pathname)) {
   switchLangHref = langSwap.get(Astro.url.pathname) || switchLangHref;
 }
 const path = Astro.url.pathname;
-// Force dark (black) burger for Offers: grids and all detail pages (EN/ES, incl. /aprove)
+// Force dark (black) burger for Offers: grids and all detail pages (EN/ES, incl. /approve)
 const isOffersSection = (
   path.startsWith('/savings') ||
   path.startsWith('/es/savings') ||
-  path.startsWith('/aprove/savings') ||
-  path.startsWith('/es/aprove/savings')
+  path.startsWith('/approve/savings') ||
+  path.startsWith('/es/approve/savings')
 );
 // Enforce dark (black) header on white-background pages (including Offers grids and Privacy Policy)
 const onWhiteHeader =

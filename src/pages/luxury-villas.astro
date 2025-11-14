@@ -1,20 +1,41 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import { fetchDatoCMS } from '@lib/datocms';
 
+const slug = 'luxury-villas';
+const locale = 'en';
+let page = null;
+try {
+  const query = `
+    query PageBySlug($slug: String, $locale: SiteLocale) {
+      allPages(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
+        title
+        subtitle
+        intro
+      }
+    }
+  `;
+  const data = await fetchDatoCMS(query, { slug, locale });
+  page = data?.allPages?.[0] || null;
+} catch (_) { page = null; }
+const pageTitle = page?.title || 'OUR Luxury villas';
+const pageSubtitle = page?.subtitle || 'An escape from routine, a connection with nature';
+const introText = (page?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
 ---
-<Layout title="Discovers our offers" >
+<Layout title="Our Luxury Villas - La Casa Que Canta" >
 
 <section class="py-32 relative">
     <div class="top-0 opacity-20 bg-[url('https://lacasaquecanta.com/wp-content/uploads/2022/07/main-bg.jpeg')] bg-cover bg-center bg-no-repeat absolute w-full h-full"></div>
     <div class="grid  max-w-6xl mx-auto ">
         <div class="max-w-4xl px-4 mx-auto mb-10 text-center relative">
-            <h1 class="text-4xl md:text-5xl lg:text-7xl mb-6 font-bold">OUR Luxury villas
-            </h1>
-            <p>An escape from routin, a connection with nature.
-                an occasion to relate with your inner self
-
-            </p>
-
+            <h1 class="text-4xl md:text-5xl lg:text-7xl mb-6 font-bold">{pageTitle}</h1>
+            <p>{pageSubtitle}</p>
+            {introText && (
+              <div class="mt-4 text-left grid gap-4 max-w-3xl mx-auto">
+                {introParas.map((p)=> (<p>{p}</p>))}
+              </div>
+            )}
         </div>
         <div class=" grid gap-6 grid-cols-1 px-4 md:grid-cols-2 relative ">
                 <div class="group relative bg-cover bg-center  aspect-square lg:aspect-[16/11] grid items-end text-white  overflow-hidden">

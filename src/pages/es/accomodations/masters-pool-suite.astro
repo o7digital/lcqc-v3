@@ -1,0 +1,58 @@
+---
+import LayoutAccomo from '@layouts/LayoutAccomo.astro';
+import { fetchSuiteDetails } from '@lib/fetchSuiteDetails';
+
+const slug = 'masters-pool-suite';
+const locale = 'es';
+const details = await fetchSuiteDetails(slug, locale);
+
+const fallbackFrontmatter = {
+  title: 'Master Pool Suite',
+  imagefront: '/master-pool-suite/5.jpg',
+  book: 'https://be.synxis.com/?adult=1&arrive=2024-07-01&chain=22402&child=0&currency=USD&depart=2024-07-02&hotel=78821&level=hotel&locale=es-ES&room=STE&rooms=1&src=24C',
+  square: '1,100 -1,735 ft² | 103-160 m²',
+  beds: 'Cama King Size',
+  guest: '2 huéspedes',
+  roomfeatures: [
+    { rf: 'Terraza con sala, mesa, sillas y tumbonas' },
+    { rf: 'Alberca pequeña privada' },
+    { rf: 'Escritorio de trabajo' },
+    { rf: 'Vestidor tipo walk-in' },
+    { rf: 'Caja de seguridad' },
+  ],
+  amenities: [
+    { a: 'Minibar de cortesía' },
+    { a: 'Fruta fresca repuesta diariamente' },
+    { a: 'Bebida de bienvenida' },
+    { a: 'Tapiz cubrecama artístico decorada con flores frescas' },
+    { a: 'Revistas y libros en la habitación' },
+    { a: 'Acceso a internet' },
+    { a: 'Wi-Fi de cortesía.' },
+  ],
+  items: [
+    { image: '/master-pool-suite/1.jpg' },
+    { image: '/master-pool-suite/2.jpg' },
+    { image: '/master-pool-suite/3.jpg' },
+    { image: '/master-pool-suite/4.jpg' },
+    { image: '/master-pool-suite/5.jpg' },
+    { image: '/master-pool-suite/6.jpg' },
+  ],
+};
+
+const parseList = (v)=>Array.isArray(v)?v.map(s=>String(s).trim()).filter(Boolean):(typeof v==='string'?v.split(/\r?\n+/).map(s=>s.trim()).filter(Boolean):[]);
+const datoFeatures = parseList(details?.roomFeatures).map((rf)=>({rf}));
+const rawAmenities = parseList(details?.amenities);
+const datoAmenities = (()=>{ const arr=rawAmenities.map((a)=>({a})); if(details?.internetAccess && !rawAmenities.some(s=>s.toLowerCase().includes('internet'))) arr.push({a:'Acceso a internet'}); return arr;})();
+
+const frontmatter = { ...fallbackFrontmatter, description: details?.subtitle ?? '', roomfeatures: datoFeatures.length? datoFeatures: fallbackFrontmatter.roomfeatures, amenities: datoAmenities.length? datoAmenities : fallbackFrontmatter.amenities };
+const introText = (details?.intro || '').trim();
+const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+---
+
+<LayoutAccomo frontmatter={frontmatter}>
+  {introText ? introParas.map((p)=>(<p>{p}</p>)) : (
+    <p>
+      Estas 9 suites tipo apartamento son todas diferentes por su atractivo y decoración mexicana. Cuentan con amplias terrazas privadas con albercas infinity y vistas a la bahía. Sus espacios vastos e iluminados, artesanías únicas y vegetación se suman a su encanto.
+    </p>
+  )}
+</LayoutAccomo>
