@@ -1,12 +1,23 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
+import sitemap from '@astrojs/sitemap';
 
 console.log('Forzando redeploy limpio desde astro.config.mjs');
 
 export default defineConfig({
-  site: 'https://lcqc2.vercel.app',  // URL de tu proyecto en Vercel
+  site: 'https://www.lacasaquecanta.com',
   integrations: [
-    tailwind()
+    tailwind(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en',
+          es: 'es'
+        }
+      },
+      filter: (page) => !page.includes('/aprove/') && !page.includes('/admin/')
+    })
   ],
   output: 'static',
 

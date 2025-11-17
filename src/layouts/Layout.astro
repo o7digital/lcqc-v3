@@ -98,6 +98,60 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 			  document.head.appendChild(script);
 			}, 6000); // 6 seconds delay
 		</script>
+
+		<!-- Schema.org JSON-LD for Hotel/LocalBusiness -->
+		<script type="application/ld+json">
+		{
+		  "@context": "https://schema.org",
+		  "@type": "Hotel",
+		  "name": "La Casa Que Canta",
+		  "description": {isEs 
+		    ? "Hotel boutique de lujo frente al mar en Zihuatanejo, México. Experiencia romántica exclusiva con vistas al océano Pacífico." 
+		    : "Luxury oceanfront boutique hotel in Zihuatanejo, Mexico. Exclusive romantic experience with Pacific Ocean views."},
+		  "image": "https://www.lacasaquecanta.com/panorama-lcqc.jpg",
+		  "starRating": {
+		    "@type": "Rating",
+		    "ratingValue": "5"
+		  },
+		  "address": {
+		    "@type": "PostalAddress",
+		    "streetAddress": "Camino Escénico at Playa La Ropa S/N",
+		    "addressLocality": "Zihuatanejo",
+		    "addressRegion": "Guerrero",
+		    "postalCode": "40880",
+		    "addressCountry": "MX"
+		  },
+		  "geo": {
+		    "@type": "GeoCoordinates",
+		    "latitude": "17.6266",
+		    "longitude": "-101.5556"
+		  },
+		  "telephone": "+52-755-555-7000",
+		  "email": "sales.reservations@lacasaquecanta.com",
+		  "url": "https://www.lacasaquecanta.com",
+		  "priceRange": "$$$$",
+		  "amenityFeature": [
+		    { "@type": "LocationFeatureSpecification", "name": "Infinity Pool" },
+		    { "@type": "LocationFeatureSpecification", "name": "Ocean View" },
+		    { "@type": "LocationFeatureSpecification", "name": "Spa" },
+		    { "@type": "LocationFeatureSpecification", "name": "Restaurant" },
+		    { "@type": "LocationFeatureSpecification", "name": "Private Pools" },
+		    { "@type": "LocationFeatureSpecification", "name": "WiFi" },
+		    { "@type": "LocationFeatureSpecification", "name": "Adults Only" }
+		  ],
+		  "openingHoursSpecification": {
+		    "@type": "OpeningHoursSpecification",
+		    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+		    "opens": "09:00",
+		    "closes": "18:00"
+		  },
+		  "sameAs": [
+		    "https://www.facebook.com/LaCasaQueCantaLuxuryHotel/",
+		    "https://www.instagram.com/lacasaquecanta_hotelboutique/",
+		    "https://www.tripadvisor.com/Hotel_Review-g150795-d152932-Reviews-La_Casa_Que_Canta-Zihuatanejo_Zihuatanejo_de_Azueta_Pacific_Coast.html"
+		  ]
+		}
+		</script>
 	</head>
 	<body>
 		<main>
