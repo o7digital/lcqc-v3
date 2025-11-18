@@ -36,6 +36,15 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-FLBSN6KCTV"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'G-FLBSN6KCTV');
+		</script>
+
 		<!-- Open Graph -->
 		<meta property="og:title" content={title}>
 		<meta property="og:description" content={metaDescription}>
