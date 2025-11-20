@@ -64,7 +64,10 @@ const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
   <!-- 🔹 Ahora cada bloque ocupa toda la fila -->
   <section class="grid">
     <!-- History -->
-    <div class="aspect-[16/9] grid items-end bg-cover bg-center" style="background-image: image-set(url('/images/welcome-lacasa.webp') type('image/webp'), url('/images/welcome-lacasa.jpeg') type('image/jpeg'));">
+    <div
+      class="aspect-[16/9] grid items-end bg-cover"
+      style="background-image: image-set(url('/images/welcome-lacasa.webp') type('image/webp'), url('/images/welcome-lacasa-optimized.jpeg') type('image/jpeg')); background-position: center 45%;"
+    >
       <div class="p-10">
         <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
           History
