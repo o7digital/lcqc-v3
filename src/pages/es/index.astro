@@ -21,8 +21,8 @@ const slides = data?.allSliders || [];
 const fpParams = (fp) => (fp && typeof fp.x === 'number' && typeof fp.y === 'number') ? `&fp-x=${fp.x}&fp-y=${fp.y}` : '';
 const objPos = (fp) => {
   const defaultX = 0.5;
-  const defaultY = 0.2; // ligeramente plus haut par défaut
-  const biasUp = 0.1; // un peu moins de ciel
+  const defaultY = 0.2;
+  const biasUp = 0.1;
   const x = typeof fp?.x === 'number' ? fp.x : defaultX;
   const yRaw = typeof fp?.y === 'number' ? fp.y : defaultY;
   const y = Math.max(0, Math.min(1, yRaw - biasUp));
