@@ -28,7 +28,6 @@ const objPos = (fp) => {
   const y = Math.max(0, Math.min(1, yRaw - biasUp));
   return `${Math.round(x * 100)}% ${Math.round(y * 100)}%`;
 };
-const desktopShiftPx = 80; // ~2 cm de décalage vers le haut sur desktop
 // DEV: re-enable booking engine for testing
 const hideBooking = false;
 ---
@@ -61,7 +60,7 @@ const hideBooking = false;
                   srcset={`${slide.media.url}?auto=compress&q=70&w=640 640w, ${slide.media.url}?auto=compress&q=70&w=1280 1280w, ${slide.media.url}?auto=compress&q=70&w=1920 1920w`}
                   sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
                   class="w-full h-full object-cover"
-                  style={`object-position: ${objPos(slide.media.focalPoint)}; transform: translateY(-${desktopShiftPx}px) scale(1.05);`}
+                  style={`object-position: ${objPos(slide.media.focalPoint)};`}
                   alt={slide.description || 'Slide'}
                   loading={i === 0 ? 'eager' : 'lazy'}
                   decoding="async"
