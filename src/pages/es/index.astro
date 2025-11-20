@@ -28,8 +28,8 @@ const objPos = (fp) => {
   const y = Math.max(0, Math.min(1, yRaw - biasUp));
   return `${Math.round(x * 100)}% ${Math.round(y * 100)}%`;
 };
-// DEV: re-enable booking engine for testing
-const hideBooking = false;
+// DEV: cacher le booking engine pour dev
+const hideBooking = true;
 ---
 
 <Layout title="Bienvenido a La Casa Que Canta">
