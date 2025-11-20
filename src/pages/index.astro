@@ -20,9 +20,15 @@ const data = await fetchDatoCMS(query);
 const slides = data?.allSliders || [];
 const isEs = Astro.url.pathname.startsWith('/es');
 const fpParams = (fp) => (fp && typeof fp.x === 'number' && typeof fp.y === 'number') ? `&fp-x=${fp.x}&fp-y=${fp.y}` : '';
-const objPos = (fp) => (fp && typeof fp.x === 'number' && typeof fp.y === 'number')
-  ? `${Math.round(fp.x * 100)}% ${Math.round(fp.y * 100)}%`
-  : '50% 20%';
+const objPos = (fp) => {
+  const defaultX = 0.5;
+  const defaultY = 0.2; // already raised once; bias further below
+  const biasUp = 0.1; // move crop a bit higher (less sky)
+  const x = typeof fp?.x === 'number' ? fp.x : defaultX;
+  const yRaw = typeof fp?.y === 'number' ? fp.y : defaultY;
+  const y = Math.max(0, Math.min(1, yRaw - biasUp));
+  return `${Math.round(x * 100)}% ${Math.round(y * 100)}%`;
+};
 // DEV: re-enable booking engine for testing
 const hideBooking = false;
 ---
