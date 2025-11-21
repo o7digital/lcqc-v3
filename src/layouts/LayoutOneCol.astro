@@ -24,7 +24,7 @@ const justifyText = frontmatter?.justifyText === true;
                     )}
             <div class="swiper-wrapper">
             {frontmatter.items.map((item) => {
-                const webp = item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+                const webp = item.image.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)(\?.*)?$/, '.webp$2');
                 return (
                 <div class="swiper-slide">
                     <picture>
