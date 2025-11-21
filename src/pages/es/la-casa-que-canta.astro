@@ -24,6 +24,15 @@ const pageSubtitle = page?.subtitle || 'Pequeño hotel boutique de lujo';
 const heroUrl = page?.heroImage?.url || '/lobby.jpg';
 const introText = (page?.intro || '').trim();
 const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+const fallbackParas = [
+  'Nuestro hotel tiene historia y personalidad propia. Ubicado en Zihuatanejo, junto a la hermosa playa La Ropa, ha sido reconocido por segundo año consecutivo con 1 Llave Michelin.',
+  'Construido con adobe, palapas y maderas tropicales, la singular arquitectura de nuestra "Casa" es un ícono de la costa del Pacífico mexicano. Sus 25 suites frente al mar ofrecen vistas panorámicas inigualables desde todas sus amplias suites y terrazas, distribuidas en tres edificios.',
+  'Considerado el hotel más romántico por prestigiosas revistas y viajeros, fue escenario de la famosa película de Hollywood "Cuando un hombre ama a una mujer".',
+];
+const oldIntroStart = 'la casa que canta es un pequeño hotel de lujo con esencia, historia y una personalidad propia';
+const introNormalized = introText.toLowerCase().replace(/\s+/g, ' ').trim();
+const useDatoIntro = introText && !introNormalized.startsWith(oldIntroStart);
+const paragraphs = useDatoIntro ? introParas : fallbackParas;
 ---
 
 <Layout title={pageTitle}>
@@ -38,24 +47,7 @@ const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
       </div>
 
       <div class="text-justify text-base grid gap-4">
-        {introText ? (
-          introParas.map((p) => (<p>{p}</p>))
-        ) : (
-          <>
-            <p>
-              Nuestro hotel tiene historia y personalidad propia. Ubicado en Zihuatanejo, junto a la hermosa playa La Ropa,
-              ha sido reconocido por segundo año consecutivo con 1 Llave Michelin.
-            </p>
-            <p>
-              Construido con adobe, palapas y maderas tropicales, la singular arquitectura de nuestra "Casa" es un ícono de la costa del Pacífico mexicano.
-              Sus 25 suites frente al mar ofrecen vistas panorámicas inigualables desde todas sus amplias suites y terrazas, distribuidas en tres edificios.
-            </p>
-            <p>
-              Considerado el hotel más romántico por prestigiosas revistas y viajeros, fue escenario de la famosa película de Hollywood
-              "Cuando un hombre ama a una mujer".
-            </p>
-          </>
-        )}
+        {paragraphs.map((p) => (<p>{p}</p>))}
       </div>
     </div>
   </section>
