@@ -31,7 +31,7 @@ const justifyText = frontmatter?.justifyText === true;
                         <source srcset={webp} type="image/webp" />
                         <img 
                             class="cursor-pointer object-cover transition duration-300 ease-in-out w-full h-full" 
-                            style={item.objectPosition ? `object-position: ${item.objectPosition}; transform: scale(${item.scale || 1})` : 'object-position: center'}
+                            style={item.objectPosition ? `object-position: ${item.objectPosition}` : 'object-position: center'}
                             data-page="false" 
                             src={item.image} 
                             alt={frontmatter.title} 
