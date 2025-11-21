@@ -36,12 +36,16 @@ const frontmatter = {
   ...fallbackFrontmatter,
   ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? '' } : {}),
 };
-
+const filteredFrontmatter = {
+  ...frontmatter,
+  // Ocultar la primera foto del gym hasta validación del cliente
+  items: (frontmatter.items || []).slice(1),
+};
 const introText = (page?.intro || '').trim();
 const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
 ---
 
-<LayoutOneCol frontmatter={frontmatter}>
+<LayoutOneCol frontmatter={filteredFrontmatter}>
   {introText ? (
     introParas.map((p) => (<p>{p}</p>))
   ) : (
@@ -53,4 +57,3 @@ const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
     </>
   )}
 </LayoutOneCol>
-
