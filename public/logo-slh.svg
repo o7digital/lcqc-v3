@@ -1,0 +1,13 @@
+<svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" width="180" height="180">
+  <!-- Background with light blue tint -->
+  <rect width="180" height="180" fill="transparent"/>
+  
+  <!-- White bordered box -->
+  <rect x="15" y="15" width="150" height="150" fill="rgba(255,255,255,0.95)" stroke="rgba(200,200,200,0.8)" stroke-width="2"/>
+  
+  <!-- Text: SMALL LUXURY HOTELS OF THE WORLD -->
+  <text x="90" y="45" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" fill="rgba(150,150,150,0.9)">SMALL</text>
+  <text x="90" y="62" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" fill="rgba(150,150,150,0.9)">LUXURY</text>
+  <text x="90" y="79" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="500" text-anchor="middle" fill="rgba(150,150,150,0.9)">HOTELS</text>
+  <text x="90" y="96" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="400" text-anchor="middle" fill="rgba(150,150,150,0.9)">OF THE WORLD</text>
+</svg>
