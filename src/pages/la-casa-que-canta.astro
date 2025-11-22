@@ -24,14 +24,15 @@ const pageSubtitle = page?.subtitle || 'Small Luxury Hotel Boutique';
 const heroUrl = page?.heroImage?.url || '/lobby.jpg';
 const introText = (page?.intro || '').trim();
 const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+const introNormalized = introText.toLowerCase().replace(/\s+/g, ' ').trim();
+const hasMichelinMention = introNormalized.includes('michelin');
 const fallbackParas = [
-  'Our hotel has history and a personality of its own. Located in Zihuatanejo next to the beautiful La Ropa beach.',
+  'Our hotel has history and a personality of its own. Located in Zihuatanejo next to the beautiful La Ropa beach, it is recognized for the second year with 1 Key by The Michelin Guide.',
   'Built with Adobe bricks, palapas and tropical woods, the unique architecture of our "Casa" is an icon on the Pacific Coast of Mexico. Its 25 oceanfront suites offer unrivaled panoramic views from every ample suite and spacious terrace, spread out among three buildings.',
   'Considered the most romantic hotel by famous magazines and travelers, the hotel was chosen for a famous Hollywood movie "When a Man loves a woman".',
 ];
 const oldIntroStart = 'la casa que canta is a small luxury hotel with essence, history and a personality of its own';
-const introNormalized = introText.toLowerCase().replace(/\s+/g, ' ').trim();
-const useDatoIntro = introText && !introNormalized.startsWith(oldIntroStart);
+const useDatoIntro = introText && !introNormalized.startsWith(oldIntroStart) && hasMichelinMention;
 const paragraphs = useDatoIntro ? introParas : fallbackParas;
 ---
 
@@ -56,7 +57,7 @@ const paragraphs = useDatoIntro ? introParas : fallbackParas;
     <!-- History -->
     <div
       class="aspect-[16/9] grid items-end bg-cover"
-      style="background-image: image-set(url('/images/welcome-lacasa-optimized.webp?v=2') type('image/webp'), url('/images/welcome-lacasa-optimized.jpg?v=2') type('image/jpeg')); background-position: center -170px;"
+      style="background-image: image-set(url('/images/welcome-lacasa-optimized.webp?v=3') type('image/webp'), url('/images/welcome-lacasa-optimized.jpg?v=3') type('image/jpeg')); background-position: center center;"
     >
       <div class="p-10">
         <h2 class="text-5xl lg:text-7xl text-white text-balance font-bold">
