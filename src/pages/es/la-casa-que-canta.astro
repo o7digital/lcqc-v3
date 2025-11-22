@@ -25,7 +25,7 @@ const heroUrl = page?.heroImage?.url || '/lobby.jpg';
 const introText = (page?.intro || '').trim();
 const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
 const fallbackParas = [
-  'Nuestro hotel tiene historia y personalidad propia. Ubicado en Zihuatanejo, junto a la hermosa playa La Ropa, ha sido reconocido por segundo año consecutivo con 1 Llave Michelin.',
+  'Nuestro hotel tiene historia y personalidad propia. Ubicado en Zihuatanejo, junto a la hermosa playa La Ropa.',
   'Construido con adobe, palapas y maderas tropicales, la singular arquitectura de nuestra "Casa" es un ícono de la costa del Pacífico mexicano. Sus 25 suites frente al mar ofrecen vistas panorámicas inigualables desde todas sus amplias suites y terrazas, distribuidas en tres edificios.',
   'Considerado el hotel más romántico por prestigiosas revistas y viajeros, fue escenario de la famosa película de Hollywood "Cuando un hombre ama a una mujer".',
 ];
@@ -43,11 +43,6 @@ const paragraphs = useDatoIntro ? introParas : fallbackParas;
     <div class="px-4 grid md:grid-cols-2 py-8 max-w-7xl items-center mx-auto justify-between">
       <div class="mb-8">
         <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">{pageTitle}</h2>
-        <!-- Logos SLH and Michelin - Centered -->
-        <div class="flex justify-start gap-[100] items-center mt-6">
-          <img src="/SLH2-black.svg" alt="Small Luxury Hotels" class="h-24 md:h-28 w-auto" />
-          <img src="/images/1 MICHELIN Key_2025_Round_Red.png" alt="Michelin 2025" class="h-24 md:h-28 w-auto" />
-        </div>
       </div>
 
       <div class="text-justify text-base grid gap-4">
