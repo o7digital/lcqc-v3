@@ -43,10 +43,13 @@ const paragraphs = useDatoIntro ? introParas : fallbackParas;
     <div class="px-4 grid md:grid-cols-2 py-8 max-w-7xl items-center mx-auto justify-between">
       <div class="mb-8">
         <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">{pageTitle}</h2>
-        <!-- Logos SLH and Michelin - Centered -->
-        <div class="flex justify-start gap-[100] items-center mt-6">
-          <img src="/SLH2-black.svg" alt="Small Luxury Hotels" class="h-24 md:h-28 w-auto" />
-          <img src="/images/1 MICHELIN Key_2025_Round_Red.png" alt="Michelin 2025" class="h-24 md:h-28 w-auto" />
+        <!-- Logo SLH sous le titre -->
+        <div class="flex items-center mt-6">
+          <img src="/images/logo2-slh.svg" alt="SLH" class="h-16 w-auto" />
+        </div>
+        <!-- Logo Michelin à droite -->
+        <div class="flex justify-end mt-4">
+          <img src="/images/1 MICHELIN Key_2025_Round_Red.png" alt="Michelin 2025" class="h-24 md:h-28 w-auto" style="margin-right:2cm;" />
         </div>
       </div>
 
