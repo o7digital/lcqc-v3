@@ -1,0 +1,13 @@
+<svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+  <!-- White box with black border -->
+  <rect x="10" y="10" width="180" height="140" fill="white" stroke="black" stroke-width="2"/>
+  
+  <!-- Text: SMALL LUXURY HOTELS OF THE WORLD -->
+  <text x="100" y="50" font-family="Georgia, serif" font-size="16" font-weight="400" text-anchor="middle" fill="black" letter-spacing="3">SMALL</text>
+  <text x="100" y="75" font-family="Georgia, serif" font-size="16" font-weight="400" text-anchor="middle" fill="black" letter-spacing="3">LUXURY</text>
+  <text x="100" y="100" font-family="Georgia, serif" font-size="16" font-weight="400" text-anchor="middle" fill="black" letter-spacing="3">HOTELS</text>
+  <text x="100" y="130" font-family="Georgia, serif" font-size="13" font-weight="400" text-anchor="middle" fill="black" letter-spacing="2">OF THE WORLD</text>
+  
+  <!-- Script text: Independently minded -->
+  <text x="100" y="180" font-family="cursive" font-size="12" font-style="italic" text-anchor="middle" fill="#333333">Independently minded</text>
+</svg>
