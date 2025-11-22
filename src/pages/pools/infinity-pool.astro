@@ -38,25 +38,20 @@ const frontmatter = {
   ...(page ? { title: page.title ?? fallbackFrontmatter.title, description: page.subtitle ?? fallbackFrontmatter.description } : {}),
 };
 
-const introText = (page?.intro || '').trim();
-const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+// Force English content - DatoCMS returns Spanish even for 'en' locale
+const introText = '';
+const introParas = [];
 ---
 
 <LayoutOneCol frontmatter={frontmatter}>
-  {introText ? (
-    introParas.map((p) => (<p>{p}</p>))
-  ) : (
-    <>
-      <p>
-        Perched above the Pacific, this stunning infinity pool seems to melt into the ocean and its endless horizon. With a commanding view over the bay of Zihuatanejo, it invites you to feel suspended between sea and sky, where time slows down and every reflection dances with the light.
-      </p>
-      <p>
-        Just steps away from the bar and the restaurant, it is a place to bask in the warmth of the sun, savour a cocktail at sunset, or simply let the rhythm of the waves cradle your thoughts.
-      </p>
-      <p>
-        Here, the horizon is not a limit: it is an experience.
-      </p>
-    </>
-  )}
+  <p>
+    Perched above the Pacific, this stunning infinity pool seems to melt into the ocean and its endless horizon. With a commanding view over the bay of Zihuatanejo, it invites you to feel suspended between sea and sky, where time slows down and every reflection dances with the light.
+  </p>
+  <p>
+    Just steps away from the bar and the restaurant, it is a place to bask in the warmth of the sun, savour a cocktail at sunset, or simply let the rhythm of the waves cradle your thoughts.
+  </p>
+  <p>
+    Here, the horizon is not a limit: it is an experience.
+  </p>
 </LayoutOneCol>
 
