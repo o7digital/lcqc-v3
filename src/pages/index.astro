@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import BookingEngine from '@components/BookingEngine.astro';
 import { fetchDatoCMS } from '@lib/datocms';
+import sliderBackup from '../data/slider-backup.json';
 
 const query = `
 {
@@ -16,20 +17,43 @@ const query = `
   }
 }
 `;
-const data = await fetchDatoCMS(query);
-const slides = data?.allSliders || [];
+let slides = [];
+try {
+  const data = await fetchDatoCMS(query);
+  slides = data?.allSliders || [];
+} catch (error) {
+  console.error('DatoCMS slider fetch failed, using local backup.', error);
+  slides = [];
+}
+const buildLocalSources = (base) => ({
+  webp: `/images/slider/${base}-640.webp 640w, /images/slider/${base}-1280.webp 1280w, /images/slider/${base}-1920.webp 1920w`,
+  jpg: `/images/slider/${base}-640.jpg 640w, /images/slider/${base}-1280.jpg 1280w, /images/slider/${base}-1920.jpg 1920w`,
+  fallback: `/images/slider/${base}-1920.jpg`,
+});
 const localHeroSlide = {
   id: 'local-casa-sunset',
   description: 'Suites at sunset overlooking the Pacific',
   media: { focalPoint: { x: 0.5, y: 0.6 } },
-  isLocal: true,
+  localSources: buildLocalSources('casa-sunset'),
 };
-const localSunsetSources = {
-  webp: '/images/slider/casa-sunset-640.webp 640w, /images/slider/casa-sunset-1280.webp 1280w, /images/slider/casa-sunset-1920.webp 1920w',
-  jpg: '/images/slider/casa-sunset-640.jpg 640w, /images/slider/casa-sunset-1280.jpg 1280w, /images/slider/casa-sunset-1920.jpg 1920w',
-  fallback: '/images/slider/casa-sunset-1920.jpg',
+const localDatoSlides = sliderBackup.map((slide) => ({
+  id: `local-${slide.baseName}`,
+  description: slide.description,
+  media: { focalPoint: slide.focalPoint || null },
+  localSources: buildLocalSources(slide.baseName),
+}));
+const replacementSlide7 = {
+  id: 'local-replace-slide-7',
+  description: 'Lobby with ocean view',
+  media: { focalPoint: { x: 0.5, y: 0.5 } },
+  localSources: buildLocalSources('custom-slide-07'),
 };
-const heroSlides = [localHeroSlide, ...slides.slice(1)];
+const baseSlides = slides.length > 0 ? slides : localDatoSlides;
+const adjustedSlides = [...baseSlides];
+if (adjustedSlides[6]) {
+  adjustedSlides[6] = replacementSlide7;
+}
+const heroSlides = [localHeroSlide, ...adjustedSlides.slice(1)];
 const isEs = Astro.url.pathname.startsWith('/es');
 const fpParams = (fp) => (fp && typeof fp.x === 'number' && typeof fp.y === 'number') ? `&fp-x=${fp.x}&fp-y=${fp.y}` : '';
 const objPos = (fp) => {
@@ -60,16 +84,16 @@ const hideBooking = true;
         <div class="swiper-wrapper">
           {heroSlides.length > 0 ? heroSlides.map((slide, i) => (
             <div class="swiper-slide">
-              {slide.isLocal ? (
+              {slide.localSources ? (
                 <picture>
                   <source
                     type="image/webp"
-                    srcset={`${localSunsetSources.webp}`}
+                    srcset={`${slide.localSources.webp}`}
                     sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
                   />
                   <img
-                    src={localSunsetSources.fallback}
-                    srcset={`${localSunsetSources.jpg}`}
+                    src={slide.localSources.fallback}
+                    srcset={`${slide.localSources.jpg}`}
                     sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
                     class="w-full h-full object-cover"
                     style={`object-position: ${objPos(slide.media.focalPoint)};`}
@@ -119,16 +143,16 @@ const hideBooking = true;
         {heroSlides.length > 0 ? heroSlides.map((slide, i) => (
           <div class="swiper-slide relative">
             <picture>
-              {slide.isLocal ? (
+              {slide.localSources ? (
                 <>
                   <source
                     type="image/webp"
-                    srcset={`${localSunsetSources.webp}`}
+                    srcset={`${slide.localSources.webp}`}
                     sizes="100vw"
                   />
                   <img
-                    src={localSunsetSources.fallback}
-                    srcset={`${localSunsetSources.jpg}`}
+                    src={slide.localSources.fallback}
+                    srcset={`${slide.localSources.jpg}`}
                     sizes="100vw"
                     class="w-full h-full object-cover object-center"
                     style={`object-position: ${objPos(slide.media.focalPoint)};`}
