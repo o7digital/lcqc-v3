@@ -91,7 +91,7 @@ export default function Blog() {
                     href={`/blog_single/${elm.id}`}
                     className="btn-link text-uppercase fs-13 fw-semi-bold theme-color d-inline-flex align-items-center"
                   >
-                    <span>Read More</span>
+                    <span>See More</span>
                     <svg
                       className="ms-2"
                       width="12"

@@ -87,7 +87,7 @@ export default function Blogs() {
                     href={`/blog_single/${elm.id}`}
                     className="btn-link btn-link_md default-underline fs-13 text-uppercase fw-semi-bold"
                   >
-                    Read More
+                    See More
                   </Link>
                 </div>
               </div>

@@ -27,7 +27,7 @@ export default function OurStory() {
                   href="/about"
                   className="btn-link btn-link_md default-underline text-uppercase fw-semi-bold fs-13"
                 >
-                  Read More
+                  See More
                 </Link>
               </p>
             </div>
