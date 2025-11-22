@@ -43,18 +43,8 @@ const showBack = frontmatter?.showBack !== false;
       <div class="mb-6">
         <h1 class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
         {frontmatter.description && (
-          <span class="font-bold bg-yellow-200 px-1">{frontmatter.description}</span>
+          <span class="font-bold">{frontmatter.description}</span>
         )}
-        <div class="flex gap-8 mt-6 items-end">
-          <div class="flex flex-col items-center">
-            <span class="text-sm font-semibold mb-2">LA CASA</span>
-            <img src="/images/slh-logo.png" alt="Small Luxury Hotels" class="h-16 w-auto" />
-          </div>
-          <div class="flex flex-col items-center">
-            <span class="text-sm font-semibold mb-2">CANTA</span>
-            <img src="/images/1 MICHELIN Key_2025_Round_Red.png" alt="Michelin 2025" class="h-20 w-auto" />
-          </div>
-        </div>
       </div>
       <slot />
       {showBack && (
