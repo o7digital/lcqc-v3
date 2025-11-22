@@ -29,10 +29,22 @@ const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
     <section class="h-72 bg-center bg-cover" style="background-image: image-set(url('/accomodations.webp') type('image/webp'), url('/accomodations.jpg') type('image/jpeg'));">
     </section>
     <section class="bg-center bg-cover bg-[url('/palm-bg-front.png')] bg-fixed">
-        <div class="px-4 grid md:grid-cols-2 py-10 max-w-7xl items-center mx-auto justify-between ">
+        <div class="px-4 grid md:grid-cols-2 py-12 max-w-7xl items-center mx-auto justify-between ">
             <div class="mb-8">
-                <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold">{pageTitle}</h2>
-                    <mark class="text-xl font-bold">{pageSubtitle}</mark>
+                <h2 class="text-5xl lg:text-7xl text-black/90 text-balance font-bold text-center">{pageTitle}</h2>
+                <mark class="text-xl font-bold block text-center">{pageSubtitle}</mark>
+                <div class="mt-6 flex items-center gap-4 justify-center">
+                  <img
+                    src="/images/slh.jpg"
+                    alt="SLH"
+                    class="h-[7.8rem] w-auto"
+                  />
+                  <img
+                    src="/images/1 MICHELIN Key_2025_Round_Red.png"
+                    alt="Michelin Key 2025"
+                    class="h-[5.5rem] w-auto"
+                  />
+                </div>
             </div>
             <div class="text-justify text-base grid gap-4">
               {introText ? (
