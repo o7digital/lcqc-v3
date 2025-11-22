@@ -2,70 +2,22 @@
 import Layout from '@layouts/Layout.astro';
 import BookingEngine from '@components/BookingEngine.astro';
 import { fetchDatoCMS } from '@lib/datocms';
-import sliderBackup from '../data/slider-backup.json';
 
 const query = `
 {
-  allSliders(orderBy: sortOrder_ASC) {
+  allSliders(orderBy: _position_ASC) {
     id
     media {
       url
-      focalPoint { x y }
     }
     description
     sortOrder
   }
 }
 `;
-let slides = [];
-try {
-  const data = await fetchDatoCMS(query);
-  slides = data?.allSliders || [];
-} catch (error) {
-  console.error('DatoCMS slider fetch failed, using local backup.', error);
-  slides = [];
-}
-const buildLocalSources = (base) => ({
-  webp: `/images/slider/${base}-640.webp 640w, /images/slider/${base}-1280.webp 1280w, /images/slider/${base}-1920.webp 1920w`,
-  jpg: `/images/slider/${base}-640.jpg 640w, /images/slider/${base}-1280.jpg 1280w, /images/slider/${base}-1920.jpg 1920w`,
-  fallback: `/images/slider/${base}-1920.jpg`,
-});
-const localHeroSlide = {
-  id: 'local-casa-sunset',
-  description: 'Suites at sunset overlooking the Pacific',
-  media: { focalPoint: { x: 0.5, y: 0.6 } },
-  localSources: buildLocalSources('casa-sunset'),
-};
-const localDatoSlides = sliderBackup.map((slide) => ({
-  id: `local-${slide.baseName}`,
-  description: slide.description,
-  media: { focalPoint: slide.focalPoint || null },
-  localSources: buildLocalSources(slide.baseName),
-}));
-const replacementSlide7 = {
-  id: 'local-replace-slide-7',
-  description: 'Lobby with ocean view',
-  media: { focalPoint: { x: 0.5, y: 0.5 } },
-  localSources: buildLocalSources('custom-slide-07'),
-};
-const baseSlides = slides.length > 0 ? slides : localDatoSlides;
-const adjustedSlides = [...baseSlides];
-if (adjustedSlides[6]) {
-  adjustedSlides[6] = replacementSlide7;
-}
-const heroSlides = [localHeroSlide, ...adjustedSlides.slice(1)];
-const isEs = Astro.url.pathname.startsWith('/es');
-const fpParams = (fp) => (fp && typeof fp.x === 'number' && typeof fp.y === 'number') ? `&fp-x=${fp.x}&fp-y=${fp.y}` : '';
-const objPos = (fp) => {
-  const defaultX = 0.5;
-  const defaultY = 0.2; // already raised once; bias further below
-  const biasUp = 0.1; // move crop a bit higher (less sky)
-  const x = typeof fp?.x === 'number' ? fp.x : defaultX;
-  const yRaw = typeof fp?.y === 'number' ? fp.y : defaultY;
-  const y = Math.max(0, Math.min(1, yRaw - biasUp));
-  return `${Math.round(x * 100)}% ${Math.round(y * 100)}%`;
-};
-// DEV: cacher le booking engine pour dev
+const data = await fetchDatoCMS(query);
+const slides = data?.allSliders || [];
+// Temporarily hide the booking engine (bug investigation)
 const hideBooking = true;
 ---
 
@@ -82,50 +34,29 @@ const hideBooking = true;
     <div class="hidden md:block absolute top-0 left-0 w-full h-full overflow-hidden">
       <div class="swiper mySwiper w-full h-full">
         <div class="swiper-wrapper">
-          {heroSlides.length > 0 ? heroSlides.map((slide, i) => (
+          {slides.length > 0 ? slides.map((slide, i) => (
             <div class="swiper-slide">
-              {slide.localSources ? (
-                <picture>
-                  <source
-                    type="image/webp"
-                    srcset={`${slide.localSources.webp}`}
-                    sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
-                  />
-                  <img
-                    src={slide.localSources.fallback}
-                    srcset={`${slide.localSources.jpg}`}
-                    sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
-                    class="w-full h-full object-cover"
-                    style={`object-position: ${objPos(slide.media.focalPoint)};`}
-                    alt={slide.description || 'Slide'}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                  />
-                </picture>
-              ) : (
-                <picture>
-                  <source
-                    type="image/avif"
-                    srcset={`${slide.media.url}?fm=avif&q=60&w=640 640w, ${slide.media.url}?fm=avif&q=60&w=1280 1280w, ${slide.media.url}?fm=avif&q=60&w=1920 1920w`}
-                    sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
-                  />
-                  <source
-                    type="image/webp"
-                    srcset={`${slide.media.url}?fm=webp&q=60&w=640 640w, ${slide.media.url}?fm=webp&q=60&w=1280 1280w, ${slide.media.url}?fm=webp&q=60&w=1920 1920w`}
-                    sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
-                  />
-                  <img
-                    src={`${slide.media.url}?auto=compress&q=70&w=1280`}
-                    srcset={`${slide.media.url}?auto=compress&q=70&w=640 640w, ${slide.media.url}?auto=compress&q=70&w=1280 1280w, ${slide.media.url}?auto=compress&q=70&w=1920 1920w`}
-                    sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
-                    class="w-full h-full object-cover"
-                    style={`object-position: ${objPos(slide.media.focalPoint)};`}
-                    alt={slide.description || 'Slide'}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                  />
-                </picture>
-              )}
+              <picture>
+                <source
+                  type="image/avif"
+                  srcset={`${slide.media.url}?fm=avif&q=60&w=640 640w, ${slide.media.url}?fm=avif&q=60&w=1280 1280w, ${slide.media.url}?fm=avif&q=60&w=1920 1920w`}
+                  sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+                />
+                <source
+                  type="image/webp"
+                  srcset={`${slide.media.url}?fm=webp&q=60&w=640 640w, ${slide.media.url}?fm=webp&q=60&w=1280 1280w, ${slide.media.url}?fm=webp&q=60&w=1920 1920w`}
+                  sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+                />
+                <img
+                  src={`${slide.media.url}?auto=compress&q=70&w=1280`}
+                  srcset={`${slide.media.url}?auto=compress&q=70&w=640 640w, ${slide.media.url}?auto=compress&q=70&w=1280 1280w, ${slide.media.url}?auto=compress&q=70&w=1920 1920w`}
+                  sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
+                  class="w-full h-full object-cover"
+                  alt={slide.description || 'Slide'}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </picture>
             </div>
           )) : (
             <div class="swiper-slide bg-black text-white flex items-center justify-center">
@@ -137,71 +68,36 @@ const hideBooking = true;
       </div>
     </div>
 
-    <!-- Slider Mobile (better crop + hint on last) -->
-    <div class="md:!hidden swiper mySwiper !absolute h-full w-full top-0 overflow-hidden">
+    <!-- Slider Mobile -->
+    <div class="md:!hidden swiper mySwiper !absolute h-full w-full top-0 overflow-hidden aspect-[16/6]">
       <div class="swiper-wrapper">
-        {heroSlides.length > 0 ? heroSlides.map((slide, i) => (
-          <div class="swiper-slide relative">
+        {slides.length > 0 ? slides.map((slide, i) => (
+          <div class="swiper-slide">
             <picture>
-              {slide.localSources ? (
-                <>
-                  <source
-                    type="image/webp"
-                    srcset={`${slide.localSources.webp}`}
-                    sizes="100vw"
-                  />
-                  <img
-                    src={slide.localSources.fallback}
-                    srcset={`${slide.localSources.jpg}`}
-                    sizes="100vw"
-                    class="w-full h-full object-cover object-center"
-                    style={`object-position: ${objPos(slide.media.focalPoint)};`}
-                    alt={slide.description || 'Slide'}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                  />
-                </>
-              ) : (
-                <>
-                  <source
-                    type="image/avif"
-                    srcset={`${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(slide.media.focalPoint)} 320w, ${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)} 640w, ${slide.media.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(slide.media.focalPoint)} 1024w`}
-                    sizes="100vw"
-                  />
-                  <source
-                    type="image/webp"
-                    srcset={`${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(slide.media.focalPoint)} 320w, ${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)} 640w, ${slide.media.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(slide.media.focalPoint)} 1024w`}
-                    sizes="100vw"
-                  />
-                  <img
-                    src={`${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)}`}
-                    srcset={`${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(slide.media.focalPoint)} 320w, ${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(slide.media.focalPoint)} 640w, ${slide.media.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(slide.media.focalPoint)} 1024w`}
-                    sizes="100vw"
-                    class="w-full h-full object-cover object-center"
-                    alt={slide.description || 'Slide'}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                  />
-                </>
-              )}
+              <source
+                type="image/avif"
+                srcset={`${slide.media.url}?fm=avif&q=60&w=320 320w, ${slide.media.url}?fm=avif&q=60&w=640 640w, ${slide.media.url}?fm=avif&q=60&w=1024 1024w`}
+                sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
+              />
+              <source
+                type="image/webp"
+                srcset={`${slide.media.url}?fm=webp&q=60&w=320 320w, ${slide.media.url}?fm=webp&q=60&w=640 640w, ${slide.media.url}?fm=webp&q=60&w=1024 1024w`}
+                sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
+              />
+              <img
+                src={`${slide.media.url}?auto=compress&q=70&w=640`}
+                srcset={`${slide.media.url}?auto=compress&q=70&w=320 320w, ${slide.media.url}?auto=compress&q=70&w=640 640w, ${slide.media.url}?auto=compress&q=70&w=1024 1024w`}
+                sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
+                class="w-full h-full object-cover"
+                alt={slide.description || 'Slide'}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
             </picture>
-            <!-- Subtle gradient for readability -->
-            <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent pointer-events-none"></div>
-            {i === heroSlides.length - 1 && (
-              <div class="md:hidden absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-white text-xs font-semibold flex items-center gap-2 px-3 py-2 bg-black/40 rounded-full backdrop-blur-sm rotate-hint">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M2 12a10 10 0 0118.36-4.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M22 12a10 10 0 01-18.36 4.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M16 4l4 2-2-4" fill="currentColor"/>
-                  <path d="M8 20l-4-2 2 4" fill="currentColor"/>
-                </svg>
-                <span>{isEs ? 'Gira tu teléfono' : 'Rotate your phone'}</span>
-              </div>
-            )}
           </div>
         )) : (
           <div class="swiper-slide bg-black text-white flex items-center justify-center">
-            {isEs ? 'Sin imágenes en el slider' : 'No images in slider'}
+            Sin imágenes en el slider
           </div>
         )}
       </div>
@@ -243,7 +139,7 @@ const hideBooking = true;
     new Swiper(".mySwiper", {
       modules: [Pagination, Autoplay],
       pagination: { el: ".swiper-pagination", clickable: true },
-      autoplay: { delay: 2500, disableOnInteraction: false },
+      autoplay: { delay: 5000, disableOnInteraction: false },
       loop: true,
     });
   </script>
@@ -255,12 +151,6 @@ const hideBooking = true;
     .scroll-section .swiper-pagination { display: none !important; }
     .booking-hover-zone .bg-black\/10 {
       transition: opacity 0.3s, transform 0.3s;
-    }
-    /* Small breathing animation for the orientation hint */
-    .rotate-hint { animation: hint-pulse 2.4s ease-in-out infinite; }
-    @keyframes hint-pulse {
-      0%, 100% { transform: translate(-50%, 0) scale(1); opacity: .95; }
-      50% { transform: translate(-50%, -3px) scale(1.02); opacity: 1; }
     }
   </style>
 
