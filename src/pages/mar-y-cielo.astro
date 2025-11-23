@@ -48,12 +48,24 @@ const frontmatter = {
 };
 
 const introText = (page?.intro || '').trim();
-const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+const introParas = introText ? introText.split(/\r?\n\r?\n+/).map(p => p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')) : [];
 ---
 
 <LayoutOneCol frontmatter={frontmatter}>
+  <div class="mb-8 flex items-center gap-4 justify-center">
+    <img
+      src="/images/slh.jpg"
+      alt="SLH"
+      class="h-[7.8rem] w-auto"
+    />
+    <img
+      src="/images/1 MICHELIN Key_2025_Round_Red.png"
+      alt="Michelin Key 2025"
+      class="h-[5.5rem] w-auto"
+    />
+  </div>
   {introText ? (
-    introParas.map((p) => (<p>{p}</p>))
+    introParas.map((p) => (<p set:html={p}></p>))
   ) : (
     <>
       <p>
@@ -65,18 +77,6 @@ const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
       <p><strong>Dinner — From 18:00 to 22:30 hrs.</strong></p>
       <div class="mt-8 flex justify-center">
         <a href="https://www.opentable.com.mx/r/mar-y-cielo-zihuatanejo" target="_blank" class="bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">Book a table</a>
-      </div>
-      <div class="mt-10 flex items-center gap-4 justify-center">
-        <img
-          src="/images/slh.jpg"
-          alt="SLH"
-          class="h-[7.8rem] w-auto"
-        />
-        <img
-          src="/images/1 MICHELIN Key_2025_Round_Red.png"
-          alt="Michelin Key 2025"
-          class="h-[5.5rem] w-auto"
-        />
       </div>
     </>
   )}

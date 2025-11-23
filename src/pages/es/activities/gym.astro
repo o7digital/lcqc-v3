@@ -42,12 +42,12 @@ const filteredFrontmatter = {
   items: (frontmatter.items || []).slice(1),
 };
 const introText = (page?.intro || '').trim();
-const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
+const introParas = introText ? introText.split(/\r?\n\r?\n+/).map(p => p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')) : [];
 ---
 
 <LayoutOneCol frontmatter={filteredFrontmatter}>
   {introText ? (
-    introParas.map((p) => (<p>{p}</p>))
+    introParas.map((p) => (<p set:html={p}></p>))
   ) : (
     <>
       <p>
