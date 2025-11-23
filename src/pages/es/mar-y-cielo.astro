@@ -48,7 +48,13 @@ const frontmatter = {
 };
 
 const introText = (page?.intro || '').trim();
-const introParas = introText ? introText.split(/\r?\n\r?\n+/).map(p => p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')) : [];
+const introParas = introText ? introText.split(/\r?\n\r?\n+/).map(p => {
+  // Convert **text** to <strong>text</strong>
+  let result = p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Force bold on hours pattern: "Cena/Comida/Desayuno ... — De HH:MM a HH:MM hrs"
+  result = result.replace(/((?:Cena|Comida|Desayuno)[^<]*?\d{1,2}:\d{2}[^<]*?hrs?\.?)/gi, '<strong>$1</strong>');
+  return result;
+}) : [];
 ---
 
 <LayoutOneCol frontmatter={frontmatter}>
