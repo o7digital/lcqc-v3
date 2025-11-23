@@ -16,7 +16,7 @@ const query = `
 }
 `;
 const data = await fetchDatoCMS(query);
-const slides = data?.allSliders || [];
+const slides = (data?.allSliders || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 // Temporarily hide the booking engine (bug investigation)
 const hideBooking = true;
 ---

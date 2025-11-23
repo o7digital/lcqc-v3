@@ -21,6 +21,7 @@ let slides = [];
 try {
   const data = await fetchDatoCMS(query);
   slides = data?.allSliders || [];
+  slides.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 } catch (error) {
   console.error('DatoCMS slider fetch failed, using local backup.', error);
   slides = [];
