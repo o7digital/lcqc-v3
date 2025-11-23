@@ -31,6 +31,18 @@ const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
         <div class="max-w-4xl px-4 mx-auto mb-10 text-center relative">
             <h1 class="text-4xl md:text-5xl lg:text-7xl mb-6 font-bold">{pageTitle}</h1>
             <p>{pageSubtitle}</p>
+            <div class="mt-8 flex items-center gap-4 justify-center">
+              <img
+                src="/images/slh.jpg"
+                alt="SLH"
+                class="h-[7.8rem] w-auto"
+              />
+              <img
+                src="/images/1 MICHELIN Key_2025_Round_Red.png"
+                alt="Michelin Key 2025"
+                class="h-[5.5rem] w-auto"
+              />
+            </div>
             {introText && (
               <div class="mt-4 text-left grid gap-4 max-w-3xl mx-auto">
                 {introParas.map((p)=> (<p>{p}</p>))}
