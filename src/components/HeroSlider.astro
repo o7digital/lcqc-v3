@@ -76,33 +76,27 @@ const slides = sliderData.map(slide => ({
   import 'swiper/css';
   import 'swiper/css/effect-fade';
 
-  // Desktop slider
+  // Desktop slider - bloqué sur la première image
   new Swiper('.heroSwiper', {
-    modules: [Autoplay, EffectFade],
+    modules: [EffectFade],
     effect: 'fade',
     fadeEffect: {
       crossFade: true
     },
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
-    loop: true,
-    speed: 1500,
+    allowTouchMove: false,
+    loop: false,
+    speed: 0,
   });
 
-  // Mobile slider
+  // Mobile slider - bloqué sur la première image
   new Swiper('.heroSwiperMobile', {
-    modules: [Autoplay, EffectFade],
+    modules: [EffectFade],
     effect: 'fade',
     fadeEffect: {
       crossFade: true
     },
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
-    loop: true,
-    speed: 1500,
+    allowTouchMove: false,
+    loop: false,
+    speed: 0,
   });
 </script>

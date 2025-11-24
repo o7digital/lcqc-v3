@@ -1,16 +1,8 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import BookingEngine from '@components/BookingEngine.astro';
+import HeroSlider from '@components/HeroSlider.astro';
 
-const heroImage = {
-  url: '/images/slider/dato-slide-02-1920.jpg',
-  focalPoint: { x: 0.5, y: 0.45 },
-  description: 'La Casa Que Canta',
-};
-const fpParams = (fp) =>
-  fp && typeof fp.x === 'number' && typeof fp.y === 'number'
-    ? `&fp-x=${fp.x}&fp-y=${fp.y}`
-    : '';
 // Temporarily hide the booking engine (bug investigation)
 const hideBooking = true;
 ---
@@ -24,57 +16,8 @@ const hideBooking = true;
       <img class="hidden md:block" src="/logo-white.svg" width="115px" alt="La Casa Que Canta - Luxury Boutique Hotel Zihuatanejo">
     </div>
 
-    <!-- Hero Desktop (static) -->
-    <div class="hidden md:block absolute top-0 left-0 w-full h-full overflow-hidden">
-      <picture>
-        <source
-          type="image/avif"
-          srcset={`${heroImage.url}?fm=avif&q=60&w=640 640w, ${heroImage.url}?fm=avif&q=60&w=1280 1280w, ${heroImage.url}?fm=avif&q=60&w=1920 1920w`}
-          sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
-        />
-        <source
-          type="image/webp"
-          srcset={`${heroImage.url}?fm=webp&q=60&w=640 640w, ${heroImage.url}?fm=webp&q=60&w=1280 1280w, ${heroImage.url}?fm=webp&q=60&w=1920 1920w`}
-          sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
-        />
-        <img
-          src={`${heroImage.url}?auto=compress&q=70&w=1280`}
-          srcset={`${heroImage.url}?auto=compress&q=70&w=640 640w, ${heroImage.url}?auto=compress&q=70&w=1280 1280w, ${heroImage.url}?auto=compress&q=70&w=1920 1920w`}
-          sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
-          class="w-full h-full object-cover"
-          style="object-position: center top;"
-          alt={heroImage.description}
-          loading="eager"
-          decoding="async"
-        />
-      </picture>
-    </div>
-
-    <!-- Hero Mobile (static + focal crop) -->
-    <div class="md:!hidden absolute h-full w-full top-0 overflow-hidden">
-      <picture>
-        <source
-          type="image/avif"
-          srcset={`${heroImage.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(heroImage.focalPoint)} 320w, ${heroImage.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(heroImage.focalPoint)} 640w, ${heroImage.url}?fm=avif&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(heroImage.focalPoint)} 1024w`}
-          sizes="100vw"
-        />
-        <source
-          type="image/webp"
-          srcset={`${heroImage.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(heroImage.focalPoint)} 320w, ${heroImage.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(heroImage.focalPoint)} 640w, ${heroImage.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(heroImage.focalPoint)} 1024w`}
-          sizes="100vw"
-        />
-        <img
-          src={`${heroImage.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(heroImage.focalPoint)}`}
-          srcset={`${heroImage.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams(heroImage.focalPoint)} 320w, ${heroImage.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams(heroImage.focalPoint)} 640w, ${heroImage.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams(heroImage.focalPoint)} 1024w`}
-          sizes="100vw"
-          class="w-full h-full object-cover object-center"
-          alt={heroImage.description}
-          loading="eager"
-          decoding="async"
-        />
-      </picture>
-      <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent pointer-events-none"></div>
-    </div>
+    <!-- Hero Slider (fixed on first image) -->
+    <HeroSlider />
 
     <!-- Michelin logo overlay inside hero (bottom-right); raise on desktop (~3cm ≈ 120px) to avoid chatbot overlap -->
     <div class="absolute bottom-[54px] md:bottom-[120px] right-4 z-20">
