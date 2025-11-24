@@ -1,0 +1,174 @@
+═══════════════════════════════════════════════════════════════════════════════
+  TECHNIQUE : AFFICHAGE/MASQUAGE DU MOTEUR DE RÉSERVATION AU SURVOL/TOUCH
+═══════════════════════════════════════════════════════════════════════════════
+
+📋 DESCRIPTION
+--------------
+Cette technique permet d'afficher un élément (ici un moteur de réservation) 
+uniquement au survol de la souris (desktop) ou au toucher (mobile/tablette).
+L'élément est invisible par défaut et apparaît avec une animation fluide.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🏗️ STRUCTURE HTML
+-----------------
+
+<div class="booking-hover-zone group" tabindex="0" style="outline:none;">
+  <div class="bg-black/10 group-hover:bg-black/20 group-focus-within:bg-black/20 
+       backdrop-blur-sm transition rounded-lg p-4 
+       opacity-0 pointer-events-none scale-95 
+       group-hover:opacity-100 group-hover:pointer-events-auto group-hover:scale-100 
+       group-focus-within:opacity-100 group-focus-within:pointer-events-auto group-focus-within:scale-100" 
+       id="booking-bar-container">
+    <!-- Votre contenu ici (BookingEngine, formulaire, etc.) -->
+  </div>
+</div>
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 CSS (Tailwind + Custom)
+---------------------------
+
+/* Transition fluide pour l'animation */
+.booking-hover-zone .bg-black\/10 {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+CLASSES TAILWIND UTILISÉES :
+- opacity-0               → Invisible au départ
+- pointer-events-none     → Non-cliquable au départ
+- scale-95                → Légèrement réduit (95%)
+- group                   → Conteneur parent pour grouper les états hover
+- group-hover:opacity-100 → Visible au survol du parent
+- group-hover:pointer-events-auto → Cliquable au survol
+- group-hover:scale-100   → Taille normale au survol
+- transition              → Active les transitions CSS
+- backdrop-blur-sm        → Effet de flou d'arrière-plan
+- bg-black/10             → Fond noir avec 10% d'opacité
+
+═══════════════════════════════════════════════════════════════════════════════
+
+💻 JAVASCRIPT (Support Mobile/Tactile)
+---------------------------------------
+
+<script>
+  // Pour le support tactile/mobile : afficher au toucher
+  if (typeof window !== 'undefined') {
+    const box = document.querySelector('.booking-hover-zone');
+    const barContainer = document.getElementById('booking-bar-container');
+    
+    if (box && barContainer) {
+      let hideTimeout;
+      
+      box.addEventListener('touchstart', () => {
+        // Afficher immédiatement au toucher
+        barContainer.style.opacity = '1';
+        barContainer.style.pointerEvents = 'auto';
+        barContainer.style.transform = 'scale(1)';
+        
+        // Annuler le timer précédent si l'utilisateur retouche
+        clearTimeout(hideTimeout);
+        
+        // Masquer automatiquement après 2 secondes d'inactivité
+        hideTimeout = setTimeout(() => {
+          barContainer.style.opacity = '0';
+          barContainer.style.pointerEvents = 'none';
+          barContainer.style.transform = 'scale(0.95)';
+        }, 2000);
+      });
+    }
+  }
+</script>
+
+═══════════════════════════════════════════════════════════════════════════════
+
+⚙️ FONCTIONNEMENT DÉTAILLÉ
+---------------------------
+
+1. ÉTAT INITIAL (Invisible)
+   - opacity-0 → L'élément est transparent
+   - pointer-events-none → On ne peut pas cliquer dessus
+   - scale-95 → Légèrement réduit pour l'effet d'animation
+
+2. DESKTOP (Survol souris)
+   - group-hover active tous les états hover des enfants
+   - opacity-100 → L'élément devient visible
+   - pointer-events-auto → L'élément devient cliquable
+   - scale-100 → L'élément reprend sa taille normale
+   - Transition CSS de 0.3s pour une animation fluide
+
+3. MOBILE/TABLETTE (Toucher)
+   - Événement touchstart détecté par JavaScript
+   - Les styles inline sont appliqués immédiatement
+   - Un timer de 2 secondes est lancé
+   - Si aucun toucher pendant 2s → masquage automatique
+   - Si nouvel toucher → timer réinitialisé
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔧 PERSONNALISATION
+-------------------
+
+CHANGER LA DURÉE D'AFFICHAGE MOBILE :
+Modifier la valeur 2000 (ms) dans le setTimeout
+
+CHANGER LA VITESSE D'ANIMATION :
+Modifier "0.3s" dans la transition CSS
+
+CHANGER L'EFFET DE ZOOM :
+Modifier scale-95 (état caché) et scale-100 (état visible)
+Exemples : scale-90, scale-98, etc.
+
+CHANGER LE FOND :
+- bg-black/10 → Fond noir 10% opacité (état normal)
+- bg-black/20 → Fond noir 20% opacité (au survol)
+Peut être remplacé par : bg-white/10, bg-blue-500/20, etc.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📱 COMPATIBILITÉ
+----------------
+
+✅ Desktop : Fonctionne avec :hover
+✅ Mobile : Fonctionne avec touchstart
+✅ Tablette : Fonctionne avec touchstart
+✅ Accessibilité : tabindex="0" permet la navigation au clavier
+✅ Focus : group-focus-within gère le focus pour l'accessibilité
+
+═══════════════════════════════════════════════════════════════════════════════
+
+💡 NOTES IMPORTANTES
+--------------------
+
+1. Le conteneur parent doit avoir la classe "group"
+2. L'élément enfant doit avoir un id pour le JavaScript mobile
+3. tabindex="0" permet la navigation au clavier (accessibilité)
+4. style="outline:none;" retire le contour de focus (optionnel)
+5. Le timer mobile (2s) empêche l'élément de rester affiché indéfiniment
+6. clearTimeout évite les conflits si l'utilisateur touche plusieurs fois
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📦 DÉPENDANCES
+--------------
+
+- Tailwind CSS (pour les classes utilitaires)
+- JavaScript vanilla (pas de bibliothèque requise)
+- Support navigateurs modernes (CSS transitions, touchstart)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🚀 INTÉGRATION RAPIDE
+---------------------
+
+1. Copier la structure HTML
+2. Remplacer le contenu par votre élément
+3. Ajouter le style CSS custom
+4. Ajouter le script JavaScript en bas de page
+5. Adapter les classes Tailwind selon vos besoins
+6. Tester sur desktop ET mobile
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Source : lcqc-v2/src/pages/index.astro (lignes 139-198)
+Date : Novembre 2025

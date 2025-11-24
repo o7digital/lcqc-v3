@@ -93,6 +93,10 @@ npm run astro check
   - Pagination cliquable
   - Version responsive (desktop/mobile)
   - Lazy loading optimisé
+- ✅ **Fallback local + overrides** :
+  - Si DatoCMS tombe, on lit `src/data/slider-backup.json` et les fichiers `public/images/slider/*`.
+  - Slide 1 forcée sur l’image locale `casa-sunset` (hero principal).
+  - Slide 7 forcée sur `custom-slide-07` (photo lobby vue mer). Remplacer les fichiers `custom-slide-07-{640,1280,1920}.{jpg,webp}` pour la mettre à jour.
 
 **Query GraphQL actuelle :**
 ```graphql

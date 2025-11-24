@@ -1,55 +1,8 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import BookingEngine from '@components/BookingEngine.astro';
-import { fetchDatoCMS } from '@lib/datocms';
-import sliderBackup from '../data/slider-backup.json';
+import HeroSlider from '@components/HeroSlider.astro';
 
-const query = `
-{
-  allSliders {
-    id
-    media {
-      url
-    }
-    description
-    sortOrder
-  }
-}
-`;
-let slides = [];
-try {
-  const data = await fetchDatoCMS(query);
-  slides = (data?.allSliders || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-} catch (error) {
-  console.error('DatoCMS slider fetch failed, using local backup.', error);
-  slides = [];
-}
-const buildLocalSources = (base) => ({
-  webp: `/images/slider/${base}-640.webp 640w, /images/slider/${base}-1280.webp 1280w, /images/slider/${base}-1920.webp 1920w`,
-  jpg: `/images/slider/${base}-640.jpg 640w, /images/slider/${base}-1280.jpg 1280w, /images/slider/${base}-1920.jpg 1920w`,
-  fallback: `/images/slider/${base}-1920.jpg`,
-});
-const localHeroSlide = {
-  id: 'local-casa-sunset',
-  description: 'Sunset suites with Pacific views',
-  localSources: buildLocalSources('casa-sunset'),
-};
-const replacementSlide7 = {
-  id: 'local-replace-slide-7',
-  description: 'Lobby with ocean view',
-  localSources: buildLocalSources('custom-slide-07'),
-};
-const localDatoSlides = sliderBackup.map((slide) => ({
-  id: `local-${slide.baseName}`,
-  description: slide.description,
-  localSources: buildLocalSources(slide.baseName),
-}));
-const baseSlides = slides.length > 0 ? slides : localDatoSlides;
-const adjustedSlides = [...baseSlides];
-if (adjustedSlides[6]) {
-  adjustedSlides[6] = replacementSlide7;
-}
-const heroSlides = adjustedSlides.length > 0 ? [localHeroSlide, ...adjustedSlides.slice(1)] : [localHeroSlide];
 // Temporarily hide the booking engine (bug investigation)
 const hideBooking = true;
 ---
@@ -63,6 +16,7 @@ const hideBooking = true;
       <img class="hidden md:block" src="/logo-white.svg" width="115px" alt="La Casa Que Canta - Luxury Boutique Hotel Zihuatanejo">
     </div>
 
+<<<<<<< HEAD
     <!-- Slider Desktop -->
     <div class="hidden md:block absolute top-0 left-0 w-full h-full overflow-hidden">
       <div class="swiper mySwiper w-full h-full">
@@ -174,10 +128,14 @@ const hideBooking = true;
       </div>
       <div class="swiper-pagination"></div>
     </div>
+=======
+    <!-- Hero Slider (fixed on first image) -->
+    <HeroSlider />
+>>>>>>> dev
 
     <!-- Michelin logo overlay inside hero (bottom-right); raise on desktop (~3cm ≈ 120px) to avoid chatbot overlap -->
     <div class="absolute bottom-[54px] md:bottom-[120px] right-4 z-20">
-      <img src="images/1 MICHELIN Key_2025_Round_Red.png" alt="Michelin 2025" class="w-20 md:w-24 h-auto drop-shadow-xl" />
+      <img src="/images/1 MICHELIN Key_2025_Round_Red.png" alt="Michelin 2025" class="w-20 md:w-24 h-auto drop-shadow-xl" />
     </div>
 
     <!-- Contenido -->
@@ -201,25 +159,8 @@ const hideBooking = true;
     )}
   </section>
 
-  <script>
-    import Swiper from "swiper";
-    import { Pagination, Autoplay } from "swiper/modules";
-    import "swiper/css";
-    import "swiper/css/pagination";
-
-    new Swiper(".mySwiper", {
-      modules: [Pagination, Autoplay],
-      pagination: { el: ".swiper-pagination", clickable: true },
-      autoplay: { delay: 5000, disableOnInteraction: false },
-      loop: true,
-    });
-  </script>
-
   <style is:global>
     .scroll-section { height: 100vh; position: relative; }
-    .swiper, .swiper-slide { width: 100%; height: 100%; }
-    /* Hide pagination bullets for hero slider (desktop + mobile) */
-    .scroll-section .swiper-pagination { display: none !important; }
     .booking-hover-zone .bg-black\/10 {
       transition: opacity 0.3s, transform 0.3s;
     }
