@@ -19,7 +19,7 @@ try {
   const data = await fetchDatoCMS(query, { slug: 'la-casa-que-canta', locale });
   page = data?.allPages?.[0] || null;
 } catch(_) { page = null; }
-const pageTitle = page?.title || 'Bienvenido a La Casa Que Canta';
+const pageTitle = page?.title || 'La Casa Que Canta';
 const pageSubtitle = page?.subtitle || 'Pequeño hotel boutique de lujo';
 const heroUrl = page?.heroImage?.url || '/lobby.jpg';
 const introText = (page?.intro || '').trim();
