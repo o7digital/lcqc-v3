@@ -1,0 +1,108 @@
+---
+import sliderData from '../data/slider-backup.json';
+
+const slides = sliderData.map(slide => ({
+  ...slide,
+  localUrl: `/images/slider/${slide.baseName}-1920.jpg`
+}));
+---
+
+<!-- Hero Desktop (slider) -->
+<div class="hidden md:block absolute top-0 left-0 w-full h-full overflow-hidden">
+  <div class="swiper heroSwiper w-full h-full">
+    <div class="swiper-wrapper">
+      {slides.map((slide) => (
+        <div class="swiper-slide">
+          <picture>
+            <source
+              type="image/webp"
+              srcset={`/images/slider/${slide.baseName}-640.webp 640w, /images/slider/${slide.baseName}-1280.webp 1280w, /images/slider/${slide.baseName}-1920.webp 1920w`}
+              sizes="100vw"
+            />
+            <img
+              src={slide.localUrl}
+              srcset={`/images/slider/${slide.baseName}-640.jpg 640w, /images/slider/${slide.baseName}-1280.jpg 1280w, /images/slider/${slide.baseName}-1920.jpg 1920w`}
+              sizes="100vw"
+              class="w-full h-full object-cover"
+              style="object-position: center top;"
+              alt={slide.description}
+              loading={slide.baseName === 'dato-slide-01' ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          </picture>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<!-- Hero Mobile (slider with focal point crop) -->
+<div class="md:!hidden absolute h-full w-full top-0 overflow-hidden">
+  <div class="swiper heroSwiperMobile w-full h-full">
+    <div class="swiper-wrapper">
+      {slides.map((slide) => {
+        const fpParams = slide.focalPoint && typeof slide.focalPoint.x === 'number' && typeof slide.focalPoint.y === 'number'
+          ? `&fp-x=${slide.focalPoint.x}&fp-y=${slide.focalPoint.y}`
+          : '';
+        return (
+          <div class="swiper-slide">
+            <picture>
+              <source
+                type="image/webp"
+                srcset={`${slide.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams} 320w, ${slide.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams} 640w, ${slide.url}?fm=webp&q=60&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams} 1024w`}
+                sizes="100vw"
+              />
+              <img
+                src={`${slide.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams}`}
+                srcset={`${slide.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=320${fpParams} 320w, ${slide.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=640${fpParams} 640w, ${slide.url}?auto=compress&q=70&fit=crop&crop=focalpoint&ar=4:5&w=1024${fpParams} 1024w`}
+                sizes="100vw"
+                class="w-full h-full object-cover object-center"
+                alt={slide.description}
+                loading={slide.baseName === 'dato-slide-01' ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </picture>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+  <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 via-black/10 to-transparent pointer-events-none"></div>
+</div>
+
+<script>
+  import Swiper from 'swiper';
+  import { Autoplay, EffectFade } from 'swiper/modules';
+  import 'swiper/css';
+  import 'swiper/css/effect-fade';
+
+  // Desktop slider
+  new Swiper('.heroSwiper', {
+    modules: [Autoplay, EffectFade],
+    effect: 'fade',
+    fadeEffect: {
+      crossFade: true
+    },
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
+    loop: true,
+    speed: 1500,
+  });
+
+  // Mobile slider
+  new Swiper('.heroSwiperMobile', {
+    modules: [Autoplay, EffectFade],
+    effect: 'fade',
+    fadeEffect: {
+      crossFade: true
+    },
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
+    loop: true,
+    speed: 1500,
+  });
+</script>
