@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /approve/
+Disallow: /aprove/
+
+Sitemap: https://www.lacasaquecanta.com/sitemap-index.xml

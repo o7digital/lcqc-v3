@@ -16,7 +16,10 @@ export default defineConfig({
           es: 'es'
         }
       },
-      filter: (page) => !page.includes('/aprove/') && !page.includes('/admin/')
+      filter: (page) =>
+        !page.includes('/aprove/') &&
+        !page.includes('/approve/') &&
+        !page.includes('/admin/')
     })
   ],
   output: 'static',
