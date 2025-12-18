@@ -16,14 +16,6 @@ const query = `
   }
 }
 `;
-let slides = [];
-try {
-  const data = await fetchDatoCMS(query);
-  slides = (data?.allSliders || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-} catch (error) {
-  console.error('DatoCMS slider fetch failed, using local backup.', error);
-  slides = [];
-}
 const buildLocalSources = (base) => ({
   webp: `/images/slider/${base}-640.webp 640w, /images/slider/${base}-1280.webp 1280w, /images/slider/${base}-1920.webp 1920w`,
   jpg: `/images/slider/${base}-640.jpg 640w, /images/slider/${base}-1280.jpg 1280w, /images/slider/${base}-1920.jpg 1920w`,
@@ -31,25 +23,51 @@ const buildLocalSources = (base) => ({
 });
 const localHeroSlide = {
   id: 'local-casa-sunset',
+  baseName: 'casa-sunset',
   description: 'Sunset suites with Pacific views',
   localSources: buildLocalSources('casa-sunset'),
 };
 const replacementSlide7 = {
   id: 'local-replace-slide-7',
+  baseName: 'dato-slide-07',
   description: 'Lobby with ocean view',
   localSources: buildLocalSources('custom-slide-07'),
 };
-const localDatoSlides = sliderBackup.map((slide) => ({
+
+const buildLocalSlideFromBackup = (slide, overrides = {}) => ({
   id: `local-${slide.baseName}`,
+  baseName: slide.baseName,
   description: slide.description,
   localSources: buildLocalSources(slide.baseName),
-}));
-const baseSlides = slides.length > 0 ? slides : localDatoSlides;
-const adjustedSlides = [...baseSlides];
-if (adjustedSlides[6]) {
-  adjustedSlides[6] = replacementSlide7;
+  ...overrides,
+});
+
+const localDatoSlides = sliderBackup.map((slide) => buildLocalSlideFromBackup(slide));
+const sliderBackupById = new Map(sliderBackup.map((slide) => [slide.id, slide]));
+const sliderBackupByUrl = new Map(sliderBackup.map((slide) => [slide.url, slide]));
+
+let datoLocalSlides = [];
+try {
+  const data = await fetchDatoCMS(query);
+  const datoSlides = (data?.allSliders || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  datoLocalSlides = datoSlides
+    .map((slide) => {
+      const backup = sliderBackupById.get(slide.id) || sliderBackupByUrl.get(slide.media?.url);
+      if (!backup) return null;
+      return buildLocalSlideFromBackup(backup, {
+        description: slide.description || backup.description,
+      });
+    })
+    .filter((slide) => slide !== null);
+} catch (error) {
+  console.error('DatoCMS slider fetch failed, using local backup.', error);
 }
-const heroSlides = adjustedSlides.length > 0 ? [localHeroSlide, ...adjustedSlides.slice(1)] : [localHeroSlide];
+
+const baseSlides = datoLocalSlides.length > 0 ? datoLocalSlides : localDatoSlides;
+const adjustedSlides = baseSlides
+  .filter((slide) => slide.baseName !== 'dato-slide-01')
+  .map((slide) => (slide.baseName === 'dato-slide-07' ? replacementSlide7 : slide));
+const heroSlides = [localHeroSlide, ...adjustedSlides];
 // Temporarily hide the booking engine (bug investigation)
 const hideBooking = true;
 ---
