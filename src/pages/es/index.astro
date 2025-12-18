@@ -50,25 +50,43 @@ const localDatoSlides = sliderBackup.map((slide) => buildLocalSlideFromBackup(sl
 const sliderBackupById = new Map(sliderBackup.map((slide) => [slide.id, slide]));
 const sliderBackupByUrl = new Map(sliderBackup.map((slide) => [slide.url, slide]));
 
-let datoLocalSlides = [];
+let datoOrderBaseNames = [];
+const datoOverridesByBaseName = new Map();
 try {
   const data = await fetchDatoCMS(query);
   const datoSlides = (data?.allSliders || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-  datoLocalSlides = datoSlides
-    .map((slide) => {
-      const backup = sliderBackupById.get(slide.id) || sliderBackupByUrl.get(slide.media?.url);
-      if (!backup) return null;
-      return buildLocalSlideFromBackup(backup, {
-        description: slide.description || backup.description,
-        media: { focalPoint: slide.media?.focalPoint || backup.focalPoint || null },
-      });
-    })
-    .filter((slide) => slide !== null);
+  datoOrderBaseNames = datoSlides
+    .map((slide) => sliderBackupById.get(slide.id) || sliderBackupByUrl.get(slide.media?.url))
+    .filter(Boolean)
+    .map((slide) => slide.baseName);
+  datoSlides.forEach((slide) => {
+    const backup = sliderBackupById.get(slide.id) || sliderBackupByUrl.get(slide.media?.url);
+    if (!backup) return;
+    datoOverridesByBaseName.set(backup.baseName, {
+      description: slide.description || backup.description,
+      media: { focalPoint: slide.media?.focalPoint || backup.focalPoint || null },
+    });
+  });
 } catch (error) {
   console.error('DatoCMS slider fetch failed, using local backup.', error);
 }
 
-const baseSlides = datoLocalSlides.length > 0 ? datoLocalSlides : localDatoSlides;
+const applyOverrides = (slide) => {
+  const overrides = datoOverridesByBaseName.get(slide.baseName);
+  return overrides ? { ...slide, ...overrides } : slide;
+};
+const localSlidesByBaseName = new Map(localDatoSlides.map((slide) => [slide.baseName, slide]));
+const baseSlides = datoOrderBaseNames.length > 0
+  ? [
+      ...datoOrderBaseNames
+        .map((baseName) => localSlidesByBaseName.get(baseName))
+        .filter(Boolean)
+        .map(applyOverrides),
+      ...localDatoSlides
+        .filter((slide) => !datoOrderBaseNames.includes(slide.baseName))
+        .map(applyOverrides),
+    ]
+  : localDatoSlides;
 const adjustedSlides = baseSlides
   .filter((slide) => slide.baseName !== 'dato-slide-01')
   .map((slide) => (slide.baseName === 'dato-slide-07' ? replacementSlide7 : slide));

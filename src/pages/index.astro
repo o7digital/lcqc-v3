@@ -38,6 +38,7 @@ const buildLocalSlideFromBackup = (slide, overrides = {}) => ({
   id: `local-${slide.baseName}`,
   baseName: slide.baseName,
   description: slide.description,
+  focalPoint: slide.focalPoint || null,
   localSources: buildLocalSources(slide.baseName),
   ...overrides,
 });
@@ -46,24 +47,52 @@ const localDatoSlides = sliderBackup.map((slide) => buildLocalSlideFromBackup(sl
 const sliderBackupById = new Map(sliderBackup.map((slide) => [slide.id, slide]));
 const sliderBackupByUrl = new Map(sliderBackup.map((slide) => [slide.url, slide]));
 
-let datoLocalSlides = [];
+const clamp01 = (value) => Math.max(0, Math.min(1, value));
+const objPos = (fp) => {
+  if (!fp || typeof fp.x !== 'number' || typeof fp.y !== 'number') return '50% 50%';
+  const x = clamp01(fp.x);
+  const y = clamp01(fp.y);
+  return `${Math.round(x * 100)}% ${Math.round(y * 100)}%`;
+};
+const imgStyle = (fp) => (fp ? `object-position: ${objPos(fp)};` : undefined);
+
+let datoOrderBaseNames = [];
+const datoOverridesByBaseName = new Map();
 try {
   const data = await fetchDatoCMS(query);
   const datoSlides = (data?.allSliders || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-  datoLocalSlides = datoSlides
-    .map((slide) => {
-      const backup = sliderBackupById.get(slide.id) || sliderBackupByUrl.get(slide.media?.url);
-      if (!backup) return null;
-      return buildLocalSlideFromBackup(backup, {
-        description: slide.description || backup.description,
-      });
-    })
-    .filter((slide) => slide !== null);
+  datoOrderBaseNames = datoSlides
+    .map((slide) => sliderBackupById.get(slide.id) || sliderBackupByUrl.get(slide.media?.url))
+    .filter(Boolean)
+    .map((slide) => slide.baseName);
+  datoSlides.forEach((slide) => {
+    const backup = sliderBackupById.get(slide.id) || sliderBackupByUrl.get(slide.media?.url);
+    if (!backup) return;
+    datoOverridesByBaseName.set(backup.baseName, {
+      description: slide.description || backup.description,
+    });
+  });
 } catch (error) {
   console.error('DatoCMS slider fetch failed, using local backup.', error);
 }
 
-const baseSlides = datoLocalSlides.length > 0 ? datoLocalSlides : localDatoSlides;
+const baseSlides = datoOrderBaseNames.length > 0
+  ? [
+      ...datoOrderBaseNames
+        .map((baseName) => localDatoSlides.find((slide) => slide.baseName === baseName))
+        .filter(Boolean)
+        .map((slide) => {
+          const overrides = datoOverridesByBaseName.get(slide.baseName);
+          return overrides ? { ...slide, ...overrides } : slide;
+        }),
+      ...localDatoSlides
+        .filter((slide) => !datoOrderBaseNames.includes(slide.baseName))
+        .map((slide) => {
+          const overrides = datoOverridesByBaseName.get(slide.baseName);
+          return overrides ? { ...slide, ...overrides } : slide;
+        }),
+    ]
+  : localDatoSlides;
 const adjustedSlides = baseSlides
   .filter((slide) => slide.baseName !== 'dato-slide-01')
   .map((slide) => (slide.baseName === 'dato-slide-07' ? replacementSlide7 : slide));
@@ -95,6 +124,7 @@ const hideBooking = true;
                     srcset={`${slide.localSources.jpg}`}
                     sizes="(max-width: 640px) 640px, (max-width: 1280px) 1280px, 1920px"
                     class="w-full h-full object-cover"
+                    style={imgStyle(slide.focalPoint)}
                     alt={slide.description || 'Slide'}
                     loading={i === 0 ? 'eager' : 'lazy'}
                     decoding="async"
@@ -151,6 +181,7 @@ const hideBooking = true;
                   srcset={`${slide.localSources.jpg}`}
                   sizes="(max-width: 480px) 320px, (max-width: 768px) 640px, 1024px"
                   class="w-full h-full object-cover"
+                  style={imgStyle(slide.focalPoint)}
                   alt={slide.description || 'Slide'}
                   loading={i === 0 ? 'eager' : 'lazy'}
                   decoding="async"
