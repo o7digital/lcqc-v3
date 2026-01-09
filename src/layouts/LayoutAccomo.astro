@@ -85,7 +85,9 @@ const cardsToShow = (suggestedRooms && suggestedRooms.length ? suggestedRooms : 
                         {isEs ? 'REGRESO A SUITES' : 'Back to accomodations'}
                     </a>
                 </div>
-                <mark class="font-bold">{frontmatter.description}</mark>
+                {frontmatter.description && (
+                  <mark class="font-bold">{frontmatter.description}</mark>
+                )}
             </div>
             <slot />
         </div>
