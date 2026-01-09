@@ -1,12 +1,6 @@
 import { fetchDatoCMS } from '@lib/datocms';
 
 export async function fetchSuiteDetails(slug, locale) {
-  const env = import.meta.env?.DATOCMS_ENVIRONMENT;
-  // Avoid pulling dev/approve datasets to keep staging aligned with main content
-  if (env && env !== 'main') {
-    return null;
-  }
-
   const tryLocales = locale === 'es' ? ['es', 'en'] : ['en', 'es'];
 
   // NOTE: requested exact field name (one 'm', lowercase 'details')
