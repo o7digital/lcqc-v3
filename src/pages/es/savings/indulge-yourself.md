@@ -1,7 +1,7 @@
 ---
 title: "Date un Capricho"
 description: "Villa privada con 4 suites frente al mar, cama King size y albercas privadas."
-date: "Junio a 22 de diciembre de 2024"
+date: "1ro de Enero al 22 de Diciembre de 2026"
 imagefront: "/offers/lcqc-indulge.jpg"
 layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=es-ES&rooms=1&src=24C"
@@ -13,7 +13,8 @@ offsetX: "2cm"
 <div class="grid gap-4">
 <p class="">Villa privada con 4 suites frente al mar, cama King size y albercas privadas. Capacidad hasta 8 personas.</p>
 <i>No se requiere estancia mínima.</i>
-<b>Incluye</b>:
+<b>Incluye:</b>
+<p><i>Vigencia: 1ro de Enero al 22 de Diciembre de 2026.</i></p>
 <ul class="list-disc ml-4">
   <li>Cuatro amplias suites, todas con alberca y terraza con vista al mar.</li>
   <li>Chef privado y servicio de mayordomo de 7 am a 10 pm.</li>
