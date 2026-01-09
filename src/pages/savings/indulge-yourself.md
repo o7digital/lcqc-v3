@@ -1,7 +1,7 @@
 ---
 title: "Indulge Yourself"
 description: "Private Villa with 4 Oceanfront Suites, King size bed and private pools."
-date: "January 1st to December 22nd, 2026"
+date: "June to December 22, 2024"
 imagefront: "/offers/lcqc-indulge.jpg"
 layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=en-US&rooms=1&src=24C"
@@ -17,7 +17,6 @@ offsetX: "2cm"
 <i>No minimum stay required.</i>
 
 <b>Includes</b>:
-<p><i>Travel: January 1st to December 22nd, 2026.</i></p>
 <ul class="list-disc ml-4">
   <li> Four spacious suites, all with pool and terrace overlooking the ocean.</li>
   <li>Private Chef and Butler service from 7 am to 10 pm.
@@ -39,4 +38,9 @@ offsetX: "2cm"
 
 A deposit is required to guarantee the reservation. Rate per night per Villa subject to 20% tax and 10% service fee. Early departure fees may apply. The offer is subject to availability at time of booking. Restrictions may apply. It is not combinable with any other promotion.
 
+<hr class="border-white/30 my-4" />
+
+<b>Travel:</b>
+
+From November 1st to December 22nd, 2025.
 </div>

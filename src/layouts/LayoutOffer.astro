@@ -24,7 +24,6 @@ const useDato = Boolean(dato && (dato.description || dato.terms || dato.subtitle
 const tcLabel = isES ? 'Términos y Condiciones' : 'Terms & Conditions';
 const travelLabel = isES ? 'Vigencia:' : 'Travel:';
 const toHtml = (s) => (s ? String(s).replace(/\n/g, '<br/>') : '');
-const travelDate = frontmatter.date || dato?.travelDate || '';
 ---
 
 <Layout title={`${frontmatter.title} Offers - La Casa Que Canta`}>
@@ -65,11 +64,11 @@ const travelDate = frontmatter.date || dato?.travelDate || '';
                     <div class="mt-2" set:html={toHtml(dato.terms)} />
                   </>
                 )}
-                {travelDate && (
+                {dato?.travelDate && (
                   <>
                     <hr class="border-white/30 my-4" />
                     <b>{travelLabel}</b>
-                    <p class="mt-1">{travelDate}</p>
+                    <p class="mt-1">{dato.travelDate}</p>
                   </>
                 )}
               </>
@@ -132,11 +131,11 @@ const travelDate = frontmatter.date || dato?.travelDate || '';
                   <div class="mt-2" set:html={toHtml(dato.terms)} />
                 </>
               )}
-              {travelDate && (
+              {dato?.travelDate && (
                 <>
                   <hr class="border-white/30 my-4" />
                   <b>{travelLabel}</b>
-                  <p class="mt-1">{travelDate}</p>
+                  <p class="mt-1">{dato.travelDate}</p>
                 </>
               )}
             </>

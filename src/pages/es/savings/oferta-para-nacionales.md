@@ -3,7 +3,6 @@ title: "Oferta para nacionales"
 description: "Tarifa especial para huéspedes nacionales. Disfrute de nuestra oferta única en un ambiente de lujo y tranquilidad."
 imagefront: "/offers/lcqc-oferta-nacionales.jpg"
 layout: "@layouts/LayoutOffer.astro"
-date: "1ro de Mayo al 31 de Octubre de 2026"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=es-ES&rooms=1&src=24C"
 hideHero: true
 bookLabel: "Reservar"
@@ -17,8 +16,7 @@ offsetX: "2cm"
 
 <i>No se requiere una estancia mínima.</i>
 
-<b>Incluye:</b>
-<p><i>Vigencia: 1ro de Mayo al 31 de Octubre de 2026.</i></p>
+<b>Incluye</b>:
 <ul class="list-disc ml-4">
   <li>Desayuno &laquo;Encanto Mexicano&raquo; diario para dos personas.</li>
   <li>Minibar en cortesía.</li>
@@ -41,6 +39,6 @@ Se requiere una identificación oficial al momento del registro que lo acredite 
 
 <b>Viaje:</b>
 
-Del 1ro de Mayo al 31 de Octubre de 2026.
+1 de Octubre a 31 de Octubre 2025
 
 </div>
