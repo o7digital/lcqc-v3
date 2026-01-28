@@ -1,32 +1,88 @@
 import { fetchDatoCMS } from '@lib/datocms';
 
-export async function fetchSuiteDetails(slug, locale) {
-  const tryLocales = locale === 'es' ? ['es', 'en'] : ['en', 'es'];
+// Shared field selection for all suite detail queries
+const sharedFields = `
+  subtitle
+  intro
+  roomFeatures
+  amenities
+  internetAccess
+`;
 
-  // NOTE: requested exact field name (one 'm', lowercase 'details')
-  const qBySlug4 = `
-    query Suite($slug: String, $locale: SiteLocale) {
-      allAccomodationsdetails(filter: { slug: { eq: $slug } }, locale: $locale, first: 1) {
-        subtitle
-        intro
-        roomFeatures
-        amenities
-        internetAccess
-      }
-    }
-  `;
-  const qList4 = `
-    query SuiteList($locale: SiteLocale) {
-      allAccomodationsdetails(locale: $locale) {
-        slug
-        subtitle
-        intro
-        roomFeatures
-        amenities
-        internetAccess
-      }
-    }
-  `;
+const qBySlug1 = `
+  query Suite($slug: String, $locale: SiteLocale) {
+    allAccomodationsDetails(
+      filter: { slug: { eq: $slug } }
+      locale: $locale
+      fallbackLocales: []
+      first: 1
+    ) { ${sharedFields} }
+  }
+`;
+const qBySlug2 = `
+  query Suite($slug: String, $locale: SiteLocale) {
+    allAccommodationsDetails(
+      filter: { slug: { eq: $slug } }
+      locale: $locale
+      fallbackLocales: []
+      first: 1
+    ) { ${sharedFields} }
+  }
+`;
+const qBySlug3 = `
+  query Suite($slug: String, $locale: SiteLocale) {
+    allAdminDetailSuites(
+      filter: { slug: { eq: $slug } }
+      locale: $locale
+      fallbackLocales: []
+      first: 1
+    ) { ${sharedFields} }
+  }
+`;
+// NOTE: requested exact field name (one 'm', lowercase 'details')
+const qBySlug4 = `
+  query Suite($slug: String, $locale: SiteLocale) {
+    allAccomodationsdetails(
+      filter: { slug: { eq: $slug } }
+      locale: $locale
+      fallbackLocales: []
+      first: 1
+    ) { ${sharedFields} }
+  }
+`;
+
+const qList1 = `
+  query SuiteList($locale: SiteLocale) {
+    allAccomodationsDetails(locale: $locale, fallbackLocales: []) { slug ${sharedFields} }
+  }
+`;
+const qList2 = `
+  query SuiteList($locale: SiteLocale) {
+    allAccommodationsDetails(locale: $locale, fallbackLocales: []) { slug ${sharedFields} }
+  }
+`;
+const qList3 = `
+  query SuiteList($locale: SiteLocale) {
+    allAdminDetailSuites(locale: $locale, fallbackLocales: []) { slug ${sharedFields} }
+  }
+`;
+const qList4 = `
+  query SuiteList($locale: SiteLocale) {
+    allAccomodationsdetails(locale: $locale, fallbackLocales: []) { slug ${sharedFields} }
+  }
+`;
+
+export async function fetchSuiteDetails(slug, locale) {
+  const env = import.meta.env?.DATOCMS_ENVIRONMENT;
+  // Avoid pulling dev/approve datasets to keep staging aligned with main content
+  if (env && env !== 'main') {
+    return null;
+  }
+
+  const preferredLocale = locale || 'en';
+  // Avoid cross-locale fallbacks; if a translation is missing we keep the per-page
+  // static copy instead of mixing languages.
+  const tryLocales = [preferredLocale];
 
   // Try exact filter on both API keys and locales
   for (const loc of tryLocales) {
