@@ -1,102 +1,13 @@
 ---
-import https from 'node:https';
+import {
+  instagramHandle,
+  instagramProfile,
+  instagramSeedPosts,
+} from '../lib/instagram-feed.js';
 
-const instagramProfile = 'https://www.instagram.com/lacasaquecanta_hotelboutique/';
-const instagramHandle = '/lacasaquecanta_hotelboutique';
 const lightwidgetId = (import.meta.env.PUBLIC_LIGHTWIDGET_LCQC_ID || '').trim();
 
-let instagramPosts = [];
-
-if (!lightwidgetId) {
-  try {
-    const data = await new Promise((resolve, reject) => {
-      const request = https.get(
-        'https://www.instagram.com/api/v1/users/web_profile_info/?username=lacasaquecanta_hotelboutique',
-        {
-          headers: {
-            accept: 'application/json',
-            'x-ig-app-id': '936619743392459',
-            'user-agent': 'Instagram 219.0.0.12.117 Android',
-          },
-        },
-        (response) => {
-          let raw = '';
-
-          response.on('data', (chunk) => {
-            raw += chunk;
-          });
-
-          response.on('end', () => {
-            if (response.statusCode !== 200) {
-              reject(new Error(`Instagram returned ${response.statusCode}`));
-              return;
-            }
-
-            try {
-              resolve(JSON.parse(raw));
-            } catch (error) {
-              reject(error);
-            }
-          });
-        },
-      );
-
-      request.on('error', reject);
-      request.setTimeout(8000, () => {
-        request.destroy(new Error('Instagram request timed out'));
-      });
-    });
-
-    const edges = data?.data?.user?.edge_owner_to_timeline_media?.edges || [];
-    instagramPosts = edges.slice(0, 6).map(({ node }) => {
-      const caption = node?.edge_media_to_caption?.edges?.[0]?.node?.text?.trim() || '';
-      const accessibilityCaption = node?.accessibility_caption?.trim() || '';
-      return {
-        href: node?.shortcode ? `https://www.instagram.com/p/${node.shortcode}/` : instagramProfile,
-        src: node?.thumbnail_src || node?.display_url || '',
-        alt:
-          accessibilityCaption ||
-          caption ||
-          `Instagram post from ${instagramHandle}`,
-      };
-    }).filter((post) => post.src);
-  } catch (error) {
-    console.error('Instagram social wall fetch failed, using fallback images.', error);
-  }
-}
-
-const fallbackPosts = [
-  {
-    href: instagramProfile,
-    src: '/images/slider/casa-sunset-1280.jpg',
-    alt: 'La Casa Que Canta suites at sunset',
-  },
-  {
-    href: instagramProfile,
-    src: '/mar-y-cielo-restaurante.jpg',
-    alt: 'Mar y Cielo dish at La Casa Que Canta',
-  },
-  {
-    href: instagramProfile,
-    src: '/lobby.webp',
-    alt: 'Lobby at La Casa Que Canta',
-  },
-  {
-    href: instagramProfile,
-    src: '/images/welcome-lacasa-optimized.jpg',
-    alt: 'Ocean view from La Casa Que Canta',
-  },
-  {
-    href: instagramProfile,
-    src: '/pools-new.webp',
-    alt: 'Pool at La Casa Que Canta',
-  },
-  {
-    href: instagramProfile,
-    src: '/team.webp',
-    alt: 'La Casa Que Canta team',
-  },
-];
+const renderedPosts = instagramSeedPosts;
 ---
 
 <div class="relative overflow-hidden border-y border-black/10 bg-white/85 py-12 md:py-16">
@@ -141,57 +52,84 @@ const fallbackPosts = [
           title="Instagram feed La Casa Que Canta"
         ></iframe>
       </>
-    ) : instagramPosts.length > 0 ? (
-      <div class="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6">
-        {instagramPosts.map((post, index) => (
-          <a
-            href={post.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group relative block overflow-hidden bg-[#f2eee8]"
-            aria-label={`Instagram post ${index + 1}`}
-          >
-            <img
-              src={post.src}
-              alt={post.alt}
-              loading="lazy"
-              class="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              referrerpolicy="no-referrer"
-            />
-            <div class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10"></div>
-            <div class="absolute right-3 top-3 rounded-full bg-white/90 p-1.5 text-black/75 shadow-sm">
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 1.8A3.7 3.7 0 0 0 3.8 7.5v9a3.7 3.7 0 0 0 3.7 3.7h9a3.7 3.7 0 0 0 3.7-3.7v-9a3.7 3.7 0 0 0-3.7-3.7h-9Zm4.5 3.1A5.1 5.1 0 1 1 6.9 12 5.1 5.1 0 0 1 12 6.9Zm0 1.8A3.3 3.3 0 1 0 15.3 12 3.3 3.3 0 0 0 12 8.7Zm5.4-2.25a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2Z"/>
-              </svg>
-            </div>
-          </a>
-        ))}
-      </div>
     ) : (
-      <div class="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6">
-        {fallbackPosts.map((post, index) => (
-          <a
-            href={post.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group relative block overflow-hidden bg-[#f2eee8]"
-            aria-label={`Instagram La Casa Que Canta ${index + 1}`}
-          >
-            <img
-              src={post.src}
-              alt={post.alt}
-              loading="lazy"
-              class="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10"></div>
-            <div class="absolute right-3 top-3 rounded-full bg-white/90 p-1.5 text-black/75 shadow-sm">
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 1.8A3.7 3.7 0 0 0 3.8 7.5v9a3.7 3.7 0 0 0 3.7 3.7h9a3.7 3.7 0 0 0 3.7-3.7v-9a3.7 3.7 0 0 0-3.7-3.7h-9Zm4.5 3.1A5.1 5.1 0 1 1 6.9 12 5.1 5.1 0 0 1 12 6.9Zm0 1.8A3.3 3.3 0 1 0 15.3 12 3.3 3.3 0 0 0 12 8.7Zm5.4-2.25a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2Z"/>
-              </svg>
-            </div>
-          </a>
-        ))}
-      </div>
+      <>
+        <div class="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6" data-instagram-grid>
+          {renderedPosts.map((post, index) => (
+            <a
+              href={post.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group relative block overflow-hidden bg-[#f2eee8]"
+              aria-label={`Instagram post ${index + 1}`}
+              data-instagram-item
+              data-instagram-index={index}
+            >
+              <img
+                src={post.src}
+                alt={post.alt}
+                loading="lazy"
+                class="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                referrerpolicy="no-referrer"
+                data-instagram-image
+              />
+              <div class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10"></div>
+              <div class="absolute right-3 top-3 rounded-full bg-white/90 p-1.5 text-black/75 shadow-sm">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 1.8A3.7 3.7 0 0 0 3.8 7.5v9a3.7 3.7 0 0 0 3.7 3.7h9a3.7 3.7 0 0 0 3.7-3.7v-9a3.7 3.7 0 0 0-3.7-3.7h-9Zm4.5 3.1A5.1 5.1 0 1 1 6.9 12 5.1 5.1 0 0 1 12 6.9Zm0 1.8A3.3 3.3 0 1 0 15.3 12 3.3 3.3 0 0 0 12 8.7Zm5.4-2.25a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2Z"/>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <script is:inline>
+          (() => {
+            const applyPosts = (posts) => {
+              const items = document.querySelectorAll('[data-instagram-item]');
+
+              posts.slice(0, items.length).forEach((post, index) => {
+                const item = items[index];
+                const image = item?.querySelector('[data-instagram-image]');
+
+                if (!item || !image || !post?.src) return;
+
+                item.href = post.href || 'https://www.instagram.com/lacasaquecanta_hotelboutique/';
+                item.setAttribute('aria-label', `Instagram post ${index + 1}`);
+                image.src = post.src;
+                image.alt = post.alt || 'Instagram post from /lacasaquecanta_hotelboutique';
+                image.setAttribute('referrerpolicy', 'no-referrer');
+              });
+            };
+
+            const loadInstagramFeed = async () => {
+              try {
+                const response = await fetch('/api/instagram-feed', {
+                  credentials: 'same-origin',
+                  headers: {
+                    accept: 'application/json',
+                  },
+                });
+
+                if (!response.ok) return;
+
+                const data = await response.json();
+                if (!Array.isArray(data?.posts) || data.posts.length === 0) return;
+
+                applyPosts(data.posts);
+              } catch (error) {
+                console.error('Instagram social wall client refresh failed.', error);
+              }
+            };
+
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', loadInstagramFeed, { once: true });
+            } else {
+              loadInstagramFeed();
+            }
+          })();
+        </script>
+      </>
     )}
   </div>
 </div>
