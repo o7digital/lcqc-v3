@@ -1,0 +1,103 @@
+---
+const instagramProfile = 'https://www.instagram.com/lacasaquecanta_hotelboutique/';
+const instagramHandle = '/lacasaquecanta_hotelboutique';
+const lightwidgetId = (import.meta.env.PUBLIC_LIGHTWIDGET_LCQC_ID || '').trim();
+
+const fallbackPosts = [
+  {
+    src: '/images/slider/casa-sunset-1280.jpg',
+    alt: 'La Casa Que Canta suites at sunset',
+  },
+  {
+    src: '/mar-y-cielo-restaurante.jpg',
+    alt: 'Mar y Cielo dish at La Casa Que Canta',
+  },
+  {
+    src: '/lobby.webp',
+    alt: 'Lobby at La Casa Que Canta',
+  },
+  {
+    src: '/images/welcome-lacasa-optimized.jpg',
+    alt: 'Ocean view from La Casa Que Canta',
+  },
+  {
+    src: '/pools-new.webp',
+    alt: 'Pool at La Casa Que Canta',
+  },
+  {
+    src: '/team.webp',
+    alt: 'La Casa Que Canta team',
+  },
+];
+---
+
+<div class="relative overflow-hidden border-y border-black/10 bg-white/85 py-12 md:py-16">
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.08]"
+    style="background-image: url('/images/logo/logo-gris.png'); background-repeat: no-repeat; background-position: center; background-size: min(84vw, 980px);"
+  ></div>
+
+  <div class="relative max-w-[1500px] mx-auto px-4">
+    <div class="mb-8 flex items-center justify-center gap-3 text-black/70">
+      <a
+        href={instagramProfile}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-3 text-center text-2xl md:text-4xl font-light tracking-tight hover:text-black transition-colors"
+        aria-label="Instagram La Casa Que Canta"
+      >
+        <svg
+          class="h-7 w-7 md:h-10 md:w-10"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2" />
+          <circle cx="12" cy="12" r="4.25" stroke="currentColor" stroke-width="2" />
+          <circle cx="17.2" cy="6.8" r="1.25" fill="currentColor" />
+        </svg>
+        <span>{instagramHandle}</span>
+      </a>
+    </div>
+
+    {lightwidgetId ? (
+      <>
+        <script src="https://cdn.lightwidget.com/widgets/lightwidget.js" async></script>
+        <iframe
+          src={`//lightwidget.com/widgets/${lightwidgetId}.html`}
+          scrolling="no"
+          allowtransparency="true"
+          class="lightwidget-widget !w-full !border-0 !overflow-hidden bg-transparent"
+          style="width:100%;border:0;overflow:hidden;"
+          title="Instagram feed La Casa Que Canta"
+        ></iframe>
+      </>
+    ) : (
+      <div class="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6">
+        {fallbackPosts.map((post, index) => (
+          <a
+            href={instagramProfile}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative block overflow-hidden bg-[#f2eee8]"
+            aria-label={`Instagram La Casa Que Canta ${index + 1}`}
+          >
+            <img
+              src={post.src}
+              alt={post.alt}
+              loading="lazy"
+              class="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10"></div>
+            <div class="absolute right-3 top-3 rounded-full bg-white/90 p-1.5 text-black/75 shadow-sm">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 1.8A3.7 3.7 0 0 0 3.8 7.5v9a3.7 3.7 0 0 0 3.7 3.7h9a3.7 3.7 0 0 0 3.7-3.7v-9a3.7 3.7 0 0 0-3.7-3.7h-9Zm4.5 3.1A5.1 5.1 0 1 1 6.9 12 5.1 5.1 0 0 1 12 6.9Zm0 1.8A3.3 3.3 0 1 0 15.3 12 3.3 3.3 0 0 0 12 8.7Zm5.4-2.25a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2Z"/>
+              </svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</div>

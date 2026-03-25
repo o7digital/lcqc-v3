@@ -1,12 +1,13 @@
 ---
+import SocialWall from './SocialWall.astro';
+
 const isES = Astro.url.pathname.startsWith('/es');
 const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
 const contactHref = isES ? '/es/contact' : '/contact';
+const newsletterHref = isES ? '/es/la-casa-que-canta#newsletter' : '/la-casa-que-canta#newsletter';
 ---
 <section class="py-6 max-w-7xl mx-auto px-4 bg-[url('/palm-bg-footer.png')] bg-cover bg-bottom bg-no-repeat">
-  <div class="w-full">
-    
-  </div>
+  <SocialWall />
 
   <div class="flex flex-col md:flex-row justify-around gap-4 pt-8">
     <div class="flex flex-col justify-between">
@@ -68,6 +69,9 @@ const contactHref = isES ? '/es/contact' : '/contact';
         </a>
         <a href="https://www.tripadvisor.com/Hotel_Review-g150795-d152932-Reviews-La_Casa_Que_Canta-Zihuatanejo_Zihuatanejo_de_Azueta_Pacific_Coast.html" target="_blank">
           <img src="/tripadvisor.svg" width="140px" alt="Tripadvisor">
+        </a>
+        <a href={newsletterHref} class="text-sm underline underline-offset-4 hover:no-underline">
+          {isES ? 'Newsletter' : 'Newsletter'}
         </a>
       </div>
       <div class="mt-10">

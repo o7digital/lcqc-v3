@@ -1,0 +1,200 @@
+---
+interface Props {
+  locale?: 'en' | 'es';
+}
+
+const locale = Astro.props.locale === 'es' ? 'es' : 'en';
+const isES = locale === 'es';
+const privacyHref = isES ? '/es/privacy-policy' : '/privacy-policy';
+const formId = `newsletter-form-${locale}`;
+const successId = `newsletter-success-${locale}`;
+const errorId = `newsletter-error-${locale}`;
+
+const copy = isES
+  ? {
+      eyebrow: 'Newsletter',
+      title: 'Suscríbete a nuestra newsletter',
+      description:
+        'Déjanos tu correo para recibir ofertas exclusivas, novedades del hotel y noticias de La Casa Que Canta.',
+      emailLabel: 'Tu email',
+      emailPlaceholder: 'nombre@ejemplo.com',
+      consentPrefix:
+        'Acepto el uso de mis datos de acuerdo con la',
+      privacyLabel: 'Política de privacidad',
+      submit: 'Suscribirme',
+      submitting: 'Enviando…',
+      success: 'Gracias. Tu suscripción ha sido enviada.',
+      error:
+        'Lo sentimos, hubo un problema al enviar tu suscripción. Inténtalo de nuevo o escribe a sales.reservations@lacasaquecanta.com.',
+      networkError: 'Error de red. Verifica tu conexión e inténtalo nuevamente.',
+      subject: 'Newsletter Subscription - Hotel Page (ES)',
+      origin: 'Hotel page - ES',
+    }
+  : {
+      eyebrow: 'Newsletter',
+      title: 'Subscribe to our newsletter',
+      description:
+        'Enter your email to receive exclusive offers, hotel news and updates from La Casa Que Canta.',
+      emailLabel: 'Your email',
+      emailPlaceholder: 'name@example.com',
+      consentPrefix:
+        'I agree to the use of my data in accordance with the',
+      privacyLabel: 'Privacy Policy',
+      submit: 'Subscribe',
+      submitting: 'Sending…',
+      success: 'Thank you. Your subscription has been sent.',
+      error:
+        'Sorry, there was a problem sending your subscription. Please try again or email sales.reservations@lacasaquecanta.com.',
+      networkError: 'Network error. Please check your connection and try again.',
+      subject: 'Newsletter Subscription - Hotel Page (EN)',
+      origin: 'Hotel page - EN',
+    };
+---
+
+<section id="newsletter" class="bg-[url('/palm-bg-front.png')] bg-cover bg-center py-16 md:py-24 scroll-mt-28">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] rounded-sm border border-black/10 bg-white/75 p-8 md:p-12 backdrop-blur-sm shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+      <div class="max-w-2xl">
+        <p class="text-sm uppercase tracking-[0.35em] text-black/60">{copy.eyebrow}</p>
+        <h2 class="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold text-black/90 text-balance">
+          {copy.title}
+        </h2>
+        <p class="mt-5 text-base md:text-lg leading-relaxed text-black/75 max-w-xl">
+          {copy.description}
+        </p>
+      </div>
+
+      <div class="lg:pl-8">
+        <form
+          id={formId}
+          action="https://formspree.io/f/xojpqdqn"
+          method="POST"
+          class="grid gap-5"
+        >
+          <input type="hidden" name="_subject" value={copy.subject} />
+          <input type="hidden" name="origin" value={copy.origin} />
+          <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off" />
+
+          <div>
+            <label for={`${formId}-email`} class="block text-sm font-medium text-black/80">
+              {copy.emailLabel}*
+            </label>
+            <input
+              id={`${formId}-email`}
+              type="email"
+              name="email"
+              placeholder={copy.emailPlaceholder}
+              required
+              class="mt-2 w-full border border-black/40 bg-white/90 px-4 py-3 text-black placeholder:text-black/35 focus:border-black focus:outline-none"
+            />
+          </div>
+
+          <label class="flex items-start gap-3 text-sm leading-relaxed text-black/75">
+            <input
+              type="checkbox"
+              name="consent"
+              value="accepted"
+              required
+              class="mt-1 h-4 w-4 accent-black"
+            />
+            <span>
+              {copy.consentPrefix}{' '}
+              <a href={privacyHref} class="underline underline-offset-4 hover:no-underline">
+                {copy.privacyLabel}
+              </a>
+              .
+            </span>
+          </label>
+
+          <div class="flex flex-col items-start gap-4">
+            <button
+              type="submit"
+              class="bg-black/90 font-semibold uppercase tracking-[0.18em] py-3 px-6 text-white hover:bg-black/70 transition-colors"
+            >
+              {copy.submit}
+            </button>
+            <p id={successId} class="hidden text-sm text-green-700" aria-live="polite">{copy.success}</p>
+            <p id={errorId} class="hidden text-sm text-red-700" aria-live="polite">{copy.error}</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ formId, successId, errorId, submitText: copy.submit, submittingText: copy.submitting, fallbackError: copy.error, networkError: copy.networkError }}>
+  (() => {
+    const form = document.getElementById(formId);
+    const ok = document.getElementById(successId);
+    const err = document.getElementById(errorId);
+
+    if (!(form instanceof HTMLFormElement)) return;
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const button = form.querySelector('button[type="submit"]');
+      ok?.classList.add('hidden');
+      err?.classList.add('hidden');
+
+      if (button instanceof HTMLButtonElement) {
+        button.disabled = true;
+        button.textContent = submittingText;
+      }
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+
+        let data = {};
+        try {
+          data = await response.json();
+        } catch (_) {}
+
+        if (response.ok) {
+          form.reset();
+          ok?.classList.remove('hidden');
+          return;
+        }
+
+        let message = '';
+        if (data && typeof data === 'object') {
+          const maybeMessage = data.message || data.error;
+          if (typeof maybeMessage === 'string') message = maybeMessage;
+          if (!message && Array.isArray(data.errors) && typeof data.errors[0]?.message === 'string') {
+            message = data.errors[0].message;
+          }
+        }
+
+        if (!message) {
+          try {
+            const text = await response.text();
+            message = text?.slice(0, 300) || '';
+          } catch (_) {}
+        }
+
+        if (message.toLowerCase().includes('domain') || message.toLowerCase().includes('origin')) {
+          message = fallbackError;
+        }
+
+        if (err) {
+          err.textContent = message || fallbackError;
+          err.classList.remove('hidden');
+        }
+      } catch (_) {
+        if (err) {
+          err.textContent = networkError;
+          err.classList.remove('hidden');
+        }
+      } finally {
+        if (button instanceof HTMLButtonElement) {
+          button.disabled = false;
+          button.textContent = submitText;
+        }
+      }
+    });
+  })();
+</script>
