@@ -6,6 +6,11 @@ export const instagramHandle = '/lacasaquecanta_hotelboutique';
 const instagramApiUrl =
   'https://i.instagram.com/api/v1/users/web_profile_info/?username=lacasaquecanta_hotelboutique';
 
+const browserHeaders = {
+  'user-agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
+};
+
 export const instagramSeedPosts = [
   {
     href: 'https://www.instagram.com/lacasaquecanta_hotelboutique/p/DWRmwPUksG0/',
@@ -79,6 +84,37 @@ function extractMeta(html, property) {
   return decodeHtmlEntities(match?.[1] || '');
 }
 
+function getPostUrl(node) {
+  if (!node?.shortcode) return instagramProfile;
+  if (node?.product_type === 'clips') return `https://www.instagram.com/reel/${node.shortcode}/`;
+  return `https://www.instagram.com/p/${node.shortcode}/`;
+}
+
+function getPostImage(node) {
+  const squareThumbnail = node?.thumbnail_resources?.at(-1)?.src;
+  const displayResource = node?.display_resources?.at(-1)?.src;
+  const fallback = node?.thumbnail_src || node?.display_url || '';
+  return decodeHtmlEntities(squareThumbnail || displayResource || fallback);
+}
+
+async function refreshPostsFromPages(posts) {
+  const refreshedPosts = await Promise.all(posts.map(async (post) => {
+    try {
+      const html = await fetchText(post.href, browserHeaders);
+
+      return {
+        href: extractMeta(html, 'og:url') || post.href,
+        src: extractMeta(html, 'og:image') || post.src,
+        alt: extractMeta(html, 'og:description') || post.alt,
+      };
+    } catch {
+      return post;
+    }
+  }));
+
+  return refreshedPosts.filter((post) => post.src);
+}
+
 async function fetchInstagramPayload() {
   const raw = await fetchText(instagramApiUrl, {
     accept: 'application/json',
@@ -93,38 +129,24 @@ export async function fetchInstagramPosts(limit = 6) {
   const data = await fetchInstagramPayload();
   const edges = data?.data?.user?.edge_owner_to_timeline_media?.edges || [];
 
-  return edges.slice(0, limit).map(({ node }) => {
+  const posts = edges.slice(0, limit).map(({ node }) => {
     const caption = node?.edge_media_to_caption?.edges?.[0]?.node?.text?.trim() || '';
     const accessibilityCaption = node?.accessibility_caption?.trim() || '';
 
     return {
-      href: node?.shortcode ? `https://www.instagram.com/p/${node.shortcode}/` : instagramProfile,
-      src: node?.thumbnail_src || node?.display_url || '',
+      href: getPostUrl(node),
+      src: getPostImage(node),
       alt: accessibilityCaption || caption || `Instagram post from ${instagramHandle}`,
     };
   }).filter((post) => post.src);
+
+  const refreshedPosts = await refreshPostsFromPages(posts);
+  return refreshedPosts.length > 0 ? refreshedPosts : posts;
 }
 
 export async function fetchSeedPosts(limit = 6) {
   const seedPosts = instagramSeedPosts.slice(0, limit);
-
-  const refreshedPosts = await Promise.all(seedPosts.map(async (post) => {
-    try {
-      const html = await fetchText(post.href, {
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
-      });
-
-      return {
-        href: extractMeta(html, 'og:url') || post.href,
-        src: extractMeta(html, 'og:image') || post.src,
-        alt: extractMeta(html, 'og:description') || post.alt,
-      };
-    } catch {
-      return post;
-    }
-  }));
-
-  return refreshedPosts.filter((post) => post.src);
+  return refreshPostsFromPages(seedPosts);
 }
 
 export async function getInstagramFeedPosts(limit = 6) {
