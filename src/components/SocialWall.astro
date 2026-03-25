@@ -5,7 +5,9 @@ import {
   instagramSeedPosts,
 } from '../lib/instagram-feed.js';
 
-const lightwidgetId = (import.meta.env.PUBLIC_LIGHTWIDGET_LCQC_ID || '').trim();
+const lightwidgetId = (
+  import.meta.env.PUBLIC_LIGHTWIDGET_LCQC_ID || '192dde76ed805032a18485ba77aa856e'
+).trim();
 
 const renderedPosts = instagramSeedPosts;
 ---
