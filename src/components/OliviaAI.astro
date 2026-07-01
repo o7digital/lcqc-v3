@@ -1,0 +1,159 @@
+---
+const isEs = Astro.url.pathname.startsWith('/es');
+---
+
+<section id="olivia-ai" data-language={isEs ? 'es' : 'en'} aria-label="Olivia AI">
+  <button class="olivia-launcher" type="button" aria-expanded="false" aria-controls="olivia-panel">
+    <span class="olivia-avatar">O</span>
+    <span>{isEs ? '¿Necesita ayuda?' : 'Need help?'}</span>
+  </button>
+
+  <div id="olivia-panel" class="olivia-panel" hidden>
+    <header>
+      <div><strong>Olivia AI</strong><small>{isEs ? 'Concierge digital · En línea' : 'Digital concierge · Online'}</small></div>
+      <button class="olivia-close" type="button" aria-label={isEs ? 'Cerrar' : 'Close'}>×</button>
+    </header>
+    <div class="olivia-messages" aria-live="polite"></div>
+    <div class="olivia-consent">
+      <span>{isEs ? 'Para conversar, lea y acepte nuestro Aviso de Privacidad.' : 'To chat, please read and accept our Privacy Notice.'}</span>
+      <button class="olivia-privacy-open" type="button">{isEs ? 'Leer aviso' : 'Read notice'}</button>
+    </div>
+    <form class="olivia-form">
+      <input aria-label={isEs ? 'Escriba su mensaje' : 'Write your message'} placeholder={isEs ? 'Escriba su mensaje…' : 'Write your message…'} disabled />
+      <button type="submit" disabled>{isEs ? 'Enviar' : 'Send'}</button>
+    </form>
+  </div>
+
+  <div class="olivia-modal" hidden role="dialog" aria-modal="true" aria-labelledby="olivia-privacy-title">
+    <div class="olivia-modal-card">
+      <h2 id="olivia-privacy-title">{isEs ? 'Aviso de Privacidad de Olivia AI' : 'Olivia AI Privacy Notice'}</h2>
+      <p>{isEs
+        ? 'CASACANTA ZIHUA, S.A. DE C.V. tratará los datos que usted comparta con Olivia AI —incluidos nombre, correo electrónico, teléfono, mensajes, idioma y página visitada— para atender su solicitud, dar seguimiento y contactarle por medios electrónicos.'
+        : 'CASACANTA ZIHUA, S.A. DE C.V. will process the data you share with Olivia AI—including your name, email, phone, messages, language and visited page—to answer your request, follow up and contact you electronically.'}</p>
+      <p>{isEs
+        ? 'Puede ejercer sus derechos de acceso, rectificación, cancelación y oposición, revocar su consentimiento o limitar el uso de sus datos conforme al Aviso de Privacidad completo.'
+        : 'You may exercise access, rectification, cancellation and opposition rights, revoke consent or limit data use as described in the full Privacy Notice.'}</p>
+      <a href={isEs ? '/es/privacy-policy' : '/privacy-policy'} target="_blank">{isEs ? 'Consultar el Aviso de Privacidad completo' : 'Read the full Privacy Notice'}</a>
+      <label><input class="olivia-privacy-check" type="checkbox" /> <span>{isEs ? 'He leído y acepto el Aviso de Privacidad.' : 'I have read and accept the Privacy Notice.'}</span></label>
+      <div class="olivia-modal-actions">
+        <button class="olivia-privacy-cancel" type="button">{isEs ? 'Cancelar' : 'Cancel'}</button>
+        <button class="olivia-privacy-accept" type="button" disabled>{isEs ? 'Aceptar y continuar' : 'Accept and continue'}</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const API = 'https://suitesmine-4bmrjutt2-olivier-steineur.vercel.app/api';
+  const CLIENT = 'lacasaquecanta';
+  const root = document.querySelector('#olivia-ai');
+  if (root instanceof HTMLElement) {
+    const language = root.dataset.language === 'es' ? 'es' : 'en';
+    const panel = root.querySelector('.olivia-panel');
+    const launcher = root.querySelector('.olivia-launcher');
+    const close = root.querySelector('.olivia-close');
+    const messages = root.querySelector('.olivia-messages');
+    const form = root.querySelector('.olivia-form');
+    const input = form?.querySelector('input');
+    const send = form?.querySelector('button');
+    const modal = root.querySelector('.olivia-modal');
+    const privacyOpen = root.querySelector('.olivia-privacy-open');
+    const privacyCheck = root.querySelector('.olivia-privacy-check');
+    const privacyAccept = root.querySelector('.olivia-privacy-accept');
+    const privacyCancel = root.querySelector('.olivia-privacy-cancel');
+    const consentKey = `oliviaConsent:${CLIENT}`;
+    let consent = localStorage.getItem(consentKey) === 'accepted';
+    const visitorKey = `oliviaVisitorId:${CLIENT}`;
+    const visitorId = localStorage.getItem(visitorKey) || crypto.randomUUID();
+    localStorage.setItem(visitorKey, visitorId);
+
+    const addMessage = (role, content) => {
+      if (!(messages instanceof HTMLElement)) return;
+      const bubble = document.createElement('p');
+      bubble.className = `olivia-message ${role}`;
+      bubble.textContent = content;
+      messages.appendChild(bubble);
+      messages.scrollTop = messages.scrollHeight;
+    };
+    addMessage('assistant', language === 'es'
+      ? 'Hola, soy Olivia AI, concierge digital de La Casa Que Canta. ¿En qué puedo ayudarle? Para dar seguimiento le solicitaré nombre y apellido, email y teléfono.'
+      : 'Hello, I am Olivia AI, La Casa Que Canta’s digital concierge. How may I help? To follow up, I will ask for your first and last name, email and phone.');
+
+    const updateConsent = () => {
+      if (input instanceof HTMLInputElement) input.disabled = !consent;
+      if (send instanceof HTMLButtonElement) send.disabled = !consent;
+      root.querySelector('.olivia-consent')?.classList.toggle('accepted', consent);
+    };
+    updateConsent();
+
+    launcher?.addEventListener('click', () => {
+      if (!(panel instanceof HTMLElement)) return;
+      panel.hidden = false;
+      launcher.setAttribute('aria-expanded', 'true');
+      if (!consent && modal instanceof HTMLElement) modal.hidden = false;
+    });
+    close?.addEventListener('click', () => {
+      if (panel instanceof HTMLElement) panel.hidden = true;
+      launcher?.setAttribute('aria-expanded', 'false');
+    });
+    privacyOpen?.addEventListener('click', () => { if (modal instanceof HTMLElement) modal.hidden = false; });
+    privacyCancel?.addEventListener('click', () => { if (modal instanceof HTMLElement) modal.hidden = true; });
+    privacyCheck?.addEventListener('change', () => {
+      if (privacyAccept instanceof HTMLButtonElement && privacyCheck instanceof HTMLInputElement) privacyAccept.disabled = !privacyCheck.checked;
+    });
+    privacyAccept?.addEventListener('click', () => {
+      consent = true;
+      localStorage.setItem(consentKey, 'accepted');
+      localStorage.setItem(`${consentKey}:at`, new Date().toISOString());
+      if (modal instanceof HTMLElement) modal.hidden = true;
+      updateConsent();
+      if (input instanceof HTMLInputElement) input.focus();
+    });
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!(input instanceof HTMLInputElement) || !(send instanceof HTMLButtonElement)) return;
+      const content = input.value.trim();
+      if (!content || !consent) return;
+      input.value = '';
+      input.disabled = true;
+      send.disabled = true;
+      addMessage('user', content);
+      const metadata = {
+        pageUrl: location.href,
+        pageTitle: document.title,
+        pageContent: document.body.innerText.replace(/\s+/g, ' ').slice(0, 5000),
+        dataConsent: true,
+        dataConsentAt: localStorage.getItem(`${consentKey}:at`),
+        privacyVersion: 'lcqc-privacy-ai-2026-07-01'
+      };
+      try {
+        await fetch(`${API}/widget/conversations`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clientCode: CLIENT, visitorId, content, source: 'website', language, metadata })
+        });
+        const response = await fetch(`${API}/olivia/chat`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clientCode: CLIENT, message: content, language, pageUrl: location.href, metadata })
+        });
+        const data = await response.json();
+        const reply = data.reply || (language === 'es' ? 'Gracias. Un asesor dará seguimiento a su solicitud.' : 'Thank you. An advisor will follow up on your request.');
+        addMessage('assistant', reply);
+        await fetch(`${API}/widget/conversations`, {
+          method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clientCode: CLIENT, visitorId, content: reply, model: data.model })
+        });
+      } catch {
+        addMessage('assistant', language === 'es' ? 'No puedo responder en este momento. Escríbanos a sales.reservations@lacasaquecanta.com.' : 'I cannot respond right now. Please email sales.reservations@lacasaquecanta.com.');
+      } finally {
+        input.disabled = false;
+        send.disabled = false;
+        input.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  #olivia-ai{--gold:#b89b63;--dark:#172b2a;position:fixed;right:22px;bottom:22px;z-index:99998;font-family:Montserrat,sans-serif}.olivia-launcher{display:flex;align-items:center;gap:10px;background:var(--dark);color:#fff;border:1px solid var(--gold);border-radius:30px;padding:10px 18px;box-shadow:0 8px 28px #0005;cursor:pointer}.olivia-avatar{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--dark);font-weight:800}.olivia-panel{position:absolute;right:0;bottom:62px;width:min(390px,calc(100vw - 28px));height:560px;max-height:calc(100vh - 100px);background:#f5f0e7;border:1px solid var(--gold);border-radius:20px;overflow:hidden;box-shadow:0 16px 50px #0006}.olivia-panel header{height:78px;padding:15px 18px;background:var(--dark);color:#fff;display:flex;justify-content:space-between;align-items:center}.olivia-panel header strong,.olivia-panel header small{display:block}.olivia-panel header strong{font-size:22px;color:#e4c889}.olivia-panel header small{margin-top:5px}.olivia-close{border:0;background:transparent;color:#fff;font-size:30px;cursor:pointer}.olivia-messages{height:calc(100% - 205px);padding:18px;overflow:auto}.olivia-message{max-width:88%;padding:12px 14px;border-radius:16px;white-space:pre-wrap;line-height:1.45;margin:0 0 12px}.olivia-message.assistant{background:#fff;color:#172b2a}.olivia-message.user{background:var(--dark);color:#fff;margin-left:auto}.olivia-consent{background:#fff;padding:9px 14px;font-size:12px;color:#333}.olivia-consent.accepted{display:none}.olivia-privacy-open{border:0;background:transparent;color:#69532b;text-decoration:underline;font-weight:700;cursor:pointer}.olivia-form{display:flex;gap:8px;padding:12px;background:var(--dark)}.olivia-form input{min-width:0;flex:1;border:0;border-radius:12px;padding:12px;font-size:14px}.olivia-form button,.olivia-modal-actions button{border:0;border-radius:10px;background:var(--gold);color:#101d1c;font-weight:700;padding:10px 14px;cursor:pointer}.olivia-form button:disabled,.olivia-modal-actions button:disabled{opacity:.45;cursor:not-allowed}.olivia-modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:20px;z-index:99999}.olivia-modal[hidden],.olivia-panel[hidden]{display:none}.olivia-modal-card{width:min(560px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:26px;color:#172b2a}.olivia-modal-card h2{font-family:Montserrat,sans-serif;font-size:23px}.olivia-modal-card p{line-height:1.55}.olivia-modal-card a{color:#69532b;text-decoration:underline}.olivia-modal-card label{display:flex;gap:10px;align-items:flex-start;margin:20px 0;font-weight:600}.olivia-modal-actions{display:flex;justify-content:flex-end;gap:10px}.olivia-privacy-cancel{background:#ddd!important}@media(max-width:640px){#olivia-ai{right:14px;bottom:14px}.olivia-panel{position:fixed;inset:14px;width:auto;height:auto;max-height:none}.olivia-messages{height:calc(100% - 205px)}}
+</style>
