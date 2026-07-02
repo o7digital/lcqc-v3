@@ -66,6 +66,26 @@ const isEs = Astro.url.pathname.startsWith('/es');
     const visitorKey = `oliviaVisitorId:${CLIENT}`;
     const visitorId = localStorage.getItem(visitorKey) || crypto.randomUUID();
     localStorage.setItem(visitorKey, visitorId);
+    const contactKey = `oliviaContact:${CLIENT}:${visitorId}`;
+    let contactDraft = {};
+    try { contactDraft = JSON.parse(localStorage.getItem(contactKey) || '{}'); } catch { contactDraft = {}; }
+
+    const rememberContact = (content) => {
+      const email = content.match(/[^\s@]+@[^\s@]+\.[^\s@,.;]+/)?.[0] || contactDraft.email || '';
+      const phone = content.match(/(?:\+?\d[\d\s().-]{6,}\d)/)?.[0] || contactDraft.phone || '';
+      let name = contactDraft.name || '';
+      if (!name && email) {
+        const beforeEmail = content.slice(0, content.indexOf(email));
+        const candidate = beforeEmail
+          .replace(/\b(hola|hello|soy|i am|me llamo|my name is|nombre|name)\b/gi, ' ')
+          .replace(/[,:;|]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+        if (/^[\p{L}' -]{2,80}$/u.test(candidate)) name = candidate;
+      }
+      contactDraft = { ...contactDraft, name, email, phone };
+      localStorage.setItem(contactKey, JSON.stringify(contactDraft));
+    };
 
     const addMessage = (role, content) => {
       if (!(messages instanceof HTMLElement)) return;
@@ -120,13 +140,18 @@ const isEs = Astro.url.pathname.startsWith('/es');
       input.disabled = true;
       send.disabled = true;
       addMessage('user', content);
+      rememberContact(content);
       const metadata = {
         pageUrl: location.href,
         pageTitle: document.title,
         pageContent: document.body.innerText.replace(/\s+/g, ' ').slice(0, 5000),
         dataConsent: true,
         dataConsentAt: localStorage.getItem(`${consentKey}:at`),
-        privacyVersion: 'lcqc-privacy-ai-2026-07-01'
+        privacyVersion: 'lcqc-privacy-ai-2026-07-01',
+        bookingDraft: contactDraft,
+        name: contactDraft.name,
+        email: contactDraft.email,
+        phone: contactDraft.phone
       };
       try {
         await fetch(`${API}/widget/conversations`, {
@@ -138,6 +163,10 @@ const isEs = Astro.url.pathname.startsWith('/es');
           body: JSON.stringify({ clientCode: CLIENT, message: content, language, pageUrl: location.href, metadata })
         });
         const data = await response.json();
+        if (data.collected) {
+          contactDraft = { ...contactDraft, ...Object.fromEntries(Object.entries(data.collected).filter(([, value]) => value)) };
+          localStorage.setItem(contactKey, JSON.stringify(contactDraft));
+        }
         const reply = data.reply || (language === 'es' ? 'Gracias. Un asesor dará seguimiento a su solicitud.' : 'Thank you. An advisor will follow up on your request.');
         addMessage('assistant', reply);
         await fetch(`${API}/widget/conversations`, {
