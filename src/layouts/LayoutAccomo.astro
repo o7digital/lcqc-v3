@@ -22,9 +22,13 @@ const currentSlug = (path.split('/').filter(Boolean).pop() || '').toLowerCase();
 const allSuiteCards = [
   { slug: 'deluxe-grand-suites', title: 'Deluxe Grand Suites', imagefront: '/deluxe-grand-suites/1.jpg' },
   { slug: 'masters-pool-suite', title: 'Master Pool Suite', imagefront: '/master-pool-suite/5.jpg' },
-  { slug: "owners-pool-suite", title: "Owner's Pool Suite", imagefront: '/owner-pool-suite/2.jpg' },
+  { slug: "owners-pool-suite", title: "Penthouse Pool Suite", imagefront: '/owner-pool-suite/2.jpg' },
   { slug: 'terrace-suite', title: 'Terrace Suites', imagefront: '/terrace-suite/4.jpg' },
-  { slug: 'mexico-lindo-suite', title: 'Mexico Lindo Suite', imagefront: '/mexico-lindo-suite/2.jpg' },
+  {
+    slug: 'mexico-lindo-suite',
+    title: isEs ? 'Mexico Lindo Suite Presidencial' : 'Mexico Lindo Presidential Suite',
+    imagefront: '/mexico-lindo-suite/2.jpg',
+  },
 ];
 const staticRooms = allSuiteCards
   .filter((s) => s.slug !== currentSlug)

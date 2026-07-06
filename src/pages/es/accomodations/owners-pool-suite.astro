@@ -7,7 +7,7 @@ const locale = 'es';
 const details = await fetchSuiteDetails(slug, locale);
 
 const fallbackFrontmatter = {
-  title: "Owner's Pool Suite",
+  title: "Penthouse Pool Suite",
   imagefront: '/accomodations/4.jpeg',
   floorplan: '/floor-plan/owner.png',
   book: 'https://be.synxis.com/?chain=22402&hotel=78821&src=24C&room=OWN&locale=es-ES',
@@ -55,7 +55,7 @@ const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
     introParas.map((p)=>(<p>{p}</p>))
   ) : (
     <p>
-      Disfruta de la majestuosidad de la bahía de Zihuatanejo en nuestra suite penthouse y más privada. Este penthouse tiene una decoración elegante con artesanías seleccionadas por nuestros fundadores. La impresionante vista al mar de 180° desde la gran terraza y la alberca privada es única. La Owner's Suite incluye todas las comodidades para hacer de tu estancia una experiencia memorable.
+      Disfruta de la majestuosidad de la bahía de Zihuatanejo en nuestra suite penthouse y más privada. Este penthouse tiene una decoración elegante con artesanías seleccionadas por nuestros fundadores. La impresionante vista al mar de 180° desde la gran terraza y la alberca privada es única. La Penthouse Pool Suite incluye todas las comodidades para hacer de tu estancia una experiencia memorable.
     </p>
   )}
 </LayoutAccomo>
