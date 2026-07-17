@@ -2,7 +2,6 @@
 import Header from '../components/Header.astro';
 import Footer from "../components/Footer.astro"
 import CookieBanner from "../components/CookieBanner.astro"
-import OliviaAI from "../components/OliviaAI.astro"
 import "../styles/global.css";
 interface Props {
     title: string;
@@ -177,7 +176,6 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 				<slot />
 												<Footer/>
 												<CookieBanner/>
-												<OliviaAI/>
 																<!-- Logo Michelin overlay sur le slider, sauf Mar y Cielo -->
 																<!-- Rien ici, tout passe dans LayoutOneCol.astro et LayoutTwoCol.astro -->
 
@@ -200,6 +198,26 @@ const isVercelPreview = process.env.VERCEL_ENV === 'preview';
 			</div>
 		</main>
 
+		<script>
+			(function(){
+			  function loadTidio(){
+			    if (window.innerWidth > 768) {
+			      var tidioScript = document.createElement('script');
+			      tidioScript.src = '//code.tidio.co/k623dmbmwdep8abexdq2uebfg3yoo23f.js';
+			      tidioScript.async = true;
+			      document.body.appendChild(tidioScript);
+			    }
+			  }
+			  var consent = localStorage.getItem('cookieConsent');
+			  if (consent === 'accepted') {
+			    setTimeout(loadTidio, 20000);
+			  } else {
+			    window.addEventListener('cookie-consent-change', function(e){
+			      if (e.detail === 'accepted') setTimeout(loadTidio, 500);
+			    });
+			  }
+			})();
+		</script>
 
 		<script src="../scripts/app"></script>
 	</body>
