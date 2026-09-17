@@ -6,9 +6,9 @@ const showBack = frontmatter?.showBack !== false;
 
 <Layout title={`${frontmatter.title} - La Casa Que Canta`}>
 
-<section class="grid md:grid-cols-[65%_35%] md:h-screen overflow-y-hidden">
-  <div>
-    <div class="swiper mySwiper activities-slider overflow-hidden relative">
+<section class="grid w-full md:grid-cols-[65%_35%] md:h-screen overflow-y-hidden">
+  <div class="min-w-0">
+    <div class="swiper mySwiper activities-slider w-full max-w-full overflow-hidden relative">
       {frontmatter.showMichelin !== false && (
         <div class="absolute top-4 right-4 z-30 hidden md:block">
           <img src="/images/image2vector.svg" alt="Michelin" class="w-24 h-auto drop-shadow-xl" />
@@ -38,7 +38,7 @@ const showBack = frontmatter?.showBack !== false;
     </div>
   </div>
 
-  <div class="px-8 grid items-center my-8 prose-base md:px-12 lg:px-16">
+  <div class="min-w-0 px-8 grid items-center my-8 prose-base md:px-12 lg:px-16">
     <div>
       <div class="mb-6">
         <h1 class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
