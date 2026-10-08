@@ -1,4 +1,5 @@
 ---
+import MichelinLogo from "@components/MichelinLogo.astro";
 import LayoutOneCol from '../../../layouts/LayoutOneCol.astro';
 import { fetchDatoCMS } from '@lib/datocms';
 
@@ -70,11 +71,7 @@ const introParas = introText ? introText.split(/\r?\n\r?\n+/) : [];
       alt="SLH"
       class="h-[7.8rem] w-auto"
     />
-    <img
-      src="/images/1 MICHELIN Key_2025_Round_Red.png"
-      alt="Michelin Key 2025"
-      class="h-[5.5rem] w-auto"
-    />
+    <MichelinLogo class="h-[5.5rem] w-auto" />
   </div>
 
   <div id="spaReservationPopup" class="hidden fixed z-50 inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full" onclick="if(event.target===this){this.classList.add('hidden');}">

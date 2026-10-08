@@ -1,4 +1,5 @@
 ---
+import MichelinLogo from "@components/MichelinLogo.astro";
 import Layout from "../layouts/Layout.astro"; // 🔹 RUTA RELATIVA CORREGIDA
 const { frontmatter } = Astro.props;
 const showBack = frontmatter?.showBack !== false;
@@ -13,12 +14,12 @@ const justifyText = frontmatter?.justifyText === true;
                     {frontmatter.showAwards === false ? null : (
                         frontmatter.title && frontmatter.title.toLowerCase().includes('mar y cielo') ? (
                             <div class="absolute top-4 right-4 z-30 hidden md:flex gap-4">
-                                <img src="/images/image2vector.svg" alt="Michelin" class="w-24 h-auto drop-shadow-xl" />
+                                <MichelinLogo class="w-24 h-auto drop-shadow-xl" />
                                 <img src="/images/dinnerchoise.webp" alt="Dinner Club" class="w-24 h-auto drop-shadow-xl" />
                             </div>
                         ) : (
                             <div class="absolute top-4 right-4 z-30 hidden md:block">
-                                <img src="/images/image2vector.svg" alt="Michelin" class="w-24 h-auto drop-shadow-xl" />
+                                <MichelinLogo class="w-24 h-auto drop-shadow-xl" />
                             </div>
                         )
                     )}
@@ -99,7 +100,7 @@ const justifyText = frontmatter?.justifyText === true;
 </Layout>
 {frontmatter.title && frontmatter.title.toLowerCase().includes('mar y cielo') && frontmatter.showAwards !== false ? (
     <div class="w-full flex justify-end items-center px-4 pb-2 gap-4">
-        <img src="/images/image2vector.svg" alt="Michelin" class="w-24 h-auto drop-shadow-xl" style="pointer-events:auto;" />
+        <MichelinLogo class="w-24 h-auto drop-shadow-xl" style="pointer-events:auto;" />
         <img src="/images/dinnerchoise.webp" alt="Dinner Club" class="w-24 h-auto drop-shadow-xl" style="pointer-events:auto;" />
     </div>
 ) : null}
