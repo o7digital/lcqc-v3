@@ -1,7 +1,6 @@
 ---
 import MichelinLogo from "@components/MichelinLogo.astro";
 import Layout from '../layouts/Layout.astro';
-import NewsletterSection from '@components/NewsletterSection.astro';
 import { fetchDatoCMS } from '@lib/datocms';
 
 // Optional DatoCMS page content (fallback to static if unavailable)
@@ -27,7 +26,7 @@ const heroUrl = page?.heroImage?.url || '/lobby.jpg';
 // Official client copy (September 2026); keep independent of the CMS intro.
 const paragraphs = [
   "Our hotel, with his spectacular views, dominates the marvelous bay of Zihuatanejo Guerrero next to the beautiful La Ropa beach. We have been recognized for the third year with one Key by The MICHELIN Guide.",
-  "With two swimming pools, one between the sea and the sky, the other at the sea level with ocean water, our \" Casa Que Canta \" is built with adobe bricks, palapas and tropical woods. The unique architecture of our \"Casa\" is an icon on the Pacific Coast of Mexico. It's 25 Oceanfront ample suites offers unrivaled panoramic views and spacious terraces, spread out among three buildings.We are considered a very romantic hotel by famous magazines and travelers."
+  "With two swimming pools, one between the sea and the sky, the other at the sea level with ocean water, our \" Casa Que Canta \" is built with adobe bricks, palapas and tropical woods. The unique architecture of our \"Casa\" is an icon on the Pacific Coast of Mexico. It's 25 Oceanfront ample suites offers unrivaled panoramic views and spacious terraces, spread out among three buildings. We are considered a very romantic hotel by famous magazines and travelers."
 ];
 ---
 
@@ -104,5 +103,4 @@ const paragraphs = [
     </div>
   </section>
 
-  <NewsletterSection locale="en" />
 </Layout>
