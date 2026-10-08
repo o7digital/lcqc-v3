@@ -26,6 +26,6 @@
     "tinacms": "^2.7.5"
   },
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   }
 }
