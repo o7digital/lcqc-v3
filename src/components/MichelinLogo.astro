@@ -1,0 +1,13 @@
+---
+const { class: className = '', style } = Astro.props;
+const clipId = `michelin-${crypto.randomUUID()}`;
+---
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="32 32 686 686" class={className} style={style} role="img" aria-label="MICHELIN Guide 2026">
+  <defs>
+    <clipPath id={clipId}>
+      <circle cx="375" cy="375" r="343" />
+    </clipPath>
+  </defs>
+  <image href="/images/michelin-guide-2026.jpeg" x="0" y="0" width="733" height="749" clip-path={`url(#${clipId})`} />
+</svg>
