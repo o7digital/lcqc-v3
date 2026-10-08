@@ -1,7 +1,6 @@
 ---
 import MichelinLogo from "@components/MichelinLogo.astro";
 import Layout from '../layouts/Layout.astro';
-import NewsletterSection from '@components/NewsletterSection.astro';
 import { fetchDatoCMS } from '@lib/datocms';
 
 // Optional DatoCMS page content (fallback to static if unavailable)
@@ -104,5 +103,4 @@ const paragraphs = [
     </div>
   </section>
 
-  <NewsletterSection locale="en" />
 </Layout>
