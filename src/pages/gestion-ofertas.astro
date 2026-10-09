@@ -125,18 +125,19 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
       dirty = false;
       status(result.savedAt ? `Última actualización: ${new Date(result.savedAt).toLocaleString('es-MX', {timeZone:'America/Mexico_City'})}` : 'Promociones listas para revisar.');
     }
-    let accessRetryAt = 0;
+    let accessRetryAt = 0, accessPending = false;
     const requestAccessButton = $('request-access') as HTMLButtonElement;
     function updateAccessButton() {
       const seconds=Math.max(0,Math.ceil((accessRetryAt-Date.now())/1000));
-      requestAccessButton.disabled=seconds>0;
+      requestAccessButton.disabled=accessPending || seconds>0;
       requestAccessButton.textContent=seconds ? `Volver a solicitar en ${seconds} s` : 'Solicitar enlace por correo';
     }
     setInterval(updateAccessButton,1000);
     $('access-email-form').addEventListener('submit', async event => {
       event.preventDefault();
       const button = $('request-access') as HTMLButtonElement;
-      button.disabled = true; status('Enviando solicitud de acceso…');
+      if(accessPending || Date.now()<accessRetryAt)return;
+      accessPending=true; button.disabled = true; status('Enviando solicitud de acceso…');
       try {
         const response = await fetch('/api/offers-access', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:($('access-email') as HTMLInputElement).value.trim(), _gotcha:($('access-website') as HTMLInputElement).value})});
         const result = await response.json();
@@ -144,7 +145,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
         if(!response.ok) throw new Error(result.error || 'No se pudo enviar la solicitud.');
         status(result.message);
       }catch(e){status((e as Error).message,true);}
-      finally{updateAccessButton();}
+      finally{accessPending=false;updateAccessButton();}
     });
     $('access-form').addEventListener('submit', async event => { event.preventDefault(); token = ($('access-code') as HTMLInputElement).value.trim(); try { await load(new URLSearchParams(location.search).get('month') || ''); } catch(e) { status((e as Error).message, true); } });
     $('month').addEventListener('change', async () => {

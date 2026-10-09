@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createAccessHandler} from '../api/offers-access.js';
-import {normalizeAccessEmail,accessCooldown} from '../src/lib/offer-access.js';
+import {normalizeAccessEmail,accessCooldown,accessRetryAfter} from '../src/lib/offer-access.js';
 process.env.OFFERS_AUTOMATION_ENABLED='true';
 process.env.OFFERS_ACCESS_EMAIL_ENABLED='true';
 process.env.OFFERS_FORMSPREE_ENDPOINT='https://formspree.io/f/xkjorkgl';
@@ -52,4 +52,10 @@ test('provider success body is required; failures release the reserved request',
  const handler=createAccessHandler({claim:async()=>({allowed:true,id:'fake'}),finish:async(_claim,accepted)=>{finished=accepted},mint:()=> 'test',send:async()=>({ok:true,status:200,json:async()=>({ok:false})})});
  const res=response();await handler(request('olivier.steineur@gmail.com'),res);
  assert.equal(res.code,503);assert.equal(finished,false);
+});
+
+test('resend delay is one minute and expires without blocking for five minutes',()=>{
+ const now=Date.now(),day=new Date(now).toISOString().slice(0,10);
+ assert.equal(accessRetryAfter({lastAttempt:now-10000,day,count:1},now),50);
+ assert.equal(accessCooldown({lastAttempt:now-61000,day,count:1},now),false);
 });
