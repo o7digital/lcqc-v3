@@ -6,11 +6,15 @@ The preview is isolated from production. Private Vercel Blob store `lcqc-offers-
 
 Open `/gestion-ofertas/` using the signed link supplied in the reminder (token in the URL fragment, removed immediately and kept in tab session storage). Links are scoped to the month being reviewed and expire after that month. The preview reviewer link can access the current and next month; calendar simulation is read-only.
 
+The manager imports the complete DatoCMS catalog automatically, including inactive records, using the same CMS environment and preview mode as the site. It fetches both languages and paginates beyond 100 records. Source reads are coalesced and cached for 60 seconds. Untouched source fields refresh automatically; saved monthly edits and form-created offers are preserved. If DatoCMS is unavailable, the last stored catalog is retained and the manager displays a warning. Inactive incomplete records can be retained; activating an offer requires complete bilingual text.
+
 Choose the current or next month. Maintain the existing offers, switch an offer off, edit its Spanish and English texts, or add a bilingual offer with an existing image. Saving the current month takes effect immediately on the preview. Saving next month takes effect on the 1st at midnight in `America/Mexico_City`. Subsequent months inherit the most recent saved offers. Disabled offers remain disabled until reactivated.
 
-All dates cover the 1st through the actual last day of the month, including leap years. The public pages fetch live offers on load, when the tab becomes visible and every minute. A tab left open at midnight updates within a minute. No rebuild is needed for form changes or month rollover. Text is rendered as plain text, not HTML. Original static content is retained as a fallback during API outages; fallback dates are updated by the calendar script. Live content and additions require JavaScript; generated static HTML/SEO content is not updated by the form.
+All dates cover the 1st through the actual last day of the month, including leap years. The public pages fetch live offers on load, when the tab becomes visible and every minute. A tab left open at midnight updates within a minute. No rebuild is needed for form changes or month rollover. Text is rendered as plain text, not HTML. The hotel logo is reused from `/images/logo/logo.jpg`, the same asset used on the hotel homepage.
 
-The preview supports three existing detail routes in each language. Added offers have a shared detail page `/savings/promotion/?offer=ID` or `/es/savings/promotion/?offer=ID`. Curated offers grids display active offers from storage. Other archived offers are not managed by this system.
+Original static content is retained as a fallback during API outages; fallback dates are updated by the calendar script. Live content and additions require JavaScript; generated static HTML/SEO content is not updated by the form.
+
+The preview supports three existing detail routes in each language. Added offers have a shared detail page `/savings/promotion/?offer=ID` or `/es/savings/promotion/?offer=ID`. Curated offers grids display active offers from storage. Imported archived/inactive CMS offers are visible in the manager and remain inactive until explicitly enabled; their live details use the shared promotion route.
 
 ## Reminder
 

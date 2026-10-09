@@ -11,7 +11,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
   <title>Gestión de promociones · La Casa Que Canta</title>
 </head>
 <body data-enabled={enabled}>
-  <header><a href="/">LA CASA QUE CANTA</a><span>Reservaciones · Promociones</span></header>
+  <header><a href="https://www.lacasaquecanta.com/" aria-label="La Casa Que Canta"><img class="hotel-logo" src="/images/logo/logo.jpg" alt="La Casa Que Canta" width="220" height="93" /></a><span>Reservaciones · Promociones</span></header>
   <main>
     <p class="eyebrow">GESTIÓN MENSUAL</p>
     <h1>El próximo mes,<br/><em>listo para recibir.</em></h1>
@@ -29,7 +29,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
         <div><label for="month">Mes que desea revisar</label><select id="month"></select></div>
         <div><span class="eyebrow">VIGENCIA AUTOMÁTICA</span><p id="period" class="period"></p></div>
       </div>
-      <p id="effective"></p>
+      <p id="effective"></p><p id="catalog-source" class="catalog-source"></p>
       <form id="offers-form">
         <div id="offer-list"></div>
         <button type="button" class="secondary" id="add-offer">+ Agregar una promoción</button>
@@ -47,7 +47,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
   <footer>LA CASA QUE CANTA · ZIHUATANEJO<br/>Gestión privada de promociones</footer>
   <template id="offer-template">
     <article class="offer-card">
-      <div class="card-heading"><div><span class="eyebrow">PROMOCIÓN</span><h2 class="offer-name"></h2></div><label class="toggle"><input type="checkbox" data-key="active" /> Activa este mes</label></div>
+      <div class="card-heading"><div class="card-identity"><img class="offer-image" alt="" width="100" height="75" /><div><span class="eyebrow">PROMOCIÓN</span><h2 class="offer-name"></h2></div></div><label class="toggle"><input type="checkbox" data-key="active" /> Activa este mes</label></div>
       <details><summary>Editar textos e imagen</summary><label>Imagen<select data-key="image"><option value="/offers/lcqc-discover.jpg">Discover Us · Hotel</option><option value="/offers/lcqc-enchanting.jpg">Enchanting Moments · Pareja</option><option value="/offers/lcqc-indulge.jpg">Indulge Yourself · Villa</option></select></label>
         <div class="languages">
           {['es','en'].map(lang => <fieldset data-lang={lang}><legend>{lang === 'es' ? 'Español' : 'English'}</legend><label>{lang === 'es' ? 'Nombre' : 'Name'}<input data-key="title" required maxlength="160" /></label><label>{lang === 'es' ? 'Resumen' : 'Summary'}<textarea data-key="subtitle" rows="3" required maxlength="10000"></textarea></label><label>{lang === 'es' ? 'Descripción e inclusiones' : 'Description and inclusions'}<textarea data-key="description" rows="10" required maxlength="10000"></textarea></label><label>{lang === 'es' ? 'Términos y condiciones' : 'Terms and conditions'}<textarea data-key="terms" rows="7" required maxlength="10000"></textarea></label></fieldset>)}
@@ -74,19 +74,20 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
     function renderOffer(offer: any) {
       const card = ($('offer-template') as HTMLTemplateElement).content.firstElementChild!.cloneNode(true) as HTMLElement;
       card.dataset.id = offer.id;
-      card.querySelector('.offer-name')!.textContent = offer.es.title;
+      card.querySelector('.offer-name')!.textContent = offer.es.title || offer.en.title;
+      (card.querySelector('.offer-image') as HTMLImageElement).src = offer.image;
       card.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('[data-key]').forEach(input => {
         const lang = input.closest('fieldset')?.getAttribute('data-lang');
         const key = input.dataset.key!;
         if (input instanceof HTMLInputElement && input.type === 'checkbox') input.checked = offer.active;
         else {
           const value = lang ? offer[lang][key] : offer[key];
-          if (input instanceof HTMLSelectElement && !Array.from(input.options).some(o => o.value === value)) input.add(new Option(value, value));
+          if (input instanceof HTMLSelectElement && !Array.from(input.options).some(o => o.value === value)) input.add(new Option('Imagen actual (DatoCMS)', value));
           input.value = value;
         }
       });
       const checkbox = card.querySelector<HTMLInputElement>('[data-key="active"]')!;
-      const update = () => { (card.querySelector('.inactive-hint') as HTMLElement).hidden = checkbox.checked; card.classList.toggle('inactive', !checkbox.checked); };
+      const update = () => { card.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('fieldset input, fieldset textarea').forEach(input => input.required=checkbox.checked); (card.querySelector('.inactive-hint') as HTMLElement).hidden = checkbox.checked; card.classList.toggle('inactive', !checkbox.checked); };
       checkbox.addEventListener('change', update); update();
       $('offer-list').append(card);
     }
@@ -106,6 +107,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
       for (const m of result.allowedMonths) select.add(new Option(m, m));
       select.value = selected;
       $('period').textContent = result.period.es;
+      $('catalog-source').textContent = result.catalogStatus === 'live' ? `Catálogo sincronizado con DatoCMS: ${result.catalogCount} promociones, incluidas las desactivadas. Los cambios guardados aquí se conservan.` : 'DatoCMS no está disponible. Se muestra la última copia guardada; vuelva a cargar para sincronizar.';
       $('effective').textContent = selected === result.currentMonth ? 'Los cambios se mostrarán al guardar para el mes actual.' : 'Los cambios se guardarán ahora y entrarán en vigor el día 1 del mes seleccionado.';
       $('offer-list').replaceChildren(); result.offers.forEach(renderOffer);
       $('mail-status').textContent = result.preview ? 'Envíos desactivados durante las pruebas.' : result.mailConfigured && result.mailEnabled ? 'Recordatorio automático activado.' : 'Recordatorio pendiente de configuración.';
@@ -122,7 +124,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
     $('offers-form').addEventListener('invalid', event => { const details = (event.target as HTMLElement).closest('details'); if (details) details.open = true; }, true);
     $('offers-form').addEventListener('input', () => { dirty = true; });
     $('add-offer').addEventListener('click', () => {
-      if ($('offer-list').children.length >= 12) return status('Puede crear hasta 12 promociones.', true);
+      if ($('offer-list').children.length >= 1000) return status('Se alcanzó el límite de promociones.', true);
       renderOffer({id: `promocion-${crypto.randomUUID().slice(0,8)}`, active: true, image:'/offers/lcqc-discover.jpg', en: {title:'New promotion',subtitle:'',description:'',terms:''}, es:{title:'Nueva promoción',subtitle:'',description:'',terms:''}});
       ($('offer-list').lastElementChild!.querySelector('details') as HTMLDetailsElement).open = true;
       dirty = true;
@@ -155,7 +157,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
     else { $('access-form').hidden = false; status('Utilice su enlace privado para revisar las promociones.'); }
   </script>
   <style>
-    :global(*){box-sizing:border-box} :global([hidden]){display:none!important} :global(body){margin:0;background:#f6f3ec;color:#203833;font-family:Arial,sans-serif;line-height:1.55}header{padding:25px 6vw;border-bottom:1px solid #d9ddd4;display:flex;justify-content:space-between;gap:20px;font-size:12px;letter-spacing:.12em}header a{color:inherit;text-decoration:none;font-weight:700}header span{color:#65756a}main{max-width:1180px;margin:auto;padding:65px 30px}.eyebrow{font-size:11px;letter-spacing:.2em;color:#707c65;font-weight:700}h1{font-family:Georgia,serif;font-size:clamp(42px,6vw,72px);font-weight:400;line-height:1.07;margin:20px 0}h1 em{font-weight:400;color:#7b8967}.intro{max-width:630px;color:#5b6a60;font-size:17px}#status{padding:17px 0;min-height:56px;color:#41674e}.error{color:#a02d32!important}.notice{padding:16px 20px;background:#e9e8d7;border:1px solid #d1d5bc;border-radius:8px;margin:15px 0 24px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:1px solid #d9ddd4;border-bottom:1px solid #d9ddd4;padding:24px 0}.period{font-family:Georgia,serif;font-size:24px;margin:5px 0}.offer-card{margin:22px 0;background:#fffdf8;border:1px solid #dce0d4;border-radius:10px;padding:28px}.card-heading{display:flex;justify-content:space-between;align-items:center;gap:20px}h2{font-family:Georgia,serif;font-weight:400;font-size:29px;margin:8px 0 18px}.toggle{white-space:nowrap;background:#edf0e7;border-radius:40px;padding:9px 14px;font-size:13px!important;display:flex;align-items:center;gap:8px}.toggle input{width:auto;margin:0;accent-color:#315747}.inactive{opacity:.75}.inactive-hint{color:#86624b}label{display:block;font-size:13px;font-weight:600;margin:13px 0}input,textarea,select{display:block;width:100%;border:1px solid #bdc6b6;border-radius:5px;background:white;padding:11px 12px;font:inherit;color:#203833;margin-top:7px}input:focus,textarea:focus,select:focus{outline:2px solid #7e9b7a;outline-offset:2px}textarea{resize:vertical;line-height:1.5}select{max-width:400px}button{border:0;border-radius:5px;background:#294d40;color:white;padding:14px 21px;font:inherit;font-size:14px;cursor:pointer}button:hover{background:#3c6555}button:disabled{opacity:.5;cursor:wait}.secondary{background:transparent;border:1px solid #71836c;color:#294d40}.secondary:hover{background:#e8ecdf}.languages{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:25px}fieldset{border:0;padding:0;min-width:0}legend{font-family:Georgia,serif;font-size:22px}details{border-top:1px solid #e1e4d9;padding-top:15px;margin-top:14px}summary{cursor:pointer;font-size:14px;font-weight:600}.save-bar{display:flex;align-items:center;justify-content:space-between;gap:30px;margin:30px 0;padding:22px 0;border-top:1px solid #d9ddd4}.save-bar p{max-width:570px;color:#657061}.save-bar button{white-space:nowrap}.reminder{margin-top:45px;padding:32px;background:#e8ecdf;border-radius:10px}.reminder pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:14px;background:#fffdf8;padding:22px;border-radius:5px}#simulation{margin-top:25px;border-top:1px solid #cad1bf;padding-top:12px}#simulation input{max-width:230px;margin-bottom:15px}#access-form{max-width:500px;background:#fffdf8;padding:25px;border-radius:10px}#access-form button{margin-top:16px}footer{text-align:center;border-top:1px solid #d9ddd4;padding:30px;font-size:11px;letter-spacing:.15em;color:#74806f}@media(max-width:700px){main{padding:35px 18px}.toolbar,.card-heading,.save-bar{align-items:flex-start;flex-direction:column;gap:15px}.languages{grid-template-columns:1fr}.offer-card,.reminder{padding:20px}header span{display:none}.save-bar button{width:100%}}
+    :global(*){box-sizing:border-box} :global([hidden]){display:none!important} :global(body){margin:0;background:#f6f3ec;color:#203833;font-family:Arial,sans-serif;line-height:1.55}header{align-items:center;padding:18px 6vw;border-bottom:1px solid #d9ddd4;display:flex;justify-content:space-between;gap:20px;font-size:12px;letter-spacing:.12em}.hotel-logo{display:block;width:220px;height:auto;border-radius:3px}.card-identity{display:flex;align-items:center;gap:20px}.offer-image{width:100px;height:75px;object-fit:cover;border-radius:5px}.catalog-source{font-size:13px;color:#657061}header a{color:inherit;text-decoration:none;font-weight:700}header span{color:#65756a}main{max-width:1180px;margin:auto;padding:65px 30px}.eyebrow{font-size:11px;letter-spacing:.2em;color:#707c65;font-weight:700}h1{font-family:Georgia,serif;font-size:clamp(42px,6vw,72px);font-weight:400;line-height:1.07;margin:20px 0}h1 em{font-weight:400;color:#7b8967}.intro{max-width:630px;color:#5b6a60;font-size:17px}#status{padding:17px 0;min-height:56px;color:#41674e}.error{color:#a02d32!important}.notice{padding:16px 20px;background:#e9e8d7;border:1px solid #d1d5bc;border-radius:8px;margin:15px 0 24px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:1px solid #d9ddd4;border-bottom:1px solid #d9ddd4;padding:24px 0}.period{font-family:Georgia,serif;font-size:24px;margin:5px 0}.offer-card{margin:22px 0;background:#fffdf8;border:1px solid #dce0d4;border-radius:10px;padding:28px}.card-heading{display:flex;justify-content:space-between;align-items:center;gap:20px}h2{font-family:Georgia,serif;font-weight:400;font-size:29px;margin:8px 0 18px}.toggle{white-space:nowrap;background:#edf0e7;border-radius:40px;padding:9px 14px;font-size:13px!important;display:flex;align-items:center;gap:8px}.toggle input{width:auto;margin:0;accent-color:#315747}.inactive{opacity:.75}.inactive-hint{color:#86624b}label{display:block;font-size:13px;font-weight:600;margin:13px 0}input,textarea,select{display:block;width:100%;border:1px solid #bdc6b6;border-radius:5px;background:white;padding:11px 12px;font:inherit;color:#203833;margin-top:7px}input:focus,textarea:focus,select:focus{outline:2px solid #7e9b7a;outline-offset:2px}textarea{resize:vertical;line-height:1.5}select{max-width:400px}button{border:0;border-radius:5px;background:#294d40;color:white;padding:14px 21px;font:inherit;font-size:14px;cursor:pointer}button:hover{background:#3c6555}button:disabled{opacity:.5;cursor:wait}.secondary{background:transparent;border:1px solid #71836c;color:#294d40}.secondary:hover{background:#e8ecdf}.languages{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:25px}fieldset{border:0;padding:0;min-width:0}legend{font-family:Georgia,serif;font-size:22px}details{border-top:1px solid #e1e4d9;padding-top:15px;margin-top:14px}summary{cursor:pointer;font-size:14px;font-weight:600}.save-bar{display:flex;align-items:center;justify-content:space-between;gap:30px;margin:30px 0;padding:22px 0;border-top:1px solid #d9ddd4}.save-bar p{max-width:570px;color:#657061}.save-bar button{white-space:nowrap}.reminder{margin-top:45px;padding:32px;background:#e8ecdf;border-radius:10px}.reminder pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:14px;background:#fffdf8;padding:22px;border-radius:5px}#simulation{margin-top:25px;border-top:1px solid #cad1bf;padding-top:12px}#simulation input{max-width:230px;margin-bottom:15px}#access-form{max-width:500px;background:#fffdf8;padding:25px;border-radius:10px}#access-form button{margin-top:16px}footer{text-align:center;border-top:1px solid #d9ddd4;padding:30px;font-size:11px;letter-spacing:.15em;color:#74806f}@media(max-width:700px){main{padding:35px 18px}.toolbar,.card-heading,.save-bar{align-items:flex-start;flex-direction:column;gap:15px}.languages{grid-template-columns:1fr}.offer-card,.reminder{padding:20px}header span{display:none}.hotel-logo{width:180px}.card-identity{gap:12px}.offer-image{width:75px;height:60px}.save-bar button{width:100%}}
   </style>
 </body>
 </html>

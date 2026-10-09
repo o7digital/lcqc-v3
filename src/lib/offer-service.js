@@ -1,12 +1,13 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import { get, put, BlobNotFoundError } from '@vercel/blob';
+import { get, put, BlobNotFoundError, BlobPreconditionFailedError } from '@vercel/blob';
 import defaults from '../data/monthly-offers.json' with { type: 'json' };
 import { localDay, nextMonth, monthPeriod, reminderDay, offersForMonth } from './offer-calendar.js';
+import {fetchCatalog, reconcileCatalog} from './offer-catalog.js';
 const PATH = 'monthly-offers/state.json';
 export function initialState() {
   return {revision: 0, baseOffers: structuredClone(defaults), months: {}, reminders: {}};
 }
-export async function readState() {
+async function readStoredState() {
   try {
     // Avoid gzip's weak W/ ETag: conditional writes need the strong origin ETag.
     const blob = await get(PATH, {access: 'private', useCache: false, headers: {'Accept-Encoding': 'identity'}});
@@ -16,6 +17,23 @@ export async function readState() {
   } catch (e) {
     if (e instanceof BlobNotFoundError) return {state: initialState(), etag: null};
     throw e;
+  }
+}
+export async function readState() {
+  let catalog;
+  try { catalog=await fetchCatalog(); }
+  catch { const stored=await readStoredState(); return {...stored, catalogStatus:'cached'}; }
+  for (let attempt=0;attempt<3;attempt++) {
+    const stored=await readStoredState();
+    const state=reconcileCatalog(stored.state,catalog);
+    if(JSON.stringify(state)===JSON.stringify(stored.state)) return {...stored,catalogStatus:'live'};
+    try {
+      await writeState(state,stored.etag);
+      return {...await readStoredState(),catalogStatus:'live'};
+    } catch(e) {
+      if(!(e instanceof BlobPreconditionFailedError) && e.name!=='BlobAlreadyExistsError') throw e;
+      if(attempt===2) throw e;
+    }
   }
 }
 export async function writeState(state, etag) {

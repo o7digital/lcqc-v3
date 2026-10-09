@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     if (!validMonth(month)) return res.status(400).json({error: 'Mes inválido.'});
     const simulation = process.env.VERCEL_ENV === 'preview' && claims?.month === '*';
     if (month !== current && !(simulation || permittedMonth(claims, month, current))) return res.status(403).json({error: 'No tiene acceso a este mes.'});
-    const {state, etag} = await readState();
+    const {state, etag, catalogStatus} = await readState();
     if (req.method === 'PUT') {
       if (!permittedMonth(claims, month, current)) return res.status(403).json({error: 'Solo puede editar el mes actual o el siguiente.'});
       if (req.body?.revision !== state.revision) return res.status(409).json({error: 'Otra persona actualizó las ofertas. Recargue antes de guardar.'});
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     if (!admin) return res.status(200).json({period: monthPeriod(month), offers: offers.filter(o => o.active)});
     if (!(simulation || permittedMonth(claims, month, current))) return res.status(403).json({error: 'No tiene acceso a este mes.'});
     return res.status(200).json({
-      offers, revision: state.revision, currentMonth: current, nextMonth: nextMonth(current),
+      offers, catalogStatus, catalogSource: state.catalogSource || 'Copia local', catalogCount: state.baseOffers.length, revision: state.revision, currentMonth: current, nextMonth: nextMonth(current),
       allowedMonths: claims.month === '*' ? [current, nextMonth(current)] : [claims.month],
       period: monthPeriod(month), savedAt: state.months[month]?.updatedAt || null,
       preview: process.env.VERCEL_ENV !== 'production',
