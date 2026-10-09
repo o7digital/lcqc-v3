@@ -68,3 +68,5 @@ Access delivery checks the Formspree JSON `ok` flag as well as HTTP status. Fail
 ## Open browser demo
 
 `PUBLIC_OFFERS_DEMO_ENABLED=true` on dev Preview opens the manager directly, without email or access code. The build imports the full CMS catalog as a demo snapshot (including disabled offers); only offer content is embedded, never CMS credentials. The browser simulates current/next month edits, calendar and reminder preview. Saves use only the `lcqc-offers-demo-v1` localStorage key. No management or email API is called in demo mode. Existing signed server access and write protection remain in place; this flag is not configured on Production.
+
+The demo build also renders the manager at `/`, so the Vercel Visit button and deployment thumbnail open the form. Host-specific redirects cover the dedicated hostname and `lcqc-v3-*.vercel.app` preview URLs. The root hotel component is retained for builds where the demo flag is absent; the hotel production domain does not match either redirect.

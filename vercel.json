@@ -12,6 +12,17 @@
       "permanent": false
     },
     {
+      "source": "/:path((?!gestion-ofertas(?:/|$)|api/offers(?:/|$)|api/offers-reminder(?:/|$)|api/offers-access(?:/|$)|_astro/|images/logo/|offers/).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "lcqc-v3-(.*)\\.vercel\\.app"
+        }
+      ],
+      "destination": "/gestion-ofertas/",
+      "permanent": false
+    },
+    {
       "source": "/aprove/:path*",
       "destination": "/approve/:path*",
       "permanent": false
