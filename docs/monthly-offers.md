@@ -50,3 +50,7 @@ After user approval, production needs a **separate private Blob store**, its own
 Run `node --test tests/monthly-offers.test.js` and `PUBLIC_OFFERS_AUTOMATION_ENABLED=true npm run build`. Test signed access, persistent saves, stale revision rejection, additions/removals, current/next month separation and both public languages on the deployed preview. The production build with the public flag omitted leaves live automation disabled.
 
 Sources: https://vercel.com/docs/cron-jobs/manage-cron-jobs, https://vercel.com/docs/vercel-blob/using-blob-sdk, https://help.formspree.io/articles/advanced-features/form-rules/
+
+## Dedicated preview hostname
+
+`lcqc-offers.o7digitalgroup.com` tracks `dev`. A host-specific redirect sends the root and website-page paths to `/gestion-ofertas/`. Only the management page, offers API, JavaScript/CSS and required image paths bypass this redirect. The rule does not match the hotel production domain or other preview hostnames. This changes no production branch or production deployment.

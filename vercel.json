@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/:path((?!gestion-ofertas(?:/|$)|api/offers(?:/|$)|api/offers-reminder(?:/|$)|_astro/|images/logo/|offers/).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "lcqc-offers.o7digitalgroup.com"
+        }
+      ],
+      "destination": "/gestion-ofertas/",
+      "permanent": false
+    },
+    {
       "source": "/aprove/:path*",
       "destination": "/approve/:path*",
       "permanent": false
