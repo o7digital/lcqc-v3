@@ -1,4 +1,5 @@
 ---
+import MonthlyOffers from "@components/MonthlyOffers.astro";
 const {
   title = "Discover our offers",
   description = "",
@@ -95,7 +96,7 @@ selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
         ></div>
       </>
     )}
-    <div class="relative z-10 grid gap-6 grid-cols-1 px-4 md:grid-cols-3 max-w-7xl mx-auto" style={`transform: translateX(${offsetX});`}>
+    <div data-monthly-offers-grid={import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true' && Array.isArray(includeSlugs) && includeSlugs.includes('discover-us') ? '' : undefined} class="relative z-10 grid gap-6 grid-cols-1 px-4 md:grid-cols-3 max-w-7xl mx-auto" style={`transform: translateX(${offsetX});`}>
     {(includeSlugs ? selectedOffers : offers.slice(0, 6)).map((post) => (
       <div class="group relative bg-cover bg-center aspect-square grid items-end text-white overflow-hidden">
         <div class="absolute z-10 w-full h-full top-0 bg-gradient-to-br from-transparent to-gray-900 opacity-60"></div>
@@ -114,4 +115,5 @@ selectedOffers = Array.isArray(includeSlugs) && includeSlugs.length
     </div>
   </div>
   
+<MonthlyOffers />
 </section>

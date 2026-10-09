@@ -1,0 +1,81 @@
+---
+const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
+---
+{enabled && <script>
+  import { localDay, monthPeriod } from '../lib/offer-calendar.js';
+  if (import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true') {
+  const isES = location.pathname.startsWith('/es/');
+  const lang = isES ? 'es' : 'en';
+  function text(tag: string, value: string, className = '') {
+    const el = document.createElement(tag); el.textContent = value; el.className = className; return el;
+  }
+  function detailHref(id: string) {
+    const base = isES ? '/es/savings/' : '/savings/';
+    return ['discover-us','enchanting-moments','indulge-yourself'].includes(id) ? `${base}${id}/` : `${base}promotion/?offer=${encodeURIComponent(id)}`;
+  }
+  function updateDate(period: any) {
+    document.querySelectorAll('[data-monthly-date]').forEach(el => el.textContent = period[lang]);
+    document.querySelectorAll('[data-monthly-offer-body] p i').forEach(el => {
+      if (/^(Travel|Vigencia):/.test(el.textContent || '')) el.textContent = `${isES ? 'Vigencia' : 'Travel'}: ${period[lang]}.`;
+    });
+  }
+  async function refresh() {
+    const detailSlug = location.pathname.split('/').filter(Boolean).at(-1);
+    if (document.querySelector('[data-monthly-offer-body]') && !['discover-us','enchanting-moments','indulge-yourself','promotion'].includes(detailSlug || '')) return;
+    // Immediate date calculation also covers a temporary API outage.
+    updateDate(monthPeriod(localDay().slice(0,7)));
+    try {
+      const response = await fetch('/api/offers', {cache:'no-store'});
+      if (!response.ok) throw new Error('Offers unavailable');
+      const {offers, period} = await response.json();
+      updateDate(period);
+      document.querySelectorAll('[data-monthly-offers-grid]').forEach(grid => {
+        const cards = offers.map((offer: any) => {
+          const copy = offer[lang];
+          const card = document.createElement('div');
+          card.className = 'group relative bg-cover bg-center aspect-square grid items-end text-white overflow-hidden';
+          const shade = document.createElement('div'); shade.className='absolute z-10 w-full h-full top-0 bg-gradient-to-br from-transparent to-gray-900 opacity-60';
+          const image = document.createElement('img'); image.src=offer.image; image.alt=''; image.className='absolute z-0 w-full h-full top-0 object-cover';
+          const title = text('h3', copy.title, 'text-3xl md:text-5xl z-20 relative text-center');
+          const bottom = document.createElement('div'); bottom.append(text('p',copy.subtitle,'text-white relative z-10 p-4 text-center'));
+          const links = document.createElement('div'); links.className='flex flex-wrap p-4 gap-4 justify-center md:justify-between';
+          for (const label of [isES?'Más detalles':'More details',isES?'Reservar':'Book Now']) {
+            const a = document.createElement('a'); a.href=detailHref(offer.id); a.textContent=label; a.className='relative text-sm z-10 bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60'; links.append(a);
+          }
+          bottom.append(links);card.append(shade,image,title,bottom);return card;
+        });
+        grid.replaceChildren(...cards);
+        if (!offers.length) grid.append(text('p',isES?'No hay promociones disponibles este mes.':'There are no promotions available this month.'));
+      });
+      const bodies = document.querySelectorAll('[data-monthly-offer-body]');
+      if (bodies.length) {
+        const slug = new URLSearchParams(location.search).get('offer') || location.pathname.split('/').filter(Boolean).at(-1);
+        const offer = offers.find((o: any) => o.id === slug);
+        if (!offer) {
+          bodies.forEach(el => el.replaceChildren(text('p',isES?'Esta promoción no está disponible este mes. Consulte nuestras ofertas vigentes.':'This promotion is not available this month. Please explore our current offers.')));
+          document.querySelectorAll<HTMLAnchorElement>('[data-offer-book]').forEach(el => el.hidden = true);
+          return;
+        }
+        document.querySelectorAll<HTMLAnchorElement>('[data-offer-book]').forEach(el => el.hidden = false);
+        const copy = offer[lang];
+        document.querySelectorAll('[data-offer-title]').forEach(el => el.textContent=copy.title);
+        document.querySelectorAll<HTMLImageElement>('[data-offer-image]').forEach(el => el.src=offer.image);
+        bodies.forEach(el => {
+          const description = text('p',copy.description); description.style.whiteSpace='pre-line';
+          const terms = text('p',copy.terms,'mt-2'); terms.style.whiteSpace='pre-line';
+          const hr = document.createElement('hr');hr.className='border-white/30 my-4';
+          const date = text('p',period[lang],'mt-1'); date.dataset.monthlyDate='';
+          el.replaceChildren(description,hr,text('b',isES?'Términos y Condiciones':'Terms & Conditions'),terms,hr.cloneNode(),text('b',isES?'Vigencia:':'Travel:'),date);
+        });
+        document.title = `${copy.title} · La Casa Que Canta`;
+      }
+    } catch {
+      // Keep the static content, with the correct calendar dates, on temporary failure.
+      document.querySelectorAll('[data-dynamic-offer]').forEach(el => el.textContent=isES?'No se pudo cargar esta promoción. Inténtelo de nuevo.':'This promotion could not be loaded. Please try again.');
+    }
+  }
+  refresh();
+  setInterval(refresh, 60000);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) refresh(); });
+  }
+</script>}

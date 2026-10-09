@@ -19,7 +19,9 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/aprove/') &&
         !page.includes('/approve/') &&
-        !page.includes('/admin/')
+        !page.includes('/admin/') &&
+        !page.includes('/gestion-ofertas/') &&
+        !page.includes('/savings/promotion/')
     })
   ],
   output: 'static',

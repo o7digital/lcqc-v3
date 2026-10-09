@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro"; // 🔹 Ruta relativa corrigée
+import MonthlyOffers from "@components/MonthlyOffers.astro";
 import { fetchOfferBySlug } from "@lib/fetchOffer";
 const { frontmatter } = Astro.props;
 const objectPosition = frontmatter.objectPosition || 'center 25%';
@@ -34,7 +35,7 @@ const travelDate = frontmatter.date || dato?.travelDate || '';
     <div>
       <img
         class="h-72 w-full object-cover"
-        src={frontmatter.imagefront}
+        data-offer-image src={frontmatter.imagefront}
         alt=""
       />
     </div>
@@ -44,16 +45,17 @@ const travelDate = frontmatter.date || dato?.travelDate || '';
       <!-- Top white header with title/date only -->
       <div class="bg-white">
         <div class="max-w-7xl mx-auto px-4 py-10">
-          <h1 class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
+          <h1 data-offer-title class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
         </div>
       </div>
 
       <!-- Full-bleed background image starts BELOW the header -->
       <div class="relative w-full min-h-[90vh] md:min-h-screen overflow-hidden">
-        <img class="absolute inset-0 w-full h-full object-cover" style={`object-position: ${objectPosition}; transform: translateX(${offsetX});`} src={frontmatter.imagefront} alt="" />
+        <img class="absolute inset-0 w-full h-full object-cover" style={`object-position: ${objectPosition}; transform: translateX(${offsetX});`} data-offer-image src={frontmatter.imagefront} alt="" />
         <div class="relative z-10 max-w-7xl mx-auto h-full px-4 py-12 md:py-16 flex items-start md:items-center">
         <div class="max-w-xl">
           <div class="relative bg-gradient-to-b from-gray-900/40 to-gray-900/70 backdrop-blur-sm p-6 md:p-8 pb-[2cm] text-sm md:text-base text-white" style={`transform: translateX(${overlayOffsetX});`}>
+            <div data-monthly-offer-body>
             {useDato ? (
               <>
                 {dato?.subtitle && (<p class="">{dato.subtitle}</p>)}
@@ -69,13 +71,14 @@ const travelDate = frontmatter.date || dato?.travelDate || '';
                   <>
                     <hr class="border-white/30 my-4" />
                     <b>{travelLabel}</b>
-                    <p class="mt-1">{travelDate}</p>
+                    <p data-monthly-date class="mt-1">{travelDate}</p>
                   </>
                 )}
               </>
             ) : (
               <slot />
             )}
+            </div>
             <hr class="border-white/30 my-4" />
             <div class="mt-4 text-[#CE33A1] space-y-2">
               <div class="flex items-center gap-2">
@@ -101,7 +104,7 @@ const travelDate = frontmatter.date || dato?.travelDate || '';
             </div>
             <div class="mt-6 flex items-center justify-between gap-4">
               <a href={moreOffersHref} class="text-sm underline text-white hover:opacity-90">{moreOffersLabel}</a>
-              <a href={frontmatter.book} class="text-sm bg-[#CE33A1] hover:bg-[#d647ad] font-semibold uppercase py-3 px-6 text-white">{bookLabel}</a>
+              <a data-offer-book href={frontmatter.book} class="text-sm bg-[#CE33A1] hover:bg-[#d647ad] font-semibold uppercase py-3 px-6 text-white">{bookLabel}</a>
             </div>
           </div>
           </div>
@@ -113,15 +116,16 @@ const travelDate = frontmatter.date || dato?.travelDate || '';
     <div class="max-w-7xl mx-auto py-16 px-4">
       <div class="max-w-xl">
         <div>
-          <h1 class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
-          <p class="mb-3">Offer available from <b>{frontmatter.date}</b></p>
+          <h1 data-offer-title class="text-5xl lg:text-7xl font-bold">{frontmatter.title}</h1>
+          <p class="mb-3">Offer available from <b data-monthly-date>{frontmatter.date}</b></p>
         </div>
         <div class="flex items-center justify-between gap-4 flex-wrap mb-8">
           <a href={moreOffersHref} class="text-sm underline hover:opacity-80">{moreOffersLabel}</a>
-          <a href={frontmatter.book} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{bookLabel}</a>
+          <a data-offer-book href={frontmatter.book} class="w-full md:w-auto text-center text-sm bg-black/90 font-semibold uppercase py-3 px-6 text-white hover:bg-black/60">{bookLabel}</a>
         </div>
         <div class="text-sm md:text-base">
-          {useDato ? (
+          <div data-monthly-offer-body>
+            {useDato ? (
             <>
               {dato?.subtitle && (<p class="">{dato.subtitle}</p>)}
               {dato?.description && (<div set:html={toHtml(dato.description)} />)}
@@ -136,13 +140,14 @@ const travelDate = frontmatter.date || dato?.travelDate || '';
                 <>
                   <hr class="border-white/30 my-4" />
                   <b>{travelLabel}</b>
-                  <p class="mt-1">{travelDate}</p>
+                  <p data-monthly-date class="mt-1">{travelDate}</p>
                 </>
               )}
             </>
           ) : (
             <slot />
           )}
+          </div>
           <div class="mt-4 space-y-2">
             <div class="flex items-center gap-2">
               <span aria-hidden="true">📞</span>
@@ -172,4 +177,5 @@ const travelDate = frontmatter.date || dato?.travelDate || '';
 
   
 </section>
+<MonthlyOffers />
 </Layout>

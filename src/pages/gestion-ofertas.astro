@@ -1,0 +1,161 @@
+---
+const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
+---
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Gestión de promociones · La Casa Que Canta</title>
+</head>
+<body data-enabled={enabled}>
+  <header><a href="/">LA CASA QUE CANTA</a><span>Reservaciones · Promociones</span></header>
+  <main>
+    <p class="eyebrow">GESTIÓN MENSUAL</p>
+    <h1>El próximo mes,<br/><em>listo para recibir.</em></h1>
+    <p class="intro">Revise las promociones, mantenga las actuales o prepare sus cambios. Las fechas se renuevan del primer al último día de cada mes.</p>
+    <div id="status" role="status" aria-live="polite">Verificando acceso…</div>
+    <form id="access-form" hidden>
+      <label for="access-code">Acceso privado</label>
+      <p>Abra el enlace seguro recibido por correo o pegue su código de acceso.</p>
+      <input id="access-code" type="password" autocomplete="off" required />
+      <button>Acceder</button>
+    </form>
+    <section id="workspace" hidden>
+      <div class="notice" id="preview-notice" hidden><strong>Vista de prueba</strong> · Los cambios se guardan únicamente en la preview. No se envían correos reales.</div>
+      <div class="toolbar">
+        <div><label for="month">Mes que desea revisar</label><select id="month"></select></div>
+        <div><span class="eyebrow">VIGENCIA AUTOMÁTICA</span><p id="period" class="period"></p></div>
+      </div>
+      <p id="effective"></p>
+      <form id="offers-form">
+        <div id="offer-list"></div>
+        <button type="button" class="secondary" id="add-offer">+ Agregar una promoción</button>
+        <div class="save-bar"><p>Si no hay cambios, las promociones vigentes continuarán automáticamente el próximo mes.</p><button id="save" type="submit">Guardar promociones</button></div>
+      </form>
+      <section class="reminder">
+        <p class="eyebrow">RECORDATORIO MENSUAL</p><h2>Una revisión antes de comenzar.</h2>
+        <p>El último lunes del mes, a las 9:00 a. m. (hora de Zihuatanejo).</p>
+        <p id="mail-status"></p>
+        <details><summary>Ver ejemplo del correo del mes seleccionado</summary><p id="recipients"></p><p id="mail-subject"></p><pre id="mail-body"></pre></details>
+        <div id="simulation" hidden><label for="simulation-month">Probar otro mes del calendario (solo lectura)</label><input id="simulation-month" type="month" min="2026-01" max="2099-12" /><button class="secondary" type="button" id="simulate">Simular calendario y correo</button><p id="simulation-result"></p></div>
+      </section>
+    </section>
+  </main>
+  <footer>LA CASA QUE CANTA · ZIHUATANEJO<br/>Gestión privada de promociones</footer>
+  <template id="offer-template">
+    <article class="offer-card">
+      <div class="card-heading"><div><span class="eyebrow">PROMOCIÓN</span><h2 class="offer-name"></h2></div><label class="toggle"><input type="checkbox" data-key="active" /> Activa este mes</label></div>
+      <details><summary>Editar textos e imagen</summary><label>Imagen<select data-key="image"><option value="/offers/lcqc-discover.jpg">Discover Us · Hotel</option><option value="/offers/lcqc-enchanting.jpg">Enchanting Moments · Pareja</option><option value="/offers/lcqc-indulge.jpg">Indulge Yourself · Villa</option></select></label>
+        <div class="languages">
+          {['es','en'].map(lang => <fieldset data-lang={lang}><legend>{lang === 'es' ? 'Español' : 'English'}</legend><label>{lang === 'es' ? 'Nombre' : 'Name'}<input data-key="title" required maxlength="160" /></label><label>{lang === 'es' ? 'Resumen' : 'Summary'}<textarea data-key="subtitle" rows="3" required maxlength="10000"></textarea></label><label>{lang === 'es' ? 'Descripción e inclusiones' : 'Description and inclusions'}<textarea data-key="description" rows="10" required maxlength="10000"></textarea></label><label>{lang === 'es' ? 'Términos y condiciones' : 'Terms and conditions'}<textarea data-key="terms" rows="7" required maxlength="10000"></textarea></label></fieldset>)}
+        </div>
+      </details>
+      <p class="inactive-hint" hidden>Esta promoción no se mostrará durante el mes seleccionado. Puede volver a activarla cuando lo desee.</p>
+    </article>
+  </template>
+  <script>
+    const $ = (id: string) => document.getElementById(id)!;
+    let token = new URLSearchParams(location.hash.slice(1)).get('access') || sessionStorage.getItem('offers-access') || '';
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    let data: any = null;
+    let dirty = false;
+    let selected = '';
+    const status = (text: string, error = false) => { $('status').textContent = text; $('status').classList.toggle('error', error); };
+    async function api(path: string, options: RequestInit = {}) {
+      const r = await fetch(path, {...options, headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', ...options.headers}});
+      const result = await r.json();
+      if (r.status === 401) { sessionStorage.removeItem('offers-access'); $('access-form').hidden = false; $('workspace').hidden = true; }
+      if (!r.ok) throw new Error(result.error || 'No se pudo completar la solicitud.');
+      return result;
+    }
+    function renderOffer(offer: any) {
+      const card = ($('offer-template') as HTMLTemplateElement).content.firstElementChild!.cloneNode(true) as HTMLElement;
+      card.dataset.id = offer.id;
+      card.querySelector('.offer-name')!.textContent = offer.es.title;
+      card.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('[data-key]').forEach(input => {
+        const lang = input.closest('fieldset')?.getAttribute('data-lang');
+        const key = input.dataset.key!;
+        if (input instanceof HTMLInputElement && input.type === 'checkbox') input.checked = offer.active;
+        else {
+          const value = lang ? offer[lang][key] : offer[key];
+          if (input instanceof HTMLSelectElement && !Array.from(input.options).some(o => o.value === value)) input.add(new Option(value, value));
+          input.value = value;
+        }
+      });
+      const checkbox = card.querySelector<HTMLInputElement>('[data-key="active"]')!;
+      const update = () => { (card.querySelector('.inactive-hint') as HTMLElement).hidden = checkbox.checked; card.classList.toggle('inactive', !checkbox.checked); };
+      checkbox.addEventListener('change', update); update();
+      $('offer-list').append(card);
+    }
+    function mailView(result: any) {
+      $('recipients').textContent = `Para: ${result.reminder.to} · Copia: ${result.reminder.cc.join(', ')} · Envío previsto: ${result.reminder.scheduled}`;
+      $('mail-subject').textContent = result.reminder.subject;
+      $('mail-body').textContent = result.reminder.message;
+    }
+    async function load(month = '') {
+      status('Cargando promociones…');
+      const result = await api(`/api/offers?admin=1${month ? `&month=${encodeURIComponent(month)}` : ''}`);
+      data = result; selected = result.period.month;
+      sessionStorage.setItem('offers-access', token);
+      $('access-form').hidden = true; $('workspace').hidden = false;
+      $('preview-notice').hidden = !result.preview; $('simulation').hidden = !result.preview;
+      const select = $('month') as HTMLSelectElement; select.replaceChildren();
+      for (const m of result.allowedMonths) select.add(new Option(m, m));
+      select.value = selected;
+      $('period').textContent = result.period.es;
+      $('effective').textContent = selected === result.currentMonth ? 'Los cambios se mostrarán al guardar para el mes actual.' : 'Los cambios se guardarán ahora y entrarán en vigor el día 1 del mes seleccionado.';
+      $('offer-list').replaceChildren(); result.offers.forEach(renderOffer);
+      $('mail-status').textContent = result.preview ? 'Envíos desactivados durante las pruebas.' : result.mailConfigured && result.mailEnabled ? 'Recordatorio automático activado.' : 'Recordatorio pendiente de configuración.';
+      mailView(result);
+      dirty = false;
+      status(result.savedAt ? `Última actualización: ${new Date(result.savedAt).toLocaleString('es-MX', {timeZone:'America/Mexico_City'})}` : 'Promociones listas para revisar.');
+    }
+    $('access-form').addEventListener('submit', async event => { event.preventDefault(); token = ($('access-code') as HTMLInputElement).value.trim(); try { await load(new URLSearchParams(location.search).get('month') || ''); } catch(e) { status((e as Error).message, true); } });
+    $('month').addEventListener('change', async () => {
+      const next = ($('month') as HTMLSelectElement).value;
+      if (dirty && !confirm('Tiene cambios sin guardar. ¿Desea descartarlos y cambiar de mes?')) { ($('month') as HTMLSelectElement).value = selected; return; }
+      try { await load(next); } catch(e) { status((e as Error).message, true); }
+    });
+    $('offers-form').addEventListener('invalid', event => { const details = (event.target as HTMLElement).closest('details'); if (details) details.open = true; }, true);
+    $('offers-form').addEventListener('input', () => { dirty = true; });
+    $('add-offer').addEventListener('click', () => {
+      if ($('offer-list').children.length >= 12) return status('Puede crear hasta 12 promociones.', true);
+      renderOffer({id: `promocion-${crypto.randomUUID().slice(0,8)}`, active: true, image:'/offers/lcqc-discover.jpg', en: {title:'New promotion',subtitle:'',description:'',terms:''}, es:{title:'Nueva promoción',subtitle:'',description:'',terms:''}});
+      ($('offer-list').lastElementChild!.querySelector('details') as HTMLDetailsElement).open = true;
+      dirty = true;
+    });
+    $('offers-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const offers = Array.from($('offer-list').children).map(card => {
+        const offer: any = {id: (card as HTMLElement).dataset.id, en:{}, es:{}};
+        card.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('[data-key]').forEach(input => {
+          const lang = input.closest('fieldset')?.getAttribute('data-lang'); const key = input.dataset.key!;
+          if (lang) offer[lang][key] = input.value;
+          else offer[key] = input instanceof HTMLInputElement && input.type === 'checkbox' ? input.checked : input.value;
+        }); return offer;
+      });
+      const button = $('save') as HTMLButtonElement; button.disabled = true;
+      status('Guardando promociones…');
+      try { await api('/api/offers', {method:'PUT', body:JSON.stringify({month:selected, revision:data.revision, offers})}); await load(selected); status(`Cambios guardados. Vigencia: ${data.period.es}.`); }
+      catch(e) { status((e as Error).message, true); }
+      finally { button.disabled = false; }
+    });
+    $('simulate').addEventListener('click', async () => {
+      const month = ($('simulation-month') as HTMLInputElement).value;
+      if (!month) return;
+      try { const result = await api(`/api/offers?admin=1&month=${encodeURIComponent(month)}`); mailView(result); $('simulation-result').textContent = `Simulación: ${result.period.es}. Recordatorio: ${result.reminder.scheduled}. No se guardaron cambios ni se envió correo.`; }
+      catch(e) { status((e as Error).message, true); }
+    });
+    window.addEventListener('beforeunload', event => { if(dirty) { event.preventDefault(); event.returnValue = ''; } });
+    if (document.body.dataset.enabled !== 'true') status('Este sistema aún no está activado en este sitio.');
+    else if (token) load(new URLSearchParams(location.search).get('month') || '').catch(e => status(e.message, true));
+    else { $('access-form').hidden = false; status('Utilice su enlace privado para revisar las promociones.'); }
+  </script>
+  <style>
+    :global(*){box-sizing:border-box} :global([hidden]){display:none!important} :global(body){margin:0;background:#f6f3ec;color:#203833;font-family:Arial,sans-serif;line-height:1.55}header{padding:25px 6vw;border-bottom:1px solid #d9ddd4;display:flex;justify-content:space-between;gap:20px;font-size:12px;letter-spacing:.12em}header a{color:inherit;text-decoration:none;font-weight:700}header span{color:#65756a}main{max-width:1180px;margin:auto;padding:65px 30px}.eyebrow{font-size:11px;letter-spacing:.2em;color:#707c65;font-weight:700}h1{font-family:Georgia,serif;font-size:clamp(42px,6vw,72px);font-weight:400;line-height:1.07;margin:20px 0}h1 em{font-weight:400;color:#7b8967}.intro{max-width:630px;color:#5b6a60;font-size:17px}#status{padding:17px 0;min-height:56px;color:#41674e}.error{color:#a02d32!important}.notice{padding:16px 20px;background:#e9e8d7;border:1px solid #d1d5bc;border-radius:8px;margin:15px 0 24px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:1px solid #d9ddd4;border-bottom:1px solid #d9ddd4;padding:24px 0}.period{font-family:Georgia,serif;font-size:24px;margin:5px 0}.offer-card{margin:22px 0;background:#fffdf8;border:1px solid #dce0d4;border-radius:10px;padding:28px}.card-heading{display:flex;justify-content:space-between;align-items:center;gap:20px}h2{font-family:Georgia,serif;font-weight:400;font-size:29px;margin:8px 0 18px}.toggle{white-space:nowrap;background:#edf0e7;border-radius:40px;padding:9px 14px;font-size:13px!important;display:flex;align-items:center;gap:8px}.toggle input{width:auto;margin:0;accent-color:#315747}.inactive{opacity:.75}.inactive-hint{color:#86624b}label{display:block;font-size:13px;font-weight:600;margin:13px 0}input,textarea,select{display:block;width:100%;border:1px solid #bdc6b6;border-radius:5px;background:white;padding:11px 12px;font:inherit;color:#203833;margin-top:7px}input:focus,textarea:focus,select:focus{outline:2px solid #7e9b7a;outline-offset:2px}textarea{resize:vertical;line-height:1.5}select{max-width:400px}button{border:0;border-radius:5px;background:#294d40;color:white;padding:14px 21px;font:inherit;font-size:14px;cursor:pointer}button:hover{background:#3c6555}button:disabled{opacity:.5;cursor:wait}.secondary{background:transparent;border:1px solid #71836c;color:#294d40}.secondary:hover{background:#e8ecdf}.languages{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:25px}fieldset{border:0;padding:0;min-width:0}legend{font-family:Georgia,serif;font-size:22px}details{border-top:1px solid #e1e4d9;padding-top:15px;margin-top:14px}summary{cursor:pointer;font-size:14px;font-weight:600}.save-bar{display:flex;align-items:center;justify-content:space-between;gap:30px;margin:30px 0;padding:22px 0;border-top:1px solid #d9ddd4}.save-bar p{max-width:570px;color:#657061}.save-bar button{white-space:nowrap}.reminder{margin-top:45px;padding:32px;background:#e8ecdf;border-radius:10px}.reminder pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:14px;background:#fffdf8;padding:22px;border-radius:5px}#simulation{margin-top:25px;border-top:1px solid #cad1bf;padding-top:12px}#simulation input{max-width:230px;margin-bottom:15px}#access-form{max-width:500px;background:#fffdf8;padding:25px;border-radius:10px}#access-form button{margin-top:16px}footer{text-align:center;border-top:1px solid #d9ddd4;padding:30px;font-size:11px;letter-spacing:.15em;color:#74806f}@media(max-width:700px){main{padding:35px 18px}.toolbar,.card-heading,.save-bar{align-items:flex-start;flex-direction:column;gap:15px}.languages{grid-template-columns:1fr}.offer-card,.reminder{padding:20px}header span{display:none}.save-bar button{width:100%}}
+  </style>
+</body>
+</html>
