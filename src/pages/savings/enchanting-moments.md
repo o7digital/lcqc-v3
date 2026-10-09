@@ -1,7 +1,7 @@
 ---
 title: "Enchanting moments"
 description: "Includes daily “Encanto Mexicano” breakfast in your Suite or at our restaurant."
-date: "May 1st to October 31st, 2026"
+date: "October 1st to October 31st, 2026"
 imagefront: "/offers/lcqc-enchanting.jpg"
 layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=en-US&rooms=1&src=24C"
@@ -18,7 +18,7 @@ offsetX: "2cm"
 <i>No minimum stay required.</i>
 
 <b>Includes</b>:
-<p><i>Travel: May 1st to October 31st, 2026.</i></p>
+<p><i>Travel: October 1st to October 31st, 2026.</i></p>
 <ul class="list-disc ml-4">
   <li>Daily “Encanto Mexicano” breakfast for two guests</li>
   <li>Complimentary minibar.</li>

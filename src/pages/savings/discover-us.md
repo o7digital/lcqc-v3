@@ -3,7 +3,7 @@ title: "Discover Us"
 description: "Important savings on all of our Oceanfront Suites."
 imagefront: "/offers/lcqc-discover.jpg"
 layout: "@layouts/LayoutOffer.astro"
-date: "January 1st to April 30th, 2026"
+date: "October 1st to October 31st, 2026"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=en-US&rooms=1&src=24C"
 hideHero: true
 overlayOffsetX: "3cm"
@@ -17,7 +17,7 @@ offsetX: "2cm"
 <i>No minimum stay required.</i>
 
 <b>Includes</b>:
-<p><i>Travel: January 1st to April 30th, 2026.</i></p>
+<p><i>Travel: October 1st to October 31st, 2026.</i></p>
 <ul class="list-disc ml-4">
   <li>Complimentary minibar.</li>
   <li>Fresh fruit daily.</li>

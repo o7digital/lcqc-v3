@@ -1,7 +1,7 @@
 ---
 title: "Momentos Encantadores"
 description: "Incluye desayuno diario “Encanto Mexicano” en su Suite o en nuestro restaurante."
-date: "1ro de Mayo al 31 de Octubre de 2026"
+date: "Del 1 al 31 de octubre de 2026"
 imagefront: "/offers/lcqc-enchanting.jpg"
 layout: "@layouts/LayoutOffer.astro"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=es-ES&rooms=1&src=24C"
@@ -18,7 +18,7 @@ bookLabel: "Reservar"
 <i>No se requiere estancia mínima.</i>
 
 <b>Incluye:</b>
-<p><i>Vigencia: 1ro de Mayo al 31 de Octubre de 2026.</i></p>
+<p><i>Vigencia: Del 1 al 31 de octubre de 2026.</i></p>
 <ul class="list-disc ml-4">
   <li>Desayuno “Encanto Mexicano” para dos personas.</li>
   <li>Minibar de cortesía.</li>
@@ -42,6 +42,6 @@ Se requiere un depósito para garantizar la reservación. Tarifa por noche en oc
 
 <b>Viaje:</b>
 
-Del 1 de noviembre al 22 de diciembre de 2025.
+Del 1 al 31 de octubre de 2026.
 
 </div>

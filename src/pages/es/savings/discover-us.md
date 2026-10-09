@@ -3,7 +3,7 @@ title: "Descúbrenos"
 description: "Ahorros importantes en todas nuestras Suites frente al mar."
 imagefront: "/offers/lcqc-discover.jpg"
 layout: "@layouts/LayoutOffer.astro"
-date: "1ro de Enero al 30 de Abril de 2026"
+date: "Del 1 al 31 de octubre de 2026"
 book: "https://be.synxis.com/?adult=1&arrive=2023-07-27&chain=22402&child=0&currency=USD&depart=2023-07-28&hotel=78821&level=hotel&locale=es-ES&rooms=1&src=24C"
 hideHero: true
 bookLabel: "Reservar"
@@ -14,7 +14,7 @@ offsetX: "2cm"
 <p class="mt-4">Ahorros importantes en todas nuestras Suites frente al mar.</p>
 <i>No se requiere estancia mínima.</i>
 <b>Incluye:</b>
-<p><i>Vigencia: 1ro de Enero al 30 de Abril de 2026.</i></p>
+<p><i>Vigencia: Del 1 al 31 de octubre de 2026.</i></p>
 <ul class="list-disc ml-4">
   <li>Minibar de cortesía.</li>
   <li>Fruta fresca diaria.</li>
