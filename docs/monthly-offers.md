@@ -24,7 +24,7 @@ Recipients requested:
 - director@lacasaquecanta.com
 - olivier.steineur@gmail.com
 
-**Formspree setup remains required.** Create a dedicated form, configure and verify all three notification recipients in its dashboard, and supply its endpoint. Adding `to` or `cc` JSON fields does not configure recipients. Depending on the Formspree plan, notification rules send separate copies rather than a literal CC header. Verify this in Formspree before activation. Disable CAPTCHA for this server-to-server reminder form and restrict it appropriately in Formspree; never reuse the public spa/contact form.
+**Formspree recipient setup remains to be verified.** The user supplied `https://formspree.io/f/xkjorkgl`; this endpoint is configured on Preview for branch `dev`. Configure and verify all three notification recipients in its dashboard before enabling delivery. Adding `to` or `cc` JSON fields does not configure recipients. Depending on the Formspree plan, notification rules send separate copies rather than a literal CC header. Verify this in Formspree before activation. Disable CAPTCHA for this server-to-server reminder form and restrict it appropriately in Formspree; never reuse the public spa/contact form.
 
 ## Configuration
 
@@ -34,6 +34,7 @@ Preview variables are configured for branch `dev`:
 - `OFFERS_AUTOMATION_ENABLED=true` — API enabled.
 - `OFFERS_SIGNING_SECRET` — generated private signing key.
 - `OFFERS_REMINDERS_ENABLED=false` — no real email.
+- `OFFERS_FORMSPREE_ENDPOINT=https://formspree.io/f/xkjorkgl` — user-supplied dedicated reminder form.
 - `BLOB_READ_WRITE_TOKEN` — provided by the dedicated private preview store.
 
 After user approval, production needs a **separate private Blob store**, its own signing secret, `CRON_SECRET`, `OFFERS_FORMSPREE_ENDPOINT`, `OFFERS_SITE_URL=https://www.lacasaquecanta.com`, both automation flags, and `OFFERS_REMINDERS_ENABLED=true`. Seed and test the production store before activation. Do not connect the preview store to Production. Production activation and actual reminder delivery are outside the current preview request.
