@@ -17,7 +17,7 @@ test('access email is normalized; unknown addresses never receive tokens or trig
 });
 test('authorized requests send an expiring link to Formspree, never to the browser',async()=>{
  let payload,expires;
- const handler=createAccessHandler({claim:async()=>true,mint:(_month,exp)=>{expires=exp;return 'test-signed-link'},send:async(url,opts)=>{assert.equal(url,'https://formspree.io/f/xkjorkgl');payload=JSON.parse(opts.body);return {ok:true}}});
+ const handler=createAccessHandler({claim:async()=>true,mint:(_month,exp)=>{expires=exp;return 'test-signed-link'},send:async(url,opts)=>{assert.equal(url,'https://formspree.io/f/xkjorkgl');payload=JSON.parse(opts.body);return {ok:true,json:async()=>({ok:true})}}});
  const res=response();await handler(request('sales.reservations@lacasaquecanta.com'),res);
  assert.equal(res.code,202);assert.equal(payload.notification,'offers_access');
  assert.match(payload.access_link,/^https:\/\/lcqc-offers.o7digitalgroup.com\/gestion-ofertas\/#access=test-signed-link$/);
@@ -37,7 +37,19 @@ test('cross-origin submissions and excessive requests are blocked without sendin
  assert.equal(accessCooldown({lastAttempt:now-600000,count:1,day},now),false);
 });
 test('upstream rejection is reported honestly rather than claiming delivery',async()=>{
- const handler=createAccessHandler({claim:async()=>true,mint:()=> 'test',send:async()=>({ok:false})});
+ const handler=createAccessHandler({claim:async()=>true,mint:()=> 'test',send:async()=>({ok:false,json:async()=>({ok:false})})});
  const res=response();await handler(request('director@lacasaquecanta.com'),res);
  assert.equal(res.code,503);assert.match(res.body.error,/No se pudo enviar/);
+});
+
+test('accepted requests remain successful on repeated clicks and expose a resend delay',async()=>{
+ const handler=createAccessHandler({claim:async()=>({allowed:false,accepted:true,retryAfter:42}),send:async()=>{throw Error('Duplicate send')}});
+ const res=response();await handler(request('olivier.steineur@gmail.com'),res);
+ assert.equal(res.code,202);assert.equal(res.body.retryAfter,42);
+});
+test('provider success body is required; failures release the reserved request',async()=>{
+ let finished;
+ const handler=createAccessHandler({claim:async()=>({allowed:true,id:'fake'}),finish:async(_claim,accepted)=>{finished=accepted},mint:()=> 'test',send:async()=>({ok:true,status:200,json:async()=>({ok:false})})});
+ const res=response();await handler(request('olivier.steineur@gmail.com'),res);
+ assert.equal(res.code,503);assert.equal(finished,false);
 });
