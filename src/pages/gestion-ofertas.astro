@@ -17,14 +17,24 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
     <h1>El próximo mes,<br/><em>listo para recibir.</em></h1>
     <p class="intro">Revise las promociones, mantenga las actuales o prepare sus cambios. Las fechas se renuevan del primer al último día de cada mes.</p>
     <div id="status" role="status" aria-live="polite">Verificando acceso…</div>
-    <form id="access-form" hidden>
-      <label for="access-code">Acceso privado</label>
-      <p>Abra el enlace seguro recibido por correo o pegue su código de acceso.</p>
-      <input id="access-code" type="password" autocomplete="off" required />
-      <button>Acceder</button>
-    </form>
+    <section id="access-panel" hidden>
+      <form id="access-email-form">
+        <h2>Acceda con su correo</h2>
+        <p>Introduzca su correo autorizado para solicitar un enlace privado. El equipo autorizado recibirá el enlace de acceso por correo.</p>
+        <label for="access-email">Correo electrónico</label>
+        <input id="access-email" name="email" type="email" placeholder="nombre@ejemplo.com" autocomplete="email" inputmode="email" required maxlength="254" />
+        <div class="email-trap" aria-hidden="true"><label for="access-website">Sitio web</label><input id="access-website" name="_gotcha" tabindex="-1" autocomplete="off" /></div>
+        <button id="request-access" type="submit">Solicitar enlace por correo</button>
+        <p class="access-note">El enlace vence en 30 minutos. Solo las direcciones autorizadas pueden solicitar acceso.</p>
+      </form>
+      <details><summary>Ya tengo un código de acceso</summary><form id="access-form">
+        <label for="access-code">Código privado</label>
+        <input id="access-code" type="password" autocomplete="off" required />
+        <button>Acceder</button>
+      </form></details>
+    </section>
     <section id="workspace" hidden>
-      <div class="notice" id="preview-notice" hidden><strong>Vista de prueba</strong> · Los cambios se guardan únicamente en la preview. No se envían correos reales.</div>
+      <div class="notice" id="preview-notice" hidden><strong>Vista de prueba</strong> · Los cambios se guardan únicamente en la preview. Los recordatorios automáticos están desactivados. Puede solicitar un enlace de acceso por correo.</div>
       <div class="toolbar">
         <div><label for="month">Mes que desea revisar</label><select id="month"></select></div>
         <div><span class="eyebrow">VIGENCIA AUTOMÁTICA</span><p id="period" class="period"></p></div>
@@ -67,7 +77,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
     async function api(path: string, options: RequestInit = {}) {
       const r = await fetch(path, {...options, headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', ...options.headers}});
       const result = await r.json();
-      if (r.status === 401) { sessionStorage.removeItem('offers-access'); $('access-form').hidden = false; $('workspace').hidden = true; }
+      if (r.status === 401) { sessionStorage.removeItem('offers-access'); $('access-panel').hidden = false; $('workspace').hidden = true; }
       if (!r.ok) throw new Error(result.error || 'No se pudo completar la solicitud.');
       return result;
     }
@@ -101,7 +111,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
       const result = await api(`/api/offers?admin=1${month ? `&month=${encodeURIComponent(month)}` : ''}`);
       data = result; selected = result.period.month;
       sessionStorage.setItem('offers-access', token);
-      $('access-form').hidden = true; $('workspace').hidden = false;
+      $('access-panel').hidden = true; $('workspace').hidden = false;
       $('preview-notice').hidden = !result.preview; $('simulation').hidden = !result.preview;
       const select = $('month') as HTMLSelectElement; select.replaceChildren();
       for (const m of result.allowedMonths) select.add(new Option(m, m));
@@ -115,6 +125,18 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
       dirty = false;
       status(result.savedAt ? `Última actualización: ${new Date(result.savedAt).toLocaleString('es-MX', {timeZone:'America/Mexico_City'})}` : 'Promociones listas para revisar.');
     }
+    $('access-email-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const button = $('request-access') as HTMLButtonElement;
+      button.disabled = true; status('Enviando solicitud de acceso…');
+      try {
+        const response = await fetch('/api/offers-access', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:($('access-email') as HTMLInputElement).value.trim(), _gotcha:($('access-website') as HTMLInputElement).value})});
+        const result = await response.json();
+        if(!response.ok) throw new Error(result.error || 'No se pudo enviar la solicitud.');
+        status(result.message);
+      }catch(e){status((e as Error).message,true);}
+      finally{button.disabled=false;}
+    });
     $('access-form').addEventListener('submit', async event => { event.preventDefault(); token = ($('access-code') as HTMLInputElement).value.trim(); try { await load(new URLSearchParams(location.search).get('month') || ''); } catch(e) { status((e as Error).message, true); } });
     $('month').addEventListener('change', async () => {
       const next = ($('month') as HTMLSelectElement).value;
@@ -154,10 +176,10 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
     window.addEventListener('beforeunload', event => { if(dirty) { event.preventDefault(); event.returnValue = ''; } });
     if (document.body.dataset.enabled !== 'true') status('Este sistema aún no está activado en este sitio.');
     else if (token) load(new URLSearchParams(location.search).get('month') || '').catch(e => status(e.message, true));
-    else { $('access-form').hidden = false; status('Utilice su enlace privado para revisar las promociones.'); }
+    else { $('access-panel').hidden = false; status('Introduzca su correo para solicitar un enlace privado.'); }
   </script>
   <style>
-    :global(*){box-sizing:border-box} :global([hidden]){display:none!important} :global(body){margin:0;background:#f6f3ec;color:#203833;font-family:Arial,sans-serif;line-height:1.55}header{align-items:center;padding:18px 6vw;border-bottom:1px solid #d9ddd4;display:flex;justify-content:space-between;gap:20px;font-size:12px;letter-spacing:.12em}.hotel-logo{display:block;width:220px;height:auto;border-radius:3px}.card-identity{display:flex;align-items:center;gap:20px}.offer-image{width:100px;height:75px;object-fit:cover;border-radius:5px}.catalog-source{font-size:13px;color:#657061}header a{color:inherit;text-decoration:none;font-weight:700}header span{color:#65756a}main{max-width:1180px;margin:auto;padding:65px 30px}.eyebrow{font-size:11px;letter-spacing:.2em;color:#707c65;font-weight:700}h1{font-family:Georgia,serif;font-size:clamp(42px,6vw,72px);font-weight:400;line-height:1.07;margin:20px 0}h1 em{font-weight:400;color:#7b8967}.intro{max-width:630px;color:#5b6a60;font-size:17px}#status{padding:17px 0;min-height:56px;color:#41674e}.error{color:#a02d32!important}.notice{padding:16px 20px;background:#e9e8d7;border:1px solid #d1d5bc;border-radius:8px;margin:15px 0 24px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:1px solid #d9ddd4;border-bottom:1px solid #d9ddd4;padding:24px 0}.period{font-family:Georgia,serif;font-size:24px;margin:5px 0}.offer-card{margin:22px 0;background:#fffdf8;border:1px solid #dce0d4;border-radius:10px;padding:28px}.card-heading{display:flex;justify-content:space-between;align-items:center;gap:20px}h2{font-family:Georgia,serif;font-weight:400;font-size:29px;margin:8px 0 18px}.toggle{white-space:nowrap;background:#edf0e7;border-radius:40px;padding:9px 14px;font-size:13px!important;display:flex;align-items:center;gap:8px}.toggle input{width:auto;margin:0;accent-color:#315747}.inactive{opacity:.75}.inactive-hint{color:#86624b}label{display:block;font-size:13px;font-weight:600;margin:13px 0}input,textarea,select{display:block;width:100%;border:1px solid #bdc6b6;border-radius:5px;background:white;padding:11px 12px;font:inherit;color:#203833;margin-top:7px}input:focus,textarea:focus,select:focus{outline:2px solid #7e9b7a;outline-offset:2px}textarea{resize:vertical;line-height:1.5}select{max-width:400px}button{border:0;border-radius:5px;background:#294d40;color:white;padding:14px 21px;font:inherit;font-size:14px;cursor:pointer}button:hover{background:#3c6555}button:disabled{opacity:.5;cursor:wait}.secondary{background:transparent;border:1px solid #71836c;color:#294d40}.secondary:hover{background:#e8ecdf}.languages{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:25px}fieldset{border:0;padding:0;min-width:0}legend{font-family:Georgia,serif;font-size:22px}details{border-top:1px solid #e1e4d9;padding-top:15px;margin-top:14px}summary{cursor:pointer;font-size:14px;font-weight:600}.save-bar{display:flex;align-items:center;justify-content:space-between;gap:30px;margin:30px 0;padding:22px 0;border-top:1px solid #d9ddd4}.save-bar p{max-width:570px;color:#657061}.save-bar button{white-space:nowrap}.reminder{margin-top:45px;padding:32px;background:#e8ecdf;border-radius:10px}.reminder pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:14px;background:#fffdf8;padding:22px;border-radius:5px}#simulation{margin-top:25px;border-top:1px solid #cad1bf;padding-top:12px}#simulation input{max-width:230px;margin-bottom:15px}#access-form{max-width:500px;background:#fffdf8;padding:25px;border-radius:10px}#access-form button{margin-top:16px}footer{text-align:center;border-top:1px solid #d9ddd4;padding:30px;font-size:11px;letter-spacing:.15em;color:#74806f}@media(max-width:700px){main{padding:35px 18px}.toolbar,.card-heading,.save-bar{align-items:flex-start;flex-direction:column;gap:15px}.languages{grid-template-columns:1fr}.offer-card,.reminder{padding:20px}header span{display:none}.hotel-logo{width:180px}.card-identity{gap:12px}.offer-image{width:75px;height:60px}.save-bar button{width:100%}}
+    :global(*){box-sizing:border-box} :global([hidden]){display:none!important} :global(body){margin:0;background:#f6f3ec;color:#203833;font-family:Arial,sans-serif;line-height:1.55}header{align-items:center;padding:18px 6vw;border-bottom:1px solid #d9ddd4;display:flex;justify-content:space-between;gap:20px;font-size:12px;letter-spacing:.12em}.hotel-logo{display:block;width:220px;height:auto;border-radius:3px}.card-identity{display:flex;align-items:center;gap:20px}.offer-image{width:100px;height:75px;object-fit:cover;border-radius:5px}.catalog-source{font-size:13px;color:#657061}header a{color:inherit;text-decoration:none;font-weight:700}header span{color:#65756a}main{max-width:1180px;margin:auto;padding:65px 30px}.eyebrow{font-size:11px;letter-spacing:.2em;color:#707c65;font-weight:700}h1{font-family:Georgia,serif;font-size:clamp(42px,6vw,72px);font-weight:400;line-height:1.07;margin:20px 0}h1 em{font-weight:400;color:#7b8967}.intro{max-width:630px;color:#5b6a60;font-size:17px}#status{padding:17px 0;min-height:56px;color:#41674e}.error{color:#a02d32!important}.notice{padding:16px 20px;background:#e9e8d7;border:1px solid #d1d5bc;border-radius:8px;margin:15px 0 24px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:1px solid #d9ddd4;border-bottom:1px solid #d9ddd4;padding:24px 0}.period{font-family:Georgia,serif;font-size:24px;margin:5px 0}.offer-card{margin:22px 0;background:#fffdf8;border:1px solid #dce0d4;border-radius:10px;padding:28px}.card-heading{display:flex;justify-content:space-between;align-items:center;gap:20px}h2{font-family:Georgia,serif;font-weight:400;font-size:29px;margin:8px 0 18px}.toggle{white-space:nowrap;background:#edf0e7;border-radius:40px;padding:9px 14px;font-size:13px!important;display:flex;align-items:center;gap:8px}.toggle input{width:auto;margin:0;accent-color:#315747}.inactive{opacity:.75}.inactive-hint{color:#86624b}label{display:block;font-size:13px;font-weight:600;margin:13px 0}input,textarea,select{display:block;width:100%;border:1px solid #bdc6b6;border-radius:5px;background:white;padding:11px 12px;font:inherit;color:#203833;margin-top:7px}input:focus,textarea:focus,select:focus{outline:2px solid #7e9b7a;outline-offset:2px}textarea{resize:vertical;line-height:1.5}select{max-width:400px}button{border:0;border-radius:5px;background:#294d40;color:white;padding:14px 21px;font:inherit;font-size:14px;cursor:pointer}button:hover{background:#3c6555}button:disabled{opacity:.5;cursor:wait}.secondary{background:transparent;border:1px solid #71836c;color:#294d40}.secondary:hover{background:#e8ecdf}.languages{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:25px}fieldset{border:0;padding:0;min-width:0}legend{font-family:Georgia,serif;font-size:22px}details{border-top:1px solid #e1e4d9;padding-top:15px;margin-top:14px}summary{cursor:pointer;font-size:14px;font-weight:600}.save-bar{display:flex;align-items:center;justify-content:space-between;gap:30px;margin:30px 0;padding:22px 0;border-top:1px solid #d9ddd4}.save-bar p{max-width:570px;color:#657061}.save-bar button{white-space:nowrap}.reminder{margin-top:45px;padding:32px;background:#e8ecdf;border-radius:10px}.reminder pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;font-size:14px;background:#fffdf8;padding:22px;border-radius:5px}#simulation{margin-top:25px;border-top:1px solid #cad1bf;padding-top:12px}#simulation input{max-width:230px;margin-bottom:15px}#access-panel{max-width:580px;background:#fffdf8;padding:25px;border-radius:10px}#access-panel button{margin-top:16px}.access-note{font-size:12px;color:#657061}.email-trap{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}footer{text-align:center;border-top:1px solid #d9ddd4;padding:30px;font-size:11px;letter-spacing:.15em;color:#74806f}@media(max-width:700px){main{padding:35px 18px}.toolbar,.card-heading,.save-bar{align-items:flex-start;flex-direction:column;gap:15px}.languages{grid-template-columns:1fr}.offer-card,.reminder{padding:20px}header span{display:none}.hotel-logo{width:180px}.card-identity{gap:12px}.offer-image{width:75px;height:60px}.save-bar button{width:100%}}
   </style>
 </body>
 </html>

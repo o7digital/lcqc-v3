@@ -20,7 +20,7 @@ The preview supports three existing detail routes in each language. Added offers
 
 A daily Vercel cron at 15:00 UTC (09:00 Mexico City) checks whether the last Monday of the month has arrived. October 2026: Monday the 26th. It sends one reminder about the following month. If an attempt fails, it retries on the next daily execution within that month. A five-minute lease and a sent marker prevent concurrent/daily duplicates; Formspree does not provide a transactional send-and-store operation, so an interrupted send after acceptance can still produce a duplicate on retry.
 
-Preview deployments are hard-blocked from sending email. The preview form shows the reminder text, planned send date and calendar simulations. Vercel runs scheduled jobs on production deployments only.
+Preview deployments are hard-blocked from sending automatic reminder emails. The preview form shows the reminder text, planned send date and calendar simulations. Vercel runs scheduled jobs on production deployments only.
 
 Recipients requested:
 
@@ -37,7 +37,7 @@ Preview variables are configured for branch `dev`:
 - `PUBLIC_OFFERS_AUTOMATION_ENABLED=true` — build-time public page integration.
 - `OFFERS_AUTOMATION_ENABLED=true` — API enabled.
 - `OFFERS_SIGNING_SECRET` — generated private signing key.
-- `OFFERS_REMINDERS_ENABLED=false` — no real email.
+- `OFFERS_REMINDERS_ENABLED=false` — no automatic reminder email.
 - `OFFERS_FORMSPREE_ENDPOINT=https://formspree.io/f/xkjorkgl` — user-supplied dedicated reminder form.
 - `BLOB_READ_WRITE_TOKEN` — provided by the dedicated private preview store.
 
@@ -47,10 +47,18 @@ After user approval, production needs a **separate private Blob store**, its own
 
 ## Validation
 
-Run `node --test tests/monthly-offers.test.js` and `PUBLIC_OFFERS_AUTOMATION_ENABLED=true npm run build`. Test signed access, persistent saves, stale revision rejection, additions/removals, current/next month separation and both public languages on the deployed preview. The production build with the public flag omitted leaves live automation disabled.
+Run `node --test tests/*.test.js` and `PUBLIC_OFFERS_AUTOMATION_ENABLED=true npm run build`. Test signed access, persistent saves, stale revision rejection, additions/removals, current/next month separation and both public languages on the deployed preview. The production build with the public flag omitted leaves live automation disabled.
 
 Sources: https://vercel.com/docs/cron-jobs/manage-cron-jobs, https://vercel.com/docs/vercel-blob/using-blob-sdk, https://help.formspree.io/articles/advanced-features/form-rules/
 
 ## Dedicated preview hostname
 
 `lcqc-offers.o7digitalgroup.com` tracks `dev`. A host-specific redirect sends the root and website-page paths to `/gestion-ofertas/`. Only the management page, offers API, JavaScript/CSS and required image paths bypass this redirect. The rule does not match the hotel production domain or other preview hostnames. This changes no production branch or production deployment.
+
+## Access by email
+
+The landing page now has an email field and a “Solicitar enlace por correo” button. `/api/offers-access` accepts requests only for the three authorized team addresses, checks same-origin requests and a honeypot, and uses a private Blob-backed five-minute cooldown plus five requests per UTC day per address. Unknown email addresses receive a generic acknowledgment without sending mail. Bearer links expire after 30 minutes and are never included in public API responses.
+
+`OFFERS_ACCESS_EMAIL_ENABLED=true` enables user-requested access email in the dev preview. Automatic monthly reminders remain disabled. No real emails are sent by automated tests.
+
+Access requests use the supplied Formspree form. **Formspree sends notifications to its verified dashboard recipients, not automatically to the address typed in the field.** The complete access link is delivered in the notification message. With the three requested recipients configured, the authorized team receives access requests. For individual delivery, configure Formspree notification rules on `notification=offers_access` and the `email` field, selecting the matching verified recipient. Keep reminder notification rules on `notification=monthly_offers`. The app does not claim that Formspree recipient rules have been verified.

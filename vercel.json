@@ -1,7 +1,7 @@
 {
   "redirects": [
     {
-      "source": "/:path((?!gestion-ofertas(?:/|$)|api/offers(?:/|$)|api/offers-reminder(?:/|$)|_astro/|images/logo/|offers/).*)",
+      "source": "/:path((?!gestion-ofertas(?:/|$)|api/offers(?:/|$)|api/offers-reminder(?:/|$)|api/offers-access(?:/|$)|_astro/|images/logo/|offers/).*)",
       "has": [
         {
           "type": "host",
