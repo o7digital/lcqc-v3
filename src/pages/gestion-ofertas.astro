@@ -1,4 +1,9 @@
 ---
+import {fetchCatalog} from '../lib/offer-catalog.js';
+import fallbackOffers from '../data/monthly-offers.json';
+const demoEnabled = import.meta.env.PUBLIC_OFFERS_DEMO_ENABLED === 'true';
+let demoOffers = fallbackOffers;
+if(demoEnabled){try{demoOffers=await fetchCatalog();}catch{console.warn('Demo uses fallback offers catalog.');}}
 const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
 ---
 <!doctype html>
@@ -10,7 +15,8 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
   <meta name="referrer" content="no-referrer" />
   <title>Gestión de promociones · La Casa Que Canta</title>
 </head>
-<body data-enabled={enabled}>
+<body data-enabled={enabled} data-demo={demoEnabled}>
+  <script is:inline type="application/json" id="demo-offers" set:html={JSON.stringify(demoEnabled ? demoOffers : []).replace(/</g, "\\u003c")} />
   <header><a href="https://www.lacasaquecanta.com/" aria-label="La Casa Que Canta"><img class="hotel-logo" src="/images/logo/logo.jpg" alt="La Casa Que Canta" width="220" height="93" /></a><span>Reservaciones · Promociones</span></header>
   <main>
     <p class="eyebrow">GESTIÓN MENSUAL</p>
@@ -67,6 +73,9 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
     </article>
   </template>
   <script>
+    import {createDemo} from '../lib/offer-demo.js';
+    const demo = document.body.dataset.demo === 'true';
+    const demoRequest = demo ? createDemo(JSON.parse(document.getElementById('demo-offers')!.textContent!),localStorage) : null;
     const $ = (id: string) => document.getElementById(id)!;
     let token = new URLSearchParams(location.hash.slice(1)).get('access') || sessionStorage.getItem('offers-access') || '';
     if (location.hash) history.replaceState(null, '', location.pathname + location.search);
@@ -75,6 +84,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
     let selected = '';
     const status = (text: string, error = false) => { $('status').textContent = text; $('status').classList.toggle('error', error); };
     async function api(path: string, options: RequestInit = {}) {
+      if(demoRequest)return demoRequest(path,options);
       const r = await fetch(path, {...options, headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', ...options.headers}});
       const result = await r.json();
       if (r.status === 401) { sessionStorage.removeItem('offers-access'); $('access-panel').hidden = false; $('workspace').hidden = true; }
@@ -110,15 +120,19 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
       status('Cargando promociones…');
       const result = await api(`/api/offers?admin=1${month ? `&month=${encodeURIComponent(month)}` : ''}`);
       data = result; selected = result.period.month;
-      sessionStorage.setItem('offers-access', token);
+      if(!demo)sessionStorage.setItem('offers-access', token);
       $('access-panel').hidden = true; $('workspace').hidden = false;
       $('preview-notice').hidden = !result.preview; $('simulation').hidden = !result.preview;
+      if(demo){
+        $('preview-notice').textContent='DEMO · Acceso libre. Sus cambios se guardan solo en este navegador. No se modifica el sitio del hotel ni se envían correos.';
+        $('save').textContent='Guardar en la demo';
+      }
       const select = $('month') as HTMLSelectElement; select.replaceChildren();
       for (const m of result.allowedMonths) select.add(new Option(m, m));
       select.value = selected;
       $('period').textContent = result.period.es;
-      $('catalog-source').textContent = result.catalogStatus === 'live' ? `Catálogo sincronizado con DatoCMS: ${result.catalogCount} promociones, incluidas las desactivadas. Los cambios guardados aquí se conservan.` : 'DatoCMS no está disponible. Se muestra la última copia guardada; vuelva a cargar para sincronizar.';
-      $('effective').textContent = selected === result.currentMonth ? 'Los cambios se mostrarán al guardar para el mes actual.' : 'Los cambios se guardarán ahora y entrarán en vigor el día 1 del mes seleccionado.';
+      $('catalog-source').textContent = demo ? `Copia de demostración: ${result.catalogCount} promociones, incluidas las desactivadas.` : result.catalogStatus === 'live' ? `Catálogo sincronizado con DatoCMS: ${result.catalogCount} promociones, incluidas las desactivadas. Los cambios guardados aquí se conservan.` : 'DatoCMS no está disponible. Se muestra la última copia guardada; vuelva a cargar para sincronizar.';
+      $('effective').textContent = demo ? 'Puede probar los cambios del mes actual o preparar el siguiente. Se guardan solo en este navegador.' : selected === result.currentMonth ? 'Los cambios se mostrarán al guardar para el mes actual.' : 'Los cambios se guardarán ahora y entrarán en vigor el día 1 del mes seleccionado.';
       $('offer-list').replaceChildren(); result.offers.forEach(renderOffer);
       $('mail-status').textContent = result.preview ? 'Envíos desactivados durante las pruebas.' : result.mailConfigured && result.mailEnabled ? 'Recordatorio automático activado.' : 'Recordatorio pendiente de configuración.';
       mailView(result);
@@ -173,7 +187,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
       });
       const button = $('save') as HTMLButtonElement; button.disabled = true;
       status('Guardando promociones…');
-      try { await api('/api/offers', {method:'PUT', body:JSON.stringify({month:selected, revision:data.revision, offers})}); await load(selected); status(`Cambios guardados. Vigencia: ${data.period.es}.`); }
+      try { await api('/api/offers', {method:'PUT', body:JSON.stringify({month:selected, revision:data.revision, offers})}); await load(selected); status(`${demo ? 'Demo guardada en este navegador' : 'Cambios guardados'}. Vigencia: ${data.period.es}.`); }
       catch(e) { status((e as Error).message, true); }
       finally { button.disabled = false; }
     });
@@ -185,7 +199,7 @@ const enabled = import.meta.env.PUBLIC_OFFERS_AUTOMATION_ENABLED === 'true';
     });
     window.addEventListener('beforeunload', event => { if(dirty) { event.preventDefault(); event.returnValue = ''; } });
     if (document.body.dataset.enabled !== 'true') status('Este sistema aún no está activado en este sitio.');
-    else if (token) load(new URLSearchParams(location.search).get('month') || '').catch(e => status(e.message, true));
+    else if (demo || token) load(new URLSearchParams(location.search).get('month') || '').catch(e => status(e.message, true));
     else { $('access-panel').hidden = false; status('Introduzca su correo para solicitar un enlace privado.'); }
   </script>
   <style>
