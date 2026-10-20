@@ -1,4 +1,9 @@
 {
+  "git": {
+    "deploymentEnabled": {
+      "main": false
+    }
+  },
   "redirects": [
     {
       "source": "/:path((?!gestion-ofertas(?:/|$)|api/offers(?:/|$)|api/offers-reminder(?:/|$)|api/offers-access(?:/|$)|_astro/|images/logo/|offers/).*)",
