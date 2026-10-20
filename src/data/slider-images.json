@@ -1,0 +1,226 @@
+{
+  "/history/1.jpg": {
+    "width": 7354,
+    "height": 4908,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/history/1-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/history/1-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/history/2.jpg": {
+    "width": 5464,
+    "height": 3640,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/history/2-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/history/2-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/history/3.jpeg": {
+    "width": 5464,
+    "height": 3640,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/history/3-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/history/3-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/history/4.jpg": {
+    "width": 5464,
+    "height": 3640,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/history/4-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/history/4-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/history/5.jpeg": {
+    "width": 7354,
+    "height": 4908,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/history/5-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/history/5-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/history/6.jpg": {
+    "width": 5464,
+    "height": 3640,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/history/6-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/history/6-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/history/7.jpg": {
+    "width": 5464,
+    "height": 3640,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/history/7-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/history/7-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/history/8.jpg": {
+    "width": 5464,
+    "height": 3640,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/history/8-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/history/8-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/images/jeremy-bishop-surfing.jpg": {
+    "width": 4242,
+    "height": 2828,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/images/jeremy-bishop-surfing-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/images/jeremy-bishop-surfing-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/images/karl-callwood.jpg": {
+    "width": 4000,
+    "height": 3000,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/images/karl-callwood-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/images/karl-callwood-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/images/jeremy-bishop-voilier.jpg": {
+    "width": 5472,
+    "height": 3648,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/images/jeremy-bishop-voilier-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/images/jeremy-bishop-voilier-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/images/hiroko-yoshii.jpg": {
+    "width": 3648,
+    "height": 2736,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/images/hiroko-yoshii-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/images/hiroko-yoshii-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/images/yoga.jpg": {
+    "width": 5184,
+    "height": 3456,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/images/yoga-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/images/yoga-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/images/langosta.jpg": {
+    "width": 7360,
+    "height": 4912,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/images/langosta-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/images/langosta-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/images/mexicana.jpg": {
+    "width": 3595,
+    "height": 2400,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/images/mexicana-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/images/mexicana-1920.webp",
+        "width": 1920
+      }
+    ]
+  },
+  "/images/robin-davies-diner.jpg": {
+    "width": 5184,
+    "height": 3888,
+    "variants": [
+      {
+        "src": "/images/optimized-sliders/images/robin-davies-diner-960.webp",
+        "width": 960
+      },
+      {
+        "src": "/images/optimized-sliders/images/robin-davies-diner-1920.webp",
+        "width": 1920
+      }
+    ]
+  }
+}

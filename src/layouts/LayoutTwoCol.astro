@@ -1,14 +1,17 @@
 ---
+import sliderImages from "../data/slider-images.json";
 import MichelinLogo from "@components/MichelinLogo.astro";
-import Layout from "../layouts/Layout.astro"; 
+import Layout from "../layouts/Layout.astro";
 const { frontmatter } = Astro.props;
 const showBack = frontmatter?.showBack !== false;
+const imageManifest = sliderImages as Record<string, { width: number; height: number; variants: { src: string; width: number }[] }>;
+const optimizedGallery = frontmatter.items?.length > 0 && frontmatter.items.every((item) => imageManifest[item.image]);
 ---
 
 <Layout title={`${frontmatter.title} - La Casa Que Canta`}>
 
 <section class="grid w-full md:grid-cols-[65%_35%] md:h-screen overflow-y-hidden">
-  <div class="min-w-0">
+  <div class:list={["min-w-0", { "optimized-gallery": optimizedGallery }]}>
     <div class="swiper mySwiper activities-slider w-full max-w-full overflow-hidden relative">
       {frontmatter.showMichelin !== false && (
         <div class="absolute top-4 right-4 z-30 hidden md:block">
@@ -16,16 +19,26 @@ const showBack = frontmatter?.showBack !== false;
         </div>
       )}
       <div class="swiper-wrapper">
-        {Array.isArray(frontmatter.items) && frontmatter.items.map((item) => {
+        {Array.isArray(frontmatter.items) && frontmatter.items.map((item, index) => {
+          const optimized = imageManifest[item.image];
           const webp = item.image.replace(/\.(jpg|jpeg|png)$/i, '.webp');
           return (
           <div class="swiper-slide">
             <picture>
-              <source srcset={webp} type="image/webp" />
-              <img 
-                class="cursor-pointer object-cover object-[40%_20%] md:object-[center_20%] transition duration-300 ease-in-out w-full h-full" 
-                src={item.image} 
-                alt={frontmatter.title} 
+              <source
+                srcset={optimized ? optimized.variants.map((variant) => `${variant.src} ${variant.width}w`).join(', ') : webp}
+                sizes={optimized ? '(min-width: 768px) 65vw, 100vw' : undefined}
+                type="image/webp"
+              />
+              <img
+                class="cursor-pointer object-cover object-[40%_20%] md:object-[center_20%] transition duration-300 ease-in-out w-full h-full"
+                src={item.image}
+                alt={item.text || frontmatter.title}
+                width={optimized?.width}
+                height={optimized?.height}
+                loading={optimizedGallery ? (index === 0 ? 'eager' : 'lazy') : undefined}
+                fetchpriority={optimizedGallery && index === 0 ? 'high' : undefined}
+                decoding={optimizedGallery ? 'async' : undefined}
               />
             </picture>
             {item.text && (
@@ -58,6 +71,31 @@ const showBack = frontmatter?.showBack !== false;
     </div>
   </div>
 </section>
+
+<style>
+  /* Reserve the gallery space before images and Swiper finish loading. */
+  .optimized-gallery {
+    height: 65svh;
+    min-height: 20rem;
+  }
+  .optimized-gallery .swiper {
+    height: 100%;
+  }
+  .optimized-gallery picture {
+    display: block;
+    height: 100%;
+  }
+  .optimized-gallery .swiper:not(.swiper-initialized) .swiper-slide {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+  @media (min-width: 768px) {
+    .optimized-gallery {
+      height: 100vh;
+      min-height: 0;
+    }
+  }
+</style>
 
 <script>
   import Swiper from "swiper";
